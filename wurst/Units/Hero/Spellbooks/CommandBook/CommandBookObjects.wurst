@@ -3,7 +3,6 @@ package CommandBookObjects
 import HeroConstants
 import ItemObjEditing
 import Ids
-import CommandControlObjects
 import AbilityObjEditing
 import OrderStringer
 
