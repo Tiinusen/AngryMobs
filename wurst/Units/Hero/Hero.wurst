@@ -1,0 +1,31 @@
+package Hero
+
+import Ids
+import UnitEntity
+import CommandBook
+import Owner
+
+public class Hero extends UnitEntity
+    construct(unit obj)
+        super(obj)
+        this.getUnit().getOwner().toOwnerType().setHero(this)
+
+    construct(player owner, vec2 pos)
+        super(CreateUnit(owner, HERO_ID, pos.x, pos.y, 270))
+        this.getUnit().getOwner().toOwnerType().setHero(this)
+
+    construct(player owner, vec2 pos, real dir)
+        super(CreateUnit(owner, HERO_ID, pos.x, pos.y, dir))
+        this.getUnit().getOwner().toOwnerType().setHero(this)
+    
+    override function applyUpgrades()
+
+    override protected function initalize()
+        new CommandBook(this.getUnit())
+
+    /** Moves player camera to hero */
+    function focus()
+        this.getOwner().getPlayer().panCamToTimed(this.getUnit(), 0)
+
+    function select()
+        this.getOwner().getPlayer().select(this.getUnit())

@@ -1,0 +1,69 @@
+package FighterObjects
+
+import FighterConstants
+import UnitObjEditing
+import Ids
+
+@compiletime function generate()
+	new UnitDefinition(FIGHTER_ID, FIGHTER_ORIGINAL_ID)
+		..setName(FIGHTER_NAME)
+		..setNameEditorSuffix("")
+		..setTooltipBasic(FIGHTER_TOOL_TIP_BASIC)
+		..setTooltipExtended(FIGHTER_TOOL_TIP_EXTENDED)
+		..setUnitClassification("_")
+		..setRace(Race.Commoner)
+		..setCanFlee(false)
+		//..setCollisionSize(0.0)
+		// Icon / Model
+		..setIconGameInterface(FIGHTER_ICON)
+		..setModelFile(FIGHTER_MODEL)
+		// Hotkey
+		..setHotkey(FIGHTER_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(FIGHTER_ABILITIES)
+		..setUpgradesUsed(FIGHTER_UPGRADES)
+		..setStructuresBuilt(commaList(""))
+		// Speed
+		..setSpeedBase(300)
+		// Sight
+		..setSightRadiusDay(600)
+		..setSightRadiusNight(100)
+		// Mana
+		..setManaRegeneration(0)
+		..setManaInitialAmount(0)
+		..setManaMaximum(0)
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		..setFoodCost(0)
+		// Shop
+		..setStockMaximum(1)
+		..setStockStartDelay(10)
+		..setStockReplenishInterval(FIGHTER_RESTOCK_INTERVAL)
+		// Armor
+		..setDefenseBase(0)
+		..setArmorType(ArmorType.Unarmored)
+		// Health
+		..setHitPointsMaximumBase(220)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Normal)
+		..setAttack1CooldownTime(1)
+		..setAttack1DamageBase(6)
+		..setAttack1DamageNumberofDice(1)
+		..setAttack1DamageSidesperDie(2)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Art Special / Animation / Maximum Pitch / Maximum Roll / Projectile / Propulsion
+		..setArtSpecial("")
+		..setAnimationBlendTimeseconds(0.0)
+		..setAnimationCastBackswing(0.0)
+		..setMaximumPitchAngledegrees(0.0)
+		..setMaximumRollAngledegrees(0.0)
+		..setProjectileImpactZ(0.0)
+		..setProjectileLaunchZ(0.0)
+		..setPropulsionWindowdegrees(1.0)
+		

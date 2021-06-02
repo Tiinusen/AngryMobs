@@ -1,0 +1,21 @@
+package FootmanConstants
+import public Assets
+import ObjectIds
+
+
+@configurable public let FOOTMAN_ORIGINAL_ID = UnitIds.footman
+
+@configurable public let FOOTMAN_ICON = Icons.bTNFootman
+@configurable public let FOOTMAN_MODEL = Units.footman1
+
+@configurable public let FOOTMAN_NAME = "Footman"
+@configurable public let FOOTMAN_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Footman"
+@configurable public let FOOTMAN_TOOL_TIP_EXTENDED = "A worthy soldier, with decent amount of damage"
+
+@configurable public let FOOTMAN_ABILITIES = commaList("")
+@configurable public let FOOTMAN_UPGRADES = commaList("")
+
+@configurable public let FOOTMAN_HOTKEY = "M"
+@configurable public let FOOTMAN_RESTOCK_INTERVAL = 10
+@configurable public let FOOTMAN_RESTOCK_MAXIMUM = 10
+@configurable public let FOOTMAN_RESTOCK_DELAY = 10

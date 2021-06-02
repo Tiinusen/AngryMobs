@@ -1,0 +1,412 @@
+package EventEntity
+
+import public Entity
+import public EntityCallback
+import LinkedList
+import ClosureTimers
+import ClosureEvents
+
+abstract public class EventEntity extends Entity
+    // To prevent closures from triggering after entity has been destructed
+    protected ClosureTerminator _closureTerminator = new ClosureTerminator()
+
+    private LinkedList<CallbackVoid> _onRemove = null
+    private LinkedList<CallbackUpgrade> _onUpgraded = null
+    private LinkedList<CallbackDeath> _onDeath = null
+    private LinkedList<CallbackSold> _onSold = null
+    private LinkedList<CallbackCast> _onCast = null
+    private LinkedList<CallbackWithin> _onWithin = null
+    private static LinkedList<CallbackConstruction> _onConstructionFinished = new LinkedList<CallbackConstruction>()    
+    
+    private EventListener _onDeathEventListener = null
+    private EventListener _onSoldEventListener = null
+    private OnCast _onCastEventListener = null
+    private static EventListener _onConstructionFinishedEventListener = null
+
+    construct(unit obj)
+        super(obj)
+        // This might have a performance impact due to it forcing usage of triggers
+        this.onDeath() (unit killer, CallbackDeath callback) ->
+            this._closureTerminator.after(5) -> 
+                this.remove(false)
+                    
+    
+    // Use remove() instead of destroy when it comes to event entities
+    ondestroy
+        if this._closureTerminator != null
+            destroy this._closureTerminator
+
+        // Destroy event listeners
+        if this._onDeathEventListener != null
+            destroy this._onDeathEventListener
+        if this._onSoldEventListener != null
+            destroy this._onSoldEventListener
+        if this._onCastEventListener != null
+            destroy this._onCastEventListener
+
+        EventEntity.removeEntityFromWithinChecker(this)
+
+        unregisterEventsForUnit(this.getUnit())
+        
+        this.remove(false)
+
+        // Destroy callbacks and lists
+        if this._onDeath != null
+            this._onDeath.forEach() (CallbackDeath t) ->
+                destroy t
+            destroy this._onDeath
+            this._onDeath = null
+
+        if this._onUpgraded != null
+            this._onUpgraded.forEach() (CallbackUpgrade t) ->
+                destroy t
+            destroy this._onUpgraded
+            this._onUpgraded = null
+
+        if this._onSold != null
+            this._onSold.forEach() (CallbackSold t) ->
+                destroy t
+            destroy this._onSold
+            this._onSold = null
+
+        if this._onCast != null
+            this._onCast.forEach() (CallbackCast t) ->
+                destroy t
+            destroy this._onCast
+            this._onCast = null
+
+        if this._onWithin != null
+            this._onWithin.forEach() (CallbackWithin t) ->
+                destroy t
+            destroy this._onWithin
+            this._onWithin = null
+
+        if this._onRemove != null
+            this._onRemove.forEach() (CallbackVoid t) ->
+                destroy t
+            destroy this._onRemove
+            this._onRemove = null
+
+    function remove(bool removeUnit)
+        if this._removed
+            return
+        this._removed = true
+
+        // Remove callback specific
+        if removeUnit and this._obj.isAliveTrick()
+            this._obj.remove()
+        
+        this.emitRemove()
+
+        destroy this
+
+    //
+    // On Remove
+    //
+    /** callback when unit dies or gets removed */
+    function onRemove(CallbackVoid callback) returns CallbackVoid
+        callback.cancel = () ->
+            if this._onRemove != null
+                this._onRemove.remove(callback)
+        if this._onRemove == null
+            this._onRemove = new LinkedList<CallbackVoid>()
+        this._onRemove.add(callback)
+        return callback
+    
+    /** triggers on remove callbacks and sets entity state to removed */
+    private function emitRemove()
+        if this._onRemove != null
+            this._onRemove.forEach() (CallbackVoid callback) ->
+                if this._onRemove.has(callback)
+                    callback.call()
+
+    //
+    // On Death
+    //
+
+    /** callback when unit dies */
+    function onDeath(CallbackDeath callback) returns CallbackDeath
+        if this._onDeath == null
+            this._onDeath = new LinkedList<CallbackDeath>()
+            nullTimer() -> 
+                this._onDeathEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_DEATH) ->
+                    if this._onDeath != null
+                        this._onDeath.forEach() (CallbackDeath callback2) ->
+                            if this._onDeath.has(callback)
+                                callback2.call(EventData.getKillingUnit(), callback2)
+            this._onDeath.add(callback)
+        callback.cancel = () ->
+            if this._onDeath != null
+                this._onDeath.remove(callback)
+        return callback
+
+    //
+    // On Sold
+    //
+    /** callback when this unit sells a unit */
+    function onSold(CallbackSold callback) returns CallbackSold
+        return this.onSold(0, callback)
+
+    /** callback when this unit sells a unit of specific type */
+    function onSold(int typeID, CallbackSold callback) returns CallbackSold
+        callback.typeID = typeID
+        if this._onSold == null
+            this._onSold = new LinkedList<CallbackSold>()
+            nullTimer() -> 
+                this._onSoldEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_SELL) ->
+                    let u = EventData.getSoldUnit()
+                    this._onSold.forEach() (CallbackSold callback) ->
+                        if this._onSold.has(callback)
+                            if callback.typeID == 0 or u.getTypeId() == callback.typeID
+                                callback.call(u, callback)
+        this._onSold.add(callback)
+        callback.cancel = () ->
+            if this._onSold != null
+                this._onSold.remove(callback)
+        return callback
+
+    //
+    // On Sold
+    //
+    /** callback when this unit is upgraded */
+    function onUpgraded(CallbackUpgrade callback) returns CallbackUpgrade
+        return this.onUpgraded(0, callback)
+
+    /** callback when this unit is upgraded to a specific type */
+    function onUpgraded(int typeID, CallbackUpgrade callback) returns CallbackUpgrade
+        callback.typeID = typeID
+        if this._onUpgraded == null
+            this._onUpgraded = new LinkedList<CallbackUpgrade>()
+            nullTimer() -> 
+                this._onSoldEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_UPGRADE_FINISH) ->
+                    let u = EventData.getConstructedStructure()
+                    this._onUpgraded.forEach() (CallbackUpgrade callback) ->
+                        if this._onUpgraded.has(callback)
+                            if callback.typeID == 0 or u.getTypeId() == callback.typeID
+                                callback.call(u.getTypeId())
+        this._onUpgraded.add(callback)
+        callback.cancel = () ->
+            if this._onUpgraded != null
+                this._onUpgraded.remove(callback)
+        return callback
+
+    //
+    // On Cast
+    //
+    /** callback when this unit sells a unit */
+    function onCast(CallbackCast callback) returns CallbackCast
+        return this.onCast(0, callback)
+
+    /** callback when this unit sells a unit of specific type */
+    function onCast(int abilityID, CallbackCast callback) returns CallbackCast
+        callback.abilityID = abilityID
+        if this._onCast == null
+            this._onCast = new LinkedList<CallbackCast>()
+            nullTimer() -> 
+                this._onCastEventListener = EventListener.onCast(this.getUnit()) (int spellId) ->
+                    let target = EventData.getSpellTargetUnit()
+                    let pos = EventData.getSpellTargetPos()
+                    this._onCast.forEach() (CallbackCast callback) ->
+                        if this._onCast.has(callback)
+                            if callback.abilityID == 0 or spellId == callback.abilityID
+                                callback.call(target, pos, callback)
+        this._onCast.add(callback)
+        callback.cancel = () ->
+            if this._onCast != null
+                this._onCast.remove(callback)
+        return callback
+    
+    //
+    // Within
+    //
+
+    /** callback once when entity is within radius of target or if entity is nlonger progressing or if unit dies */
+    function onWithinOnce(unit target, real distance, CallbackWithin callback) returns CallbackWithin
+        callback.target = target
+        callback.distance = distance
+        if this._onWithin == null
+            this._onWithin = new LinkedList<CallbackWithin>()
+        callback.cancel = () ->
+            if this._onWithin != null and this._onWithin.has(callback)
+                this._onWithin.remove(callback)
+        this._onWithin.add(callback)
+        EventEntity.addEntityAndRunWithinChecker(this)
+        return callback
+
+    /** callback once when entity is within radius of point or if entity is no longer progressing */
+    function onWithinOnce(vec2 pos, real distance, CallbackWithin callback) returns CallbackWithin
+        callback.pos = pos
+        callback.distance = distance
+        if this._onWithin == null
+            this._onWithin = new LinkedList<CallbackWithin>()
+        callback.cancel = () ->
+            if this._onWithin != null and this._onWithin.has(callback)
+                this._onWithin.remove(callback)
+        this._onWithin.add(callback)
+        EventEntity.addEntityAndRunWithinChecker(this)
+        return callback
+
+    private static LinkedList<EventEntity> _onWithinEntities = null
+
+    /** remove entity from within checker */
+    private static function removeEntityFromWithinChecker(EventEntity ee)
+        if EventEntity._onWithinEntities != null and EventEntity._onWithinEntities.has(ee)
+            EventEntity._onWithinEntities.remove(ee)
+
+    /** repeatedly check within callbacks waiting to be called if any fulfills their condition, stops automatically when there are no more callbacks */
+    private static function addEntityAndRunWithinChecker(EventEntity ee)
+        if EventEntity._onWithinEntities == null
+            EventEntity._onWithinEntities = new LinkedList<EventEntity>()
+            EventEntity._onWithinEntities.add(ee)
+            doPeriodically(0.5) (CallbackPeriodic cb) ->
+                EventEntity._onWithinEntities.forEach() (EventEntity ee) ->
+                    if EventEntity._onWithinEntities.has(ee)
+                        if ee._onWithin != null
+                            ee._onWithin.forEach() (CallbackWithin callback) ->      
+                                if ee._onWithin.has(callback)
+                                    if callback.lastEntityPos != vec2(0, 0) and callback.lastEntityPos == ee.getUnit().getPos()
+                                        callback.lastEntityPosTimes++
+                                        if callback.lastEntityPosTimes > 3
+                                            ee._onWithin.remove(callback)
+                                            nullTimer() -> 
+                                                callback.call(false, callback)
+                                                destroy callback
+                                    else if callback.target != null and not callback.target.isAliveTrick()
+                                        ee._onWithin.remove(callback)
+                                        nullTimer() -> 
+                                            callback.call(false, callback)
+                                            destroy callback
+                                    else if ee.distanceTo(callback) < callback.distance
+                                        ee._onWithin.remove(callback)
+                                        nullTimer() -> 
+                                            callback.call(true, callback)
+                                            destroy callback
+                                    else
+                                        callback.lastEntityPosTimes = 0
+                                        callback.lastEntityPos = ee.getUnit().getPos()
+                            if ee._onWithin != null and ee._onWithin.size() == 0
+                                EventEntity.removeEntityFromWithinChecker(ee)
+                                destroy ee._onWithin
+                                ee._onWithin = null
+                            else if ee._onWithin == null
+                                EventEntity.removeEntityFromWithinChecker(ee)
+                        
+                if EventEntity._onWithinEntities.size() == 0
+                    destroy EventEntity._onWithinEntities
+                    EventEntity._onWithinEntities = null
+                    destroy cb
+        else if not EventEntity._onWithinEntities.has(ee)
+            EventEntity._onWithinEntities.add(ee)
+
+    /** callback once callback condition is fulfilled or failed */
+    function isWithin(CallbackWithin callback) returns bool
+        if callback.target != null
+            return this.isWithin(callback.target, callback.distance)
+        else
+            return this.isWithin(callback.pos, callback.distance)
+
+    /** returns true if entity is within distance of unit */
+    function isWithin(unit obj, real distance) returns bool
+        return this.distanceTo(obj) < distance
+
+    /** returns true if entity is within distance of position */
+    function isWithin(vec2 pos, real distance) returns bool
+        return this.distanceTo(pos) < distance
+
+    /** returns distance to unit or point depending on callback */
+    function distanceTo(CallbackWithin callback) returns real
+        if callback.target != null
+            return this.distanceTo(callback.target)
+        else
+            return this.distanceTo(callback.pos)
+
+    /** returns distance to unit */
+    function distanceTo(unit u) returns real
+        return this.distanceTo(u.getPos())
+
+    /** returns distance to point */
+    function distanceTo(vec2 pos) returns real
+        return this.getUnit().getPos().distanceTo(pos)
+        
+
+    //
+    // Static
+    //
+
+
+
+    //
+    // On Constructed
+    /** callback when a building has been constructed */
+    static function onConstructionFinished(CallbackConstruction callback) returns CallbackConstruction
+        return onConstructionFinished(0, callback)
+
+    /** callback when a building has been constructed of specific type */
+    static function onConstructionFinished(int typeID, CallbackConstruction callback) returns CallbackConstruction
+        callback.typeID = typeID
+        if _onConstructionFinishedEventListener == null
+            _onConstructionFinishedEventListener = new NullEventListener()
+            nullTimer() -> 
+                destroy _onConstructionFinishedEventListener
+                _onConstructionFinishedEventListener = EventListener.add(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH) ->
+                    let u = EventData.getConstructedStructure()
+                    _onConstructionFinished.forEach() (CallbackConstruction callback) ->
+                        if callback.typeID == 0 or u.getTypeId() == callback.typeID
+                            callback.call(u)
+        _onConstructionFinished.add(callback)
+        return callback
+
+/** keeps track on closures and destroys them ondestruction */
+public class ClosureTerminator
+    private LinkedList<CallbackClosureTerminator> _list = new LinkedList<CallbackClosureTerminator>()
+
+    ondestroy
+        this._list.forEach() (CallbackClosureTerminator cct) ->
+            cct.terminate(null)
+            destroy cct
+        destroy this._list
+
+    /** like a normal doAfter except these are cancelled if destructed */
+    function after(real timeToWait, CallbackVoid callback) returns CallbackClosureTerminator
+        let ctsh = new ClosureTerminatorStateHolder()
+        CallbackClosureTerminator cbct =  (CallbackClosureTerminator terminator) ->
+            if ctsh.cbs != null
+                destroy ctsh.cbs
+                ctsh.cbs = null
+        this._list.add(cbct)
+        ctsh.cbs = doAfter(timeToWait) -> 
+            ctsh.cbs = null
+            callback.call()
+        cbct.state = ctsh
+        return cbct
+
+    /** like a normal doPeriodically except these are cancelled if destructed */
+    function periodically(real time, CallbackClosureTerminator callback) returns CallbackClosureTerminator
+        let ctsh = new ClosureTerminatorStateHolder()
+        CallbackClosureTerminator cbct = (CallbackClosureTerminator terminator) ->
+            if ctsh.cbp != null
+                destroy ctsh.cbp
+                ctsh.cbp = null
+        ctsh.cbp = doPeriodically(time) (CallbackPeriodic cb) ->
+            if ctsh.cbp == null
+                destroy cb
+            else
+                callback.terminate(cbct)
+        cbct.state = ctsh
+        return cbct
+
+public abstract class CallbackClosureTerminator
+    abstract function terminate(CallbackClosureTerminator terminator)
+    ClosureTerminatorStateHolder state = null
+
+    ondestroy
+        if this.state != null
+            destroy this.state
+
+class ClosureTerminatorStateHolder
+    CallbackSingle cbs = null
+    CallbackPeriodic cbp = null
+
+class NullEventListener extends EventListener
+    override function onEvent()
+        // Placeholder

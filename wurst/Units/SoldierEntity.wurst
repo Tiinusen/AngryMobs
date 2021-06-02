@@ -1,0 +1,29 @@
+package SoldierEntity
+
+import public UnitEntity
+import Worker
+
+abstract public class SoldierEntity extends UnitEntity
+    construct(int typeID, vec2 pos, player owner)
+        super(CreateUnit(owner, typeID, pos.x, pos.y, 270))
+
+    construct(int typeID, vec2 pos, player owner, real dir)
+        super(CreateUnit(owner, typeID, pos.x, pos.y, dir))
+
+    construct(int typeID, unit obj)
+        super(this.castIfNeeded(obj, typeID))
+
+    construct(int typeID, Worker worker)
+        super(this.castIfNeeded(worker.getUnit(), typeID))
+        worker.remove(false)
+
+    private function castIfNeeded(unit u, int typeID) returns unit
+        if u.getTypeId() != typeID
+            return ReplaceUnitBJ(u, typeID, bj_UNIT_STATE_METHOD_RELATIVE)
+        return u
+
+
+    override function initalize()
+        if this.getOwner().getPlayer() != this.getOwner().getSide().getSidePlayer()
+            this.getUnit().setOwner(this.getOwner().getSide().getSidePlayer(), false)
+        this.getUnit().setColor(this.getOwner().getPlayer().getColor())

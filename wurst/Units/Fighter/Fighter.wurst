@@ -1,0 +1,22 @@
+package Fighter
+
+import Worker
+import SoldierEntity
+import Ids
+
+public class Fighter extends SoldierEntity
+    construct(vec2 pos, player owner)
+        super(FIGHTER_ID, pos, owner)
+
+    construct(vec2 pos, player owner, real dir)
+        super(FIGHTER_ID, pos, owner, dir)
+
+    construct(unit obj)
+        super(FIGHTER_ID, obj)
+
+    construct(Worker worker)
+        super(FIGHTER_ID, worker)
+    
+    override function applyUpgrades()
+        this.applyMoveSpeed(this.getOwner().getResearch(WORKER_HALL_MOVEMENT_SPEED_ID)*50.)
+        this.applyAttackDamage(0, damage(this.getOwner().getResearch(WORKER_HALL_ATTACK_DAMAGE_ID)*5, 0, 0))

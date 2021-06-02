@@ -1,0 +1,138 @@
+package Owner
+
+import initlater Hero
+import UnitEntity
+import Side
+import LinkedList
+import ClosureEvents
+import ClosureTimers
+
+LinkedList<Owner> _owners = new LinkedList<Owner>()
+
+init
+    for i = 0 to 13
+        let p = Player(i)
+        if p.getSlotState() == PLAYER_SLOT_STATE_PLAYING
+            let owner = new Owner(p)
+            _owners.add(owner)
+            if i < 12
+                UnitEntity.applyUpgradesOnPlayerUnits(p)
+                owner.onResearch() (int typeid) ->
+                    UnitEntity.applyUpgradesOnPlayerUnits(owner)
+
+                    
+
+/** finds owner type linked to player primitive */
+public function player.toOwnerType() returns Owner
+    return _owners.filter((Owner owner) -> owner.getPlayer() == this).getFirst()
+        
+    
+public class Owner
+    
+    private player _player
+    private Side _side
+    private Hero _hero
+
+    private LinkedList<CallbackResearch> _onResearch = null
+
+    private EventListener _onResearchEventListener = null
+
+    construct(player p)
+        this._player = p
+        this._side = this._player.getSide()
+        if this._side.getSidePlayer() != this.getPlayer()
+            this._side.join(this)
+
+    construct(player p, Hero hero)
+        this._hero = hero
+        this._player = p
+        this._side = this._player.getSide()
+        if this._side.getSidePlayer() != this.getPlayer()
+            this._side.join(this)
+
+    ondestroy
+        // Destroy event listeners
+        if this._onResearchEventListener != null
+            destroy this._onResearchEventListener
+
+    /** returns hero belonging to player */
+    function getHero() returns Hero
+        return this._hero
+
+    /** sets hero */
+    function setHero(Hero hero)
+        this._hero = hero
+
+    /** gets player primitive */
+    function getPlayer() returns player
+        return this._player
+
+    /** returns side which owner belongs to */
+    function getSide() returns Side
+        return this._side
+
+    /** returns true if player is still playing */
+    function isPlaying() returns bool
+        return this._player.getSlotState() == PLAYER_SLOT_STATE_PLAYING
+
+    /** sets research level of provided tech */
+    function setResearch(int techid, int setToLevel)
+        this._player.setResearch(techid, setToLevel)
+
+    /** gets research level of provided tech */
+    function getResearch(int techid) returns int
+        return this._player.getResearch(techid)
+
+    /** callback when research completes */
+    function onResearch(CallbackResearch callback) returns CallbackResearch
+        return this.onResearch(0, callback)
+
+    /** callback when research completes */
+    function onResearch(int techid, CallbackResearch callback) returns CallbackResearch
+        callback.techID = techid
+        if this._onResearch == null
+            this._onResearch = new LinkedList<CallbackResearch>()
+            nullTimer() -> 
+                this._onResearchEventListener = EventListener.add(EVENT_PLAYER_UNIT_RESEARCH_FINISH) ->
+                    let typeid = EventData.getResearchedType()
+                    if this._onResearch != null
+                        this._onResearch.filter((CallbackResearch callback) -> callback.techID == 0 or callback.techID == typeid).forEach() (CallbackResearch callback) ->
+                            if this._onResearch.has(callback)
+                                callback.call(typeid)
+            this._onResearch.add(callback)
+        callback.cancel = () ->
+            if this._onResearch != null
+                this._onResearch.remove(callback)
+        return callback
+
+    /** pings on map position for a second*/
+    function ping(vec2 pos)
+        this.ping(pos, 1)
+
+    /** pings on map position for duration of time */
+    function ping(vec2 pos, real duration)
+        PingMinimapForPlayer(this._player, pos.x, pos.y, duration)
+
+    /** prints a message to player which is displayed for 5 seconds */
+    function print(string text)
+        this.print(text, 5)
+
+    /** prints a message to player which is displayed for provided duration of time */
+    function print(string text, real duration)
+        printTimedToPlayer(text, duration, this._player)
+
+    //
+    // Static Methods
+    //
+    
+    /** Gets active players */
+    static function getActive() returns LinkedList<Owner>
+        return _owners.filter((Owner t) -> t.isPlaying() and t.getPlayer() != Side.east.getSidePlayer() and t.getPlayer() != Side.west.getSidePlayer())
+            
+/** wrapper for SetPlayerTechResearched */
+public function player.setResearch(int techid, int setToLevel)
+    SetPlayerTechResearched(this, techid, setToLevel)
+
+/** wrapper for GetPlayerTechCountSimple */
+public function player.getResearch(int techid) returns int
+    return GetPlayerTechCountSimple(techid, this)

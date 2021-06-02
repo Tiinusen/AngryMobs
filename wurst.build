@@ -1,0 +1,123 @@
+---
+projectName: AngryMobs
+buildMapData:
+  name: Angry Mobs # Name shown ingame, may be colored
+  fileName: AngryMobs # Name of the map file
+  author: Tiinusen # Name of the author
+  scenarioData:
+    description: Anniversary re-make, originally inspired by Pyramid Escape's Mob Challange, construct minion spawners and use your abilities to improve their performance, take out enemy king and win
+    suggestedPlayers: DefaultSuggestedPlayers # Hint text displayed in lobby
+    loadingScreen:
+      background: Generic
+      title: Anniversary re-make
+      subTitle: Angry Mobs
+      text: Construct buildings to spawn minions, use abilities to boost minions, take out enemy leader, easy peacey
+  optionsFlags:
+    hideMinimapPreview: true
+    forcesFixed: true
+    maskedAreasPartiallyVisible: false
+    showWavesOnCliffShores: false
+    showWavesOnRollingShores: false
+    useItemClassificationSystem: false
+  players:
+  - id: 0
+    name: Player 1
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 1
+    name: Player 2
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 2
+    name: Player 3
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 3
+    name: Player 4
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 4
+    name: Player 5
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 5
+    name: Player 6
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 6
+    name: Player 7
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 7
+    name: Player 8
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 8
+    name: Player 9
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 9
+    name: Player 10
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 10
+    name: Player 11
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 11
+    name: Player 12
+    race: HUMAN
+    controller: USER
+    fixedStartLoc: true
+  - id: 12
+    name: East Army
+    race: HUMAN
+    controller: COMPUTER
+    fixedStartLoc: true
+  - id: 13
+    name: West Army
+    race: HUMAN
+    controller: COMPUTER
+    fixedStartLoc: true
+  forces:
+  - name: West Side
+    playerIds:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 13
+    flags:
+      allied: true
+      alliedVictory: true
+      sharedVision: true
+      sharedControl: false
+      sharedControlAdvanced: false
+  - name: East Side
+    playerIds:
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    flags:
+      allied: true
+      alliedVictory: true
+      sharedVision: true
+      sharedControl: false
+      sharedControlAdvanced: false

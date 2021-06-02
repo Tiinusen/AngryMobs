@@ -1,0 +1,25 @@
+package WorkerHallConstants
+import public Assets
+import Ids
+
+@configurable public let WORKER_HALL_ORIGINAL_ID = UnitIds.townhall
+
+@configurable public let WORKER_HALL_ICON = Icons.bTNTownHall
+@configurable public let WORKER_HALL_MODEL = Buildings.townHall
+
+@configurable public let WORKER_HALL_NAME = "Worker Hall"
+@configurable public let WORKER_HALL_TOOL_TIP_BASIC = "|cffFFCC00Build |cffFF7B29Worker Hall [T]"
+@configurable public let WORKER_HALL_TOOL_TIP_EXTENDED = "Automatically spawns one worker per level"
+
+@configurable public let WORKER_HALL_UNITS_SOLD = commaList(WORKER_ID)
+@configurable public let WORKER_HALL_UNITS_TRAINED = commaList("")
+
+@configurable public let WORKER_HALL_ABILITIES = commaList(WORKER_HALL_SELECT_MINE_ID)
+@configurable public let WORKER_HALL_HOTKEY = "T"
+
+@configurable public let WORKER_HALL_RUN_CYCLE_INTERVAL = 5.
+
+@configurable public let WORKER_HALL_SELECT_MINE_ICON = Icons.bTNGoldmine
+@configurable public let WORKER_HALL_SELECT_MINE_NAME = "Select Mine"
+@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_BASIC = "Select Mine"
+@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_EXTENDED = ""

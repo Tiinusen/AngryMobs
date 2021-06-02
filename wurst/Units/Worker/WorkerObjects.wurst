@@ -1,0 +1,72 @@
+package WorkerObjects
+
+import WorkerConstants
+import UnitObjEditing
+import Ids
+
+@compiletime function generate()
+	new UnitDefinition(WORKER_ID, WORKER_ORIGINAL_ID)
+		..setName(WORKER_NAME)
+		..setNameEditorSuffix("")
+		..setTooltipBasic(WORKER_TOOL_TIP_BASIC)
+		..setTooltipExtended(WORKER_TOOL_TIP_EXTENDED)
+		..setStructuresBuilt("")
+		..setUnitClassification("_")
+		..setRace(Race.Commoner)
+		..setCanFlee(true)
+		//..setCollisionSize(0.0)
+		// Icon / Model
+		..setIconGameInterface(WORKER_ICON)
+		..setModelFile(WORKER_MODEL)
+		// Button Placement
+		..setButtonPositionX(0)
+		..setButtonPositionY(0)
+		// Hotkey
+		..setHotkey(WORKER_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(WORKER_ABILITIES)
+		..setUpgradesUsed(commaList(""))
+		// Speed
+		..setSpeedBase(200)
+		// Sight
+		..setSightRadiusDay(600)
+		..setSightRadiusNight(100)
+		// Mana
+		..setManaRegeneration(0)
+		..setManaInitialAmount(0)
+		..setManaMaximum(0)
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		..setFoodCost(0)
+		// Shop
+		..setStockMaximum(1)
+		..setStockStartDelay(10)
+		..setStockReplenishInterval(WORKER_RESTOCK_INTERVAL)
+		// Armor
+		..setDefenseBase(0)
+		..setArmorType(ArmorType.Unarmored)
+		// Health
+		..setHitPointsMaximumBase(220)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Unknown)
+		..setAttack1CooldownTime(0)
+		..setAttack1DamageBase(0)
+		..setAttack1DamageNumberofDice(0)
+		..setAttack1DamageSidesperDie(0)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Art Special / Animation / Maximum Pitch / Maximum Roll / Projectile / Propulsion
+		..setArtSpecial("")
+		..setAnimationBlendTimeseconds(0.0)
+		..setAnimationCastBackswing(0.0)
+		..setMaximumPitchAngledegrees(0.0)
+		..setMaximumRollAngledegrees(0.0)
+		..setProjectileImpactZ(0.0)
+		..setProjectileLaunchZ(0.0)
+		..setPropulsionWindowdegrees(1.0)
+		

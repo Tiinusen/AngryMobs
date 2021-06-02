@@ -1,0 +1,14 @@
+package CommandBook
+
+import Ids
+import ItemObject
+
+public class CommandBook extends ItemObject
+    construct(item obj)
+        super(obj, COMMAND_BOOK_ID)
+
+    construct(vec2 pos)
+        super(pos, COMMAND_BOOK_ID)
+
+    construct(unit u)
+        super(u, COMMAND_BOOK_ID)

@@ -1,0 +1,40 @@
+package RunnerEntity
+
+import public UnitEntity
+import ClosureTimers
+
+abstract public class RunnerEntity extends UnitEntity
+    private bool enabled = true
+    CallbackPeriodic runCyclePeriod = null
+
+    construct(unit obj, real runIntervalInSeconds)
+        super(obj)
+        if runIntervalInSeconds > 0
+            this.runCyclePeriod = doPeriodically(runIntervalInSeconds) (CallbackPeriodic cb) ->
+                if this.enabled
+                    this.run()
+
+    //
+    // Abstract Methods
+    //
+
+    /** Executed each run cycle  */
+    abstract protected function run()
+
+    //
+    // Methods
+    //
+
+    function isEnabled() returns bool
+        return this.enabled
+
+    /* Enables automatic behavior on entity */
+    function enable()
+        this.enabled = true
+
+    /* Disables automatic behavior on entity */
+    function disable()
+        this.enabled = false
+
+    ondestroy
+        destroy runCyclePeriod

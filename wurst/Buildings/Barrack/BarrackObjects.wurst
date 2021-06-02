@@ -1,0 +1,40 @@
+package BarrackObjects
+
+import BarrackConstants
+import ChannelAbilityPreset
+import Ids
+
+@compiletime function generate()
+	// Worker Hall
+	let ids = [BARRACK_ID_LEVEL_1,BARRACK_ID_LEVEL_2,BARRACK_ID_LEVEL_3,BARRACK_ID_LEVEL_4]
+	for i = 0 to 3
+		let b = new BuildingDefinition(ids[i], UnitIds.humanbarracks)
+		..setNameEditorSuffix("(Barrack)")
+		..setName(BARRACK_NAME+" - Level "+(i+1).toString())
+		..setTooltipBasic(BARRACK_TOOL_TIP_BASIC)
+		..setTooltipExtended(BARRACK_TOOL_TIP_EXTENDED)
+		// Icon / Model
+		..setIconGameInterface(BARRACK_ICON)
+		..setModelFile(BARRACK_MODEL)
+		// Button Placement
+		..setButtonPositionX(i != 0 ? 3 : 1)
+		..setButtonPositionY(i != 0 ? 2 : 0)
+		// Hotkey
+		..setHotkey(BARRACK_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(BARRACK_ABILITIES)
+		..setResearchesAvailable(commaList(BARRACK_WORKER_TO_MILITIA_UPGRADE_ID, BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID))
+		..setUnitsTrained(commaList(BARRACK_UNITS_TRAINED))
+		..setUnitsSold(BARRACK_UNITS_SOLD)
+		// Build / Cost
+		..setBuildTime(1)
+		..setGoldCost(i==0 ? 200 : 150)
+		..setLumberCost(i==0 ? 1 : 0)
+		// Health
+		..setHitPointsMaximumBase(1000)
+		// Other
+		..setIsaBuilding(true)
+		..setHideMinimapDisplay(true)
+		// Upgrades To
+		if i < 3
+			b..setUpgradesTo(commaList(ids[i+1]))

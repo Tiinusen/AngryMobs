@@ -1,0 +1,10 @@
+package OrderStringer
+
+import OrderStringFactory
+
+class OrderStringer
+    static OrderStringFactory _orderStringer = new OrderStringFactory()
+
+    static function getOrderString() returns string
+        return OrderStringer._orderStringer.getOrderString(true)
+    

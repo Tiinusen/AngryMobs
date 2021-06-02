@@ -1,0 +1,24 @@
+package Militia
+
+import Worker
+import SoldierEntity
+import Ids
+
+public class Militia extends SoldierEntity
+    construct(vec2 pos, player owner)
+        super(MILITIA_ID, pos, owner)
+
+    construct(vec2 pos, player owner, real dir)
+        super(MILITIA_ID, pos, owner, dir)
+
+    construct(unit obj)
+        super(MILITIA_ID, obj)
+
+    construct(Worker worker)
+        super(MILITIA_ID, worker)
+
+    override function applyUpgrades()
+        this.applyMoveSpeed(this.getOwner().getResearch(WORKER_HALL_MOVEMENT_SPEED_ID)*50.)
+        this.applyAttackDamage(0, damage(this.getOwner().getResearch(WORKER_HALL_ATTACK_DAMAGE_ID)*7, 0, 0))
+        this.applyArmor(this.getOwner().getResearch(WORKER_HALL_ARMOR_ID).toReal())
+    

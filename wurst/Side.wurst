@@ -1,0 +1,31 @@
+package Side
+
+import LinkedList
+import initlater Owner
+
+public class Side
+
+    private player _sidePlayer
+    private LinkedList<Owner> _players = new LinkedList<Owner>()
+
+    static var west = new Side(Player(13))
+    static var east = new Side(Player(12))
+
+    construct(player p)
+        this._sidePlayer = p
+
+    /** returns player primitive belonging to computer of alliance */
+    function getSidePlayer() returns player
+        return this._sidePlayer
+
+    /** returns all players as owner objects of that side except computer of alliance player */
+    function getPlayers() returns LinkedList<Owner>
+        return this._players.copy()
+
+    /** makes player join this side */
+    function join(Owner u)
+        this._players.add(u)
+        
+/** returns side which player belongs to */
+public function player.getSide() returns Side
+    return this.isAllyOf(Side.west.getSidePlayer()) ? Side.west : Side.east

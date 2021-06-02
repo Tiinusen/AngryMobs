@@ -1,0 +1,38 @@
+package CommandBookObjects
+
+import HeroConstants
+import ItemObjEditing
+import Ids
+import CommandControlObjects
+import AbilityObjEditing
+import OrderStringer
+
+@compiletime function generate()
+	// Command Book
+	new ItemDefinition(COMMAND_BOOK_ID, ItemIds.bookoftheDead)
+	..setName("Command")
+	..setTooltipBasic("Do eet")
+	..setTooltipExtended("It is round")
+	..setDescription("Give's the hero the possibility to issue commands to friendly minions")
+	// Icon / Model
+	..setInterfaceIcon(Icons.bTNBookOfSummoning)
+	..setModelUsed("")
+	// Abilities
+	..setAbilities(commaList(COMMAND_BOOK_ABILITY_ID))
+	// Cost
+	..setGoldCost(0)
+	..setLumberCost(0)
+	// Other
+	..setDroppedWhenCarrierDies(false)
+	..setCanBeDropped(false)
+	..setCanBeSoldByMerchants(true)
+	..setCanBeSoldToMerchants(false)
+	..setNumberofCharges(0)
+
+	new AbilityDefinitionSpellBook (COMMAND_BOOK_ABILITY_ID)
+	..setLevels(1)
+	..setHeroAbility (false)
+	..setItemAbility (false)
+	..setMaximumSpells(1, 11)
+	..setBaseOrderID(1, OrderStringer.getOrderString())
+	..setSpellList(1, commaList(COMMAND_CONTROL_ID))

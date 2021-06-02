@@ -1,0 +1,26 @@
+package ItemObject
+
+import ErrorHandling
+
+abstract public class ItemObject
+    private item _obj = null
+
+    construct(item obj, int itemTypeID)
+        if obj.getTypeId() != itemTypeID
+            error("wrong item primitive passed, type does not match")
+        this._obj = obj
+
+    construct(vec2 pos, int itemTypeID)
+        this._obj = CreateItem(itemTypeID, pos.x, pos.y)
+
+    construct(unit u, int itemTypeID)
+        this._obj = CreateItem(itemTypeID, u.getPos().x, u.getPos().y)
+        u.addItemHandle(this.getItem())
+
+    ondestroy
+        this._obj.remove()
+
+    function getItem() returns item
+        return this._obj
+
+    

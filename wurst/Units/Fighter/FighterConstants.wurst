@@ -1,0 +1,19 @@
+package FighterConstants
+import public Assets
+import Ids
+
+
+@configurable public let FIGHTER_ORIGINAL_ID = UnitIds.peasant
+
+@configurable public let FIGHTER_ICON = Icons.bTNPeasant
+@configurable public let FIGHTER_MODEL = Units.peasant1
+
+@configurable public let FIGHTER_NAME = "Fighter"
+@configurable public let FIGHTER_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Fighter"
+@configurable public let FIGHTER_TOOL_TIP_EXTENDED = "A worker drafted to become a fighter"
+
+@configurable public let FIGHTER_ABILITIES = commaList("")
+@configurable public let FIGHTER_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID)
+
+@configurable public let FIGHTER_HOTKEY = "M"
+@configurable public let FIGHTER_RESTOCK_INTERVAL = 5

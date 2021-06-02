@@ -1,0 +1,38 @@
+package Barrack
+
+import Footman
+import Ids
+import BarrackConstants
+import RunnerEntity
+import Owner
+
+init
+    EventEntity.onConstructionFinished(BARRACK_ID_LEVEL_1) (unit building) ->
+        new Barrack(building)
+
+public class Barrack extends RunnerEntity
+    construct(unit obj)
+        super(obj, BARRACK_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos)
+        super(CreateUnit(owner, BARRACK_ID_LEVEL_1, pos.x, pos.y, 270), BARRACK_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos, real dir)
+        super(CreateUnit(owner, BARRACK_ID_LEVEL_1, pos.x, pos.y, dir), BARRACK_RUN_CYCLE_INTERVAL)
+
+    function getWorkerToMilitiaLevel() returns int
+        return this.getOwner().getResearch(BARRACK_WORKER_TO_MILITIA_UPGRADE_ID)
+
+    function getWorkerTripsToMineLevel() returns int
+        return this.getOwner().getResearch(BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
+
+    override function initalize()
+        this.onUpgraded() (int typeid) ->
+            this.setLevel(this.getLevel()+1)
+
+        this.onSold(FOOTMAN_ID) (unit sold, CallbackSold callback) ->
+            new Footman(sold)
+            
+    override function run()
+        for i = 1 to this.getLevel()
+            new Footman(this.getUnit().getPos(), this.getOwner().getPlayer())

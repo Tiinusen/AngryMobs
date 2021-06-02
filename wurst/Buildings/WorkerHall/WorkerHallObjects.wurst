@@ -1,0 +1,189 @@
+package WorkerHallObjects
+
+import WorkerHallConstants
+import ChannelAbilityPreset
+import UpgradeObjEditing
+import Ids
+
+@compiletime function generate()
+	// Worker Hall
+	let ids = [WORKER_HALL_ID_LEVEL_1,WORKER_HALL_ID_LEVEL_2,WORKER_HALL_ID_LEVEL_3,WORKER_HALL_ID_LEVEL_4]
+	for i = 0 to 3
+		let b = new BuildingDefinition(ids[i], UnitIds.humanbarracks)
+		..setNameEditorSuffix("(Worker Hall)")
+		..setName(WORKER_HALL_NAME+" - Level "+(i+1).toString())
+		..setTooltipBasic(WORKER_HALL_TOOL_TIP_BASIC)
+		..setTooltipExtended(WORKER_HALL_TOOL_TIP_EXTENDED)
+		// Icon / Model
+		..setIconGameInterface(WORKER_HALL_ICON)
+		..setModelFile(WORKER_HALL_MODEL)
+		// Button Placement
+		..setButtonPositionX(i != 0 ? 3 : 0)
+		..setButtonPositionY(i != 0 ? 2 : 0)
+		// Hotkey
+		..setHotkey(WORKER_HALL_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(WORKER_HALL_ABILITIES)
+		..setResearchesAvailable(commaList(
+			WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID, 
+			WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID, 
+			WORKER_HALL_MOVEMENT_SPEED_ID, 
+			WORKER_HALL_ARMOR_ID, 
+			WORKER_HALL_ATTACK_DAMAGE_ID
+		))
+		..setUnitsTrained(WORKER_HALL_UNITS_TRAINED)
+		..setUnitsSold(WORKER_HALL_UNITS_SOLD)
+		// Build / Cost
+		..setBuildTime(1)
+		..setGoldCost(i*400)
+		..setLumberCost(0)
+		// Health
+		..setHitPointsMaximumBase(1000)
+		// Other
+		..setIsaBuilding(true)
+		..setHideMinimapDisplay(true)
+		// Upgrades To
+		if i < 3
+			b..setUpgradesTo(commaList(ids[i+1]))
+		if i == 0
+			b..setRequirements(commaList(WORKER_HALL_LIMIT_REACHED_ID))
+
+	// Select Mine
+	new ChannelAbilityPreset(WORKER_HALL_SELECT_MINE_ID,1,true)
+		..setEditorSuffix("(Worker Hall)")
+		..setName(WORKER_HALL_SELECT_MINE_NAME)
+		..presetTooltipNormal(lvl -> WORKER_HALL_SELECT_MINE_TOOL_TIP_BASIC)
+		..presetTooltipNormalExtended(lvl -> WORKER_HALL_SELECT_MINE_TOOL_TIP_EXTENDED)
+		// Icon
+		..presetIcon(WORKER_HALL_SELECT_MINE_ICON)
+		// Hotkey
+		..presetHotkey("Q")
+		// Button Placement
+		..presetButtonPosNormal(0, 2)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetTargetTypes(Targettype.NONE)
+		..presetOption(Option.TARGETIMAGE, true)
+	
+	// Worker Hall limit
+	new UpgradeDefinition(WORKER_HALL_LIMIT_REACHED_ID)
+		..setLevels(1)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName(lvl -> "Worker Hall already built")
+		..presetTooltip(lvl -> "Limit reached")
+		// Icon
+		..setIcon(1, Icons.bTNCancel)
+
+	// Worker to Militia
+	new UpgradeDefinition(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID)
+		..setLevels(3)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		// Button Placement
+		..setButtonPositionX(3)
+		..setButtonPositionY(1)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(100)
+		..setGoldCostIncrement(1200)
+		// Level 1
+		..setIcon(1, Icons.bTNCallToArms)
+		..setName(1, "Call to Fighter")
+		..setTooltip(1, "Worker becomes a fighter once his gold is collected by hero")
+		// Level 2
+		..setIcon(2, Icons.bTNMilitia)
+		..setName(2, "Call to Militia")
+		..setTooltip(2, "Worker becomes a militia once his gold is collected by hero")
+		// Level 3
+		..setIcon(3, Icons.bTNFootman)
+		..setName(3, "Call to Footman")
+		..setTooltip(3, "Worker becomes a footman once his gold is collected by hero")
+
+	// Trips to Mine
+	new UpgradeDefinition(WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
+		..setLevels(2)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName((int lvl) -> "Trips to Mine (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Trips to Mine (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increase the amount of trips each worker do between the mine and the hero\n\n|c81d9dd06Increases trips to "+(lvl+1).toString())
+		// Icon
+		..presetIcon((int lvl) -> Icons.bTNBox)
+		// Button Placement
+		..setButtonPositionX(0)
+		..setButtonPositionY(1)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(1000)
+		..setGoldCostIncrement(2000)
+
+	// Movement Speed
+	new UpgradeDefinition(WORKER_HALL_MOVEMENT_SPEED_ID)
+		..setLevels(2)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName((int lvl) -> "Movement Speed (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Movement Speed (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the movement speed of the workers, fighters and militia")
+		// Icon
+		..presetIcon((int lvl) -> Icons.bTNBootsOfSpeed)
+		// Button Placement
+		..setButtonPositionX(3)
+		..setButtonPositionY(0)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(300)
+		..setGoldCostIncrement(400)
+		// Stats
+		..addEffectMovementSpeedBonus(50, 50)
+	
+	// Armor
+	new UpgradeDefinition(WORKER_HALL_ARMOR_ID)
+		..setLevels(2)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName((int lvl) -> "Armor (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Armor (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the armor of militias")
+		// Requirements
+		..presetRequirements((int lvl) -> commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
+		..presetRequirementsLevels((int lvl) -> commaList("2"))
+		// Icon
+		..setIcon(1, Icons.bTNHumanArmorUpOne)
+		..setIcon(2, Icons.bTNHumanArmorUpTwo)
+		// Button Placement
+		..setButtonPositionX(2)
+		..setButtonPositionY(0)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(400)
+		// Stats
+		..addEffectApplyDefenseUpgradeBonus()
+
+	// Attack Damage
+	new UpgradeDefinition(WORKER_HALL_ATTACK_DAMAGE_ID)
+		..setLevels(2)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the attack damage of fighters and militias")
+		// Requirements
+		..presetRequirements((int lvl) -> commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
+		..presetRequirementsLevels((int lvl) -> commaList("1"))
+		// Icon
+		..setIcon(1, "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp")
+		..setIcon(2, "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp")
+		..setIcon(3, "ReplaceableTextures\\CommandButtons\\BTNArcaniteMelee.blp")
+		// Button Placement
+		..setButtonPositionX(1)
+		..setButtonPositionY(0)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(400)
+		// Stats
+		..addEffectApplyDefenseUpgradeBonus()

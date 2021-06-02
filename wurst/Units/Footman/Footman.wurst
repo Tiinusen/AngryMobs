@@ -1,0 +1,20 @@
+package Footman
+
+import Worker
+import SoldierEntity
+import Ids
+
+public class Footman extends SoldierEntity
+    construct(vec2 pos, player owner)
+        super(FOOTMAN_ID, pos, owner)
+
+    construct(vec2 pos, player owner, real dir)
+        super(FOOTMAN_ID, pos, owner, dir)
+
+    construct(unit obj)
+        super(FOOTMAN_ID, obj)
+
+    construct(Worker worker)
+        super(FOOTMAN_ID, worker)
+    
+    override function applyUpgrades()

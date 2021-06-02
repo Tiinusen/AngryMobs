@@ -1,0 +1,87 @@
+package WorkerHall
+
+import RunnerEntity
+import Worker
+import WorkerHallConstants
+import LinkedList
+import Owner
+import Ids
+
+LinkedList<unit> mines
+
+init
+    Owner.getActive().forEach() (Owner owner) ->
+        owner.setResearch(WORKER_HALL_LIMIT_REACHED_ID, 1)
+
+    mines = GetUnitsOfTypeIdAll(UnitIds.goldmine).asList()
+
+    EventEntity.onConstructionFinished(WORKER_HALL_ID_LEVEL_1) (unit building) ->
+        let workerhall = new WorkerHall(building)
+
+        workerhall.onRemove() () ->
+            workerhall.getOwner().setResearch(WORKER_HALL_LIMIT_REACHED_ID, 1)
+
+        workerhall.getOwner().setResearch(WORKER_HALL_LIMIT_REACHED_ID, 0)
+        
+        GetUnitsOfPlayerAndTypeId(workerhall.getOwner().getPlayer(), WORKER_HALL_ID_LEVEL_1).asList().filter((unit obj) -> obj != workerhall.getUnit()).forEach() (unit obj) ->
+            obj.remove()
+
+public class WorkerHall extends RunnerEntity
+    LinkedList<Worker> workers = new LinkedList<Worker>()
+    private unit _selectedMine = null
+
+    construct(unit obj)
+        super(obj, WORKER_HALL_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos)
+        super(CreateUnit(owner, WORKER_HALL_ID_LEVEL_1, pos.x, pos.y, 270), WORKER_HALL_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos, real dir)
+        super(CreateUnit(owner, WORKER_HALL_ID_LEVEL_1, pos.x, pos.y, dir), WORKER_HALL_RUN_CYCLE_INTERVAL)
+
+    function getWorkerToMilitiaLevel() returns int
+        return this.getOwner().getResearch(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID)
+
+    function getWorkerTripsToMineLevel() returns int
+        return this.getOwner().getResearch(WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
+
+    /** returns the mine that has been selected by the select mine ability */
+    function getSelectedMine() returns unit
+        return this._selectedMine
+
+    override function initalize()
+        this._selectedMine = mines.getFirst()
+
+        this.onUpgraded() (int typeid) ->
+            this.setLevel(this.getLevel()+1)
+
+        this.onSold(WORKER_ID) (unit sold, CallbackSold callback) ->
+            let worker = new Worker(sold, this)
+            this.workers.add(worker)
+            worker.onRemove()->
+                this.workers.remove(worker)
+            for i = 2 to 10
+                let worker2 = new Worker(sold.getPos(), sold.getOwner(), this)
+                this.workers.add(worker2)
+                worker2.onRemove() ->
+                    this.workers.remove(worker2)
+
+        this.onCast(WORKER_HALL_SELECT_MINE_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            this._selectedMine = mines.filter((unit mine) -> mine != this.getSelectedMine()).getFirst()
+            this.getOwner().print("You have selected the "+(this.getSelectedMine().getPos().y>0?"North":"South")+" mine")
+            this.getOwner().ping(this.getSelectedMine().getPos(), 1)
+            this.workers.forEach() (Worker worker) ->
+                if not worker.isCarryingGold()
+                    worker.goToMine(this.getSelectedMine())
+            
+    override function run()
+        for i = 1 to this.getLevel() - this.workers.size()
+            let worker = new Worker(this.getUnit().getPos(), this.getOwner().getPlayer(), this)
+            this.workers.add(worker)
+            worker.onRemove() ->
+                this.workers.remove(worker)
+
+    ondestroy
+        this.workers.forEach() (Worker worker) ->
+            worker.remove(true)
+        destroy this.workers

@@ -1,0 +1,26 @@
+package Initialization
+
+import Hero
+import Map
+import Side
+import Owner
+import ClosureTimers
+
+init
+	spawnHeroes()
+	Owner.getActive().forEach() (Owner owner) ->
+		owner.getPlayer().addGold(10000)
+		owner.getPlayer().addLumber(10)
+	SetTimeOfDay(12)
+	doPeriodically(30) (CallbackPeriodic cb) ->
+		SetTimeOfDay(12)
+	
+function spawnHeroes()
+	Side.west.getPlayers().forEach() (Owner owner) ->
+		new Hero(owner.getPlayer(), Map.WEST_SPAWN)
+			..focus()
+			..select()
+	Side.east.getPlayers().forEach() (Owner owner) ->
+		new Hero(owner.getPlayer(), Map.EAST_SPAWN)
+			..focus()
+			..select()

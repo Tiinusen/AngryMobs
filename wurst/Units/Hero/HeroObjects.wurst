@@ -1,0 +1,61 @@
+package HeroObjects
+
+import HeroConstants
+import UnitObjEditing
+import Ids
+
+@compiletime function generate()
+	// Hero
+	new HeroDefinition(HERO_ID, HERO_ORIGINAL_ID)
+		..setProperNames(HERO_NAMES)
+		..setProperNamesUsed(6)
+		..hideHeroDeathMsg(true)
+		// ..setCollisionSize(0)
+		// Icon / Model
+		..setIconGameInterface(HERO_ICON)
+		..setIconScoreScreen("")
+		..setModelFile(HERO_MODEL)
+		// Hotkey
+		..setHotkey("")
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(HERO_ABILITIES)
+		..setUpgradesUsed(HERO_UPGRADES)
+		..setStructuresBuilt(HERO_BUILDING)
+		// Speed
+		..setSpeedBase(350)
+		// Sight
+		..setSightRadiusDay(1200)
+		..setSightRadiusNight(300)
+		// Mana
+		..setManaRegeneration(1)
+		..setManaInitialAmount(100)
+		..setManaMaximum(100)
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		..setFoodCost(0)
+		// Armor
+		..setDefenseBase(2) // value minus 2 = armor value
+		..setArmorType(ArmorType.Hero)
+		// Health
+		..setHitPointsMaximumBase(520)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Hero)
+		..setAttack1CooldownTime(1)
+		..setAttack1DamageBase(12)
+		..setAttack1DamageNumberofDice(3)
+		..setAttack1DamageSidesperDie(8)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Stats (Start)
+		..setStartingStrength(0)
+		..setStartingAgility(0)
+		..setStartingIntelligence(0)
+		// Stats (Increase per Level)
+		..setStrengthPerLevel(0)
+		..setAgilityPerLevel(0)
+		..setIntelligencePerLevel(0)

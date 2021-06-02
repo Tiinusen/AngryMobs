@@ -1,0 +1,44 @@
+package EntityCallback
+
+public abstract class Callback
+    CallbackVoid cancel
+
+public abstract class CallbackVoid
+    abstract function call()
+    thistype cancel = null
+    
+    ondestroy
+        if this.cancel != null
+            destroy this.cancel
+
+public abstract class CallbackDeath extends Callback
+    abstract function call(unit killer, CallbackDeath callback)
+
+public abstract class CallbackSold extends Callback
+    abstract function call(unit sold, CallbackSold callback)
+    int typeID
+
+public abstract class CallbackResearch extends Callback
+    abstract function call(int techid)
+    int techID
+
+public abstract class CallbackUpgrade extends Callback
+    abstract function call(int typeid)
+    int typeID
+
+public abstract class CallbackCast extends Callback
+    abstract function call(unit target, vec2 pos, CallbackCast callback)
+    int abilityID
+
+public abstract class CallbackWithin extends Callback
+    abstract function call(bool reached, CallbackWithin callback)
+    unit target = null
+    vec2 pos
+    real distance
+    vec2 lastEntityPos
+    int lastEntityPosTimes = 0
+
+
+public abstract class CallbackConstruction extends Callback
+    abstract function call(unit building)
+    int typeID

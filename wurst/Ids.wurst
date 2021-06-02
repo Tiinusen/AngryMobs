@@ -1,0 +1,67 @@
+package Ids
+
+import ObjectIdGenerator
+import public ObjectIds
+
+/*
+ * Unit
+ */
+
+// Hero
+public let HERO_ID = compiletime(HERO_ID_GEN.next())
+
+// Worker
+public let WORKER_ID = compiletime(UNIT_ID_GEN.next())
+
+// Militia
+public let MILITIA_ID = compiletime(UNIT_ID_GEN.next())
+
+// Fighter
+public let FIGHTER_ID = compiletime(UNIT_ID_GEN.next())
+
+// Footman
+public let FOOTMAN_ID = compiletime(UNIT_ID_GEN.next())
+
+/*
+ * Abilities
+ */
+
+// Command Book
+public let COMMAND_BOOK_ID = compiletime(ITEM_ID_GEN.next())
+public let COMMAND_BOOK_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
+
+/*
+ * Buffs
+ */
+
+// Controlled
+public let CONTROLLED_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+
+/*
+ * Buildings
+ */
+
+// Barrack
+public let BARRACK_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
+public let BARRACK_ID_LEVEL_2 = compiletime(UNIT_ID_GEN.next())
+public let BARRACK_ID_LEVEL_3 = compiletime(UNIT_ID_GEN.next())
+public let BARRACK_ID_LEVEL_4 = compiletime(UNIT_ID_GEN.next())
+public let BARRACK_SELECT_MINE_ID = compiletime(ABIL_ID_GEN.next())
+public let BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let BARRACK_WORKER_LIMIT_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let BARRACK_WORKER_TO_MILITIA_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let BARRACK_WORKER_SPEED = compiletime(ABIL_ID_GEN.next())
+
+// Worker Hall
+public let WORKER_HALL_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
+public let WORKER_HALL_ID_LEVEL_2 = compiletime(UNIT_ID_GEN.next())
+public let WORKER_HALL_ID_LEVEL_3 = compiletime(UNIT_ID_GEN.next())
+public let WORKER_HALL_ID_LEVEL_4 = compiletime(UNIT_ID_GEN.next())
+public let WORKER_HALL_SELECT_MINE_ID = compiletime(ABIL_ID_GEN.next())
+public let WORKER_HALL_LIMIT_REACHED_ID = compiletime(UPGD_ID_GEN.next())
+public let WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let WORKER_HALL_WORKER_LIMIT_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+public let WORKER_HALL_MOVEMENT_SPEED_ID = compiletime(ABIL_ID_GEN.next())
+public let WORKER_HALL_ATTACK_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
+public let WORKER_HALL_ARMOR_ID = compiletime(ABIL_ID_GEN.next())

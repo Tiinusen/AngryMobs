@@ -1,0 +1,15 @@
+package ControlledBuffObjects
+
+import HeroConstants
+import BuffObjEditing
+import Ids
+// import AttachmentPoints
+
+@compiletime function generate()
+	// Controlled
+	new BuffDefinition(CONTROLLED_BUFF_ID, 'Basl')
+		..setName(1, "Controlled")
+		..setTooltipNormal(1, "Controlled")
+		..setTooltipNormalExtended(1, "This unit is controlled by a hero")
+		//..setTargetAttachments(AttachmentPoints.origin)
+		..setIcon(Icons.bTNAcorn)

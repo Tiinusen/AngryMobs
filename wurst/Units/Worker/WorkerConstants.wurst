@@ -1,0 +1,20 @@
+package WorkerConstants
+import public Assets
+import Ids
+
+
+@configurable public let WORKER_ORIGINAL_ID = UnitIds.peasant
+
+@configurable public let WORKER_ICON = Icons.bTNBloodElfPeasant
+@configurable public let WORKER_MODEL = Units.peasant1
+
+@configurable public let WORKER_NAME = "Worker"
+@configurable public let WORKER_TOOL_TIP_BASIC = "|cffFFCC00Arrange |cffFF7B29Expedition [E]"
+@configurable public let WORKER_TOOL_TIP_EXTENDED = "Deploy a expedition of 10 workers\n\nHas a 4 minutes cooldown"
+
+@configurable public let WORKER_ABILITIES = commaList(AbilityIds.repairHuman)
+@configurable public let WORKER_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID)
+
+@configurable public let WORKER_HOTKEY = "E"
+@configurable public let WORKER_MINE_DISTANCE = 384.
+@configurable public let WORKER_RESTOCK_INTERVAL = 120

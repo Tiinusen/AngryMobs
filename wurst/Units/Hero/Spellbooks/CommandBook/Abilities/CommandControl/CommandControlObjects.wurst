@@ -1,0 +1,31 @@
+package CommandControlObjects
+
+import ChannelAbilityPreset
+import Ids
+import Icons
+
+public let COMMAND_CONTROL_ID = compiletime(ABIL_ID_GEN.next())
+
+@compiletime function generate()
+	// Select Mine
+	new ChannelAbilityPreset(COMMAND_CONTROL_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Control")
+		..presetTooltipNormal(lvl -> "Recruit")
+		..presetTooltipNormalExtended(lvl -> "Recruit a friendly minion to follow your directions for a period of time")
+		// Icon
+		..presetIcon(Icons.bTNCallToArms)
+		// Hotkey
+		..presetHotkey("")
+		// Button Placement
+		..presetButtonPosNormal(0, 2)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 25)
+		// Buffs / Duration
+		..presetBuffs((int lvl) -> commaList(CONTROLLED_BUFF_ID))
+		..presetDurationHero((int lvl) -> 0)
+		..presetDurationNormal((int lvl) -> 60)
+		// Target
+		..presetTargetTypes(Targettype.UNIT)
+		//..presetOption(Option.VISIBLE, true)

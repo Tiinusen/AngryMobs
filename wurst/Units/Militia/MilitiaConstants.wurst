@@ -1,0 +1,19 @@
+package MilitiaConstants
+import public Assets
+import Ids
+
+
+@configurable public let MILITIA_ORIGINAL_ID = UnitIds.militia
+
+@configurable public let MILITIA_ICON = Icons.bTNMilitia
+@configurable public let MILITIA_MODEL = Units.militia
+
+@configurable public let MILITIA_NAME = "Militia"
+@configurable public let MILITIA_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Militia"
+@configurable public let MILITIA_TOOL_TIP_EXTENDED = "A worker drafted to the militia"
+
+@configurable public let MILITIA_ABILITIES = commaList("")
+@configurable public let MILITIA_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID, WORKER_HALL_ARMOR_ID)
+
+@configurable public let MILITIA_HOTKEY = "M"
+@configurable public let MILITIA_RESTOCK_INTERVAL = 5

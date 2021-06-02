@@ -1,0 +1,53 @@
+package Entity
+import ClosureTimers
+import initlater Owner
+import ErrorHandling
+
+abstract public class Entity
+    private Owner _owner = null
+    protected unit _obj = null
+    private int _level = 1
+    protected bool _removed = false
+
+    construct(unit obj)
+        if obj == null
+            error("Entity has been created without a unit primitive provided")
+        this._obj = obj
+        this._owner = obj.getOwner().toOwnerType()
+        nullTimer() -> 
+            this.initalize()
+
+    /** returns owner of entity */
+    function getOwner() returns Owner
+        return this._owner
+
+    /** returns unit primitive belonging to entity */
+    function getUnit() returns unit
+        return this._obj
+
+    /** returns level of entity */
+    function getLevel() returns int
+        return this._level
+
+    /** sets level of entity */
+    function setLevel(int level)
+        if level == this._level
+            return
+        this._level = level
+        this.onLevelChanged()
+
+    /** returns true if unit belonging to entity is still alive */
+    function isAlive() returns bool
+        if this._removed
+            return false
+        return this._obj.isAliveTrick()
+
+    
+    //
+    // Abstract/Overridable Methods
+    //
+    /** called by constructor  */
+    protected function initalize()
+
+    /** called if level of entity gets modified  */
+    protected function onLevelChanged()
