@@ -1,0 +1,43 @@
+package ControlledBuff
+
+import HashMap
+import ClosureTimers
+import HeroConstants
+import SoldierEntity
+import BuffObjEditing
+import initlater Hero
+
+public let CONTROLLED_BUFF_OBJ = compiletime(createDummyBuffObject("Controlled", "This unit is controlled by a hero", Icons.bTNCallToArms, Abilities.generalAuraTarget, AttachmentPoints.origin))
+
+let buffId = CONTROLLED_BUFF_OBJ.abilId
+
+abstract class ControlledBuff
+	private static HashMap<SoldierEntity, CallbackSingle> _buffMap = new HashMap<SoldierEntity, CallbackSingle>()
+
+	static function has(SoldierEntity soldier) returns bool
+		return _buffMap.has(soldier)
+
+	static function remove(SoldierEntity soldier)
+		if _buffMap.has(soldier)
+			destroy _buffMap.get(soldier)
+			_buffMap.remove(soldier)
+			soldier.getUnit().removeAbility(buffId)
+			Hero.removeControlledSoldier(soldier)
+		
+
+	static function add(SoldierEntity soldier, Hero hero, real duration)
+		if _buffMap.has(soldier)
+			destroy _buffMap.get(soldier)
+		if not soldier.getUnit().hasAbility(buffId)
+			soldier.getUnit().addAbility(buffId)
+		Hero.removeControlledSoldier(soldier)
+		hero.addControlledSoldier(soldier)
+		if duration > 0
+			let cb = doAfter(duration) ->
+				if _buffMap.has(soldier)
+					_buffMap.remove(soldier)
+					soldier.getUnit().removeAbility(buffId)
+					Hero.removeControlledSoldier(soldier)
+			_buffMap.put(soldier, cb)
+		else
+			_buffMap.put(soldier, null)

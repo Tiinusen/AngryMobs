@@ -35,4 +35,4 @@ import OrderStringer
 	..setItemAbility (false)
 	..setMaximumSpells(1, 11)
 	..setBaseOrderID(1, OrderStringer.getOrderString())
-	..setSpellList(1, commaList(COMMAND_CONTROL_ID))
+	..setSpellList(1, commaList(COMMAND_CONTROL_UNIT_ID, COMMAND_CONTROL_AREA_ID, COMMAND_CONTROL_RELEASE_ID))

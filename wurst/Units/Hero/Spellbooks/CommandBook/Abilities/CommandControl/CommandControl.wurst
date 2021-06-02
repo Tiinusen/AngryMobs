@@ -1,0 +1,33 @@
+package CommandControl
+
+import ClosureEvents
+import ControlledBuff
+import ClosureTimers
+import Hero
+import Owner
+import SoldierEntity
+import Ids
+
+init
+	nullTimer() -> 
+		EventListener.onTargetCast(COMMAND_CONTROL_UNIT_ID) (unit caster, unit target) ->
+			let side = caster.getOwner().toOwnerType().getSide()
+			if side != target.getOwner().toOwnerType().getSide()
+				caster.getOwner().print("You can't target a non friendly unit")
+			let soldier = SoldierEntity.getSoldiers((SoldierEntity t) -> t.getUnit() == target).getFirst()
+			if soldier == null
+				caster.getOwner().print("You can't target a non soldier")
+			else
+				soldier.orderFollow(caster)
+				ControlledBuff.add(soldier, caster.toHeroType(), 120)
+
+		EventListener.onPointCast(COMMAND_CONTROL_AREA_ID) (unit caster, vec2 target) ->
+			let side = caster.getOwner().toOwnerType().getSide()
+			SoldierEntity.getSoldiers((SoldierEntity soldier) -> soldier.getUnit().getOwner().toOwnerType().getSide() == side and soldier.isWithin(target, 600)).forEach() (SoldierEntity soldier) ->
+				soldier.orderFollow(caster)
+				ControlledBuff.add(soldier, caster.toHeroType(), 30)
+		
+		EventListener.onCast(COMMAND_CONTROL_RELEASE_ID) (unit caster) ->
+			let hero = caster.toHeroType()
+			hero.getControlledSoldier().forEach() (SoldierEntity soldier) ->
+				ControlledBuff.remove(soldier)

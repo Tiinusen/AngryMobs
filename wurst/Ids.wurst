@@ -29,6 +29,9 @@ public let FOOTMAN_ID = compiletime(UNIT_ID_GEN.next())
 // Command Book
 public let COMMAND_BOOK_ID = compiletime(ITEM_ID_GEN.next())
 public let COMMAND_BOOK_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_CONTROL_RELEASE_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_CONTROL_UNIT_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_CONTROL_AREA_ID = compiletime(ABIL_ID_GEN.next())
 
 /*
  * Buffs

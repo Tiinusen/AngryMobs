@@ -1,27 +1,56 @@
 package Hero
 
 import Ids
-import UnitEntity
 import CommandBook
 import Owner
+import LinkedList
+import SoldierEntity
+import ControlledBuff
+
+LinkedList<Hero> _heroes = new LinkedList<Hero>()    
 
 public class Hero extends UnitEntity
+    LinkedList<SoldierEntity> _controlledSoldiers = new LinkedList<SoldierEntity>()
+
     construct(unit obj)
         super(obj)
         this.getUnit().getOwner().toOwnerType().setHero(this)
+        _heroes.add(this)
 
     construct(player owner, vec2 pos)
         super(CreateUnit(owner, HERO_ID, pos.x, pos.y, 270))
         this.getUnit().getOwner().toOwnerType().setHero(this)
+        _heroes.add(this)
 
     construct(player owner, vec2 pos, real dir)
         super(CreateUnit(owner, HERO_ID, pos.x, pos.y, dir))
         this.getUnit().getOwner().toOwnerType().setHero(this)
+        _heroes.add(this)
+
+    ondestroy
+        destroy _controlledSoldiers
+        
+    static function removeControlledSoldier(SoldierEntity soldier)
+        _heroes.forEach() (Hero hero) ->
+            if hero._controlledSoldiers.has(soldier)
+                hero._controlledSoldiers.remove(soldier)
+                soldier.orderStop()
+
+    function getControlledSoldier() returns LinkedList<SoldierEntity>
+        return this._controlledSoldiers.copy()
+
+    function addControlledSoldier(SoldierEntity soldier)
+        this._controlledSoldiers.add(soldier)
+
     
     override function applyUpgrades()
 
     override protected function initalize()
         new CommandBook(this.getUnit())
+        this.onDeath() (unit killer, CallbackDeath callback) ->
+            this._controlledSoldiers.forEach() (SoldierEntity t) ->
+                ControlledBuff.remove(t)
+            this._controlledSoldiers.clear()
 
     /** Moves player camera to hero */
     function focus()
@@ -29,3 +58,7 @@ public class Hero extends UnitEntity
 
     function select()
         this.getOwner().getPlayer().select(this.getUnit())
+
+/** finds owner type linked to player primitive */
+public function unit.toHeroType() returns Hero
+    return _heroes.filter((Hero hero) -> hero.getUnit() == this).getFirst()

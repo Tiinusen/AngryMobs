@@ -2,20 +2,37 @@ package SoldierEntity
 
 import public UnitEntity
 import Worker
+import LinkedList
 
 abstract public class SoldierEntity extends UnitEntity
+    private static LinkedList<SoldierEntity> _units = new LinkedList<SoldierEntity>()
+
     construct(int typeID, vec2 pos, player owner)
         super(CreateUnit(owner, typeID, pos.x, pos.y, 270))
+        SoldierEntity._units.add(this)
 
     construct(int typeID, vec2 pos, player owner, real dir)
         super(CreateUnit(owner, typeID, pos.x, pos.y, dir))
+        SoldierEntity._units.add(this)
 
     construct(int typeID, unit obj)
         super(this.castIfNeeded(obj, typeID))
+        SoldierEntity._units.add(this)
 
     construct(int typeID, Worker worker)
         super(this.castIfNeeded(worker.getUnit(), typeID))
         worker.remove(false)
+        SoldierEntity._units.add(this)
+
+    ondestroy
+        SoldierEntity._units.remove(this)
+
+    static function getSoldiers() returns LinkedList<SoldierEntity>
+        return SoldierEntity._units.copy()
+
+    static function getSoldiers(LinkedListPredicate<SoldierEntity> predicate) returns LinkedList<SoldierEntity>
+        return SoldierEntity._units.filter(predicate)
+            
 
     private function castIfNeeded(unit u, int typeID) returns unit
         if u.getTypeId() != typeID
