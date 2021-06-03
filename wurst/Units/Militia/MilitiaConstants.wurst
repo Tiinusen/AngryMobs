@@ -15,5 +15,14 @@ import Ids
 @configurable public let MILITIA_ABILITIES = commaList("")
 @configurable public let MILITIA_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID, WORKER_HALL_ARMOR_ID)
 
-@configurable public let MILITIA_HOTKEY = "M"
-@configurable public let MILITIA_RESTOCK_INTERVAL = 5
+@configurable public let MILITIA_HOTKEY = "E"
+@configurable public let MILITIA_BUTTON_X = 2
+@configurable public let MILITIA_BUTTON_Y = 0
+
+@configurable public let MILITIA_COST_GOLD = 25
+@configurable public let MILITIA_COST_LUMBER = 0
+@configurable public let MILITIA_COST_FOOD = 0
+
+@configurable public let MILITIA_RESTOCK_INTERVAL = 10
+@configurable public let MILITIA_RESTOCK_MAX = 5
+@configurable public let MILITIA_RESTOCK_DELAY = 30

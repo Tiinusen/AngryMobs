@@ -1,12 +1,15 @@
 package Side
 
 import LinkedList
+import Gate
 import initlater Owner
 
 public class Side
 
     private player _sidePlayer
     private LinkedList<Owner> _players = new LinkedList<Owner>()
+
+    private Gate _gate
 
     static var west = new Side(Player(13))
     static var east = new Side(Player(12))
@@ -21,6 +24,12 @@ public class Side
     /** returns all players as owner objects of that side except computer of alliance player */
     function getPlayers() returns LinkedList<Owner>
         return this._players.copy()
+
+    /** gets the enemy side */
+    function getEnemySide() returns Side
+        if this == Side.west
+            return Side.east
+        return Side.west
 
     /** makes player join this side */
     function join(Owner u)

@@ -22,6 +22,9 @@ public let FIGHTER_ID = compiletime(UNIT_ID_GEN.next())
 // Footman
 public let FOOTMAN_ID = compiletime(UNIT_ID_GEN.next())
 
+// Archer
+public let ARCHER_ID = compiletime(UNIT_ID_GEN.next())
+
 /*
  * Abilities
  */

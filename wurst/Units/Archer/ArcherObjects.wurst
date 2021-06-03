@@ -1,30 +1,30 @@
-package FighterObjects
+package ArcherObjects
 
-import FighterConstants
+import ArcherConstants
 import UnitObjEditing
 import Ids
 
 @compiletime function generate()
-	new UnitDefinition(FIGHTER_ID, FIGHTER_ORIGINAL_ID)
-		..setName(FIGHTER_NAME)
+	new UnitDefinition(ARCHER_ID, ARCHER_ORIGINAL_ID)
+		..setName(ARCHER_NAME)
 		..setNameEditorSuffix("")
-		..setTooltipBasic(FIGHTER_TOOL_TIP_BASIC)
-		..setTooltipExtended(FIGHTER_TOOL_TIP_EXTENDED)
+		..setTooltipBasic(ARCHER_TOOL_TIP_BASIC)
+		..setTooltipExtended(ARCHER_TOOL_TIP_EXTENDED)
 		..setUnitClassification("_")
 		..setRace(Race.Commoner)
 		..setCanFlee(false)
 		//..setCollisionSize(0.0)
 		// Button Placement
-		..setButtonPositionX(FIGHTER_BUTTON_X)
-		..setButtonPositionY(FIGHTER_BUTTON_Y)
+		..setButtonPositionX(ARCHER_BUTTON_X)
+		..setButtonPositionY(ARCHER_BUTTON_Y)
 		// Icon / Model
-		..setIconGameInterface(FIGHTER_ICON)
-		..setModelFile(FIGHTER_MODEL)
+		..setIconGameInterface(ARCHER_ICON)
+		..setModelFile(ARCHER_MODEL)
 		// Hotkey
-		..setHotkey(FIGHTER_HOTKEY)
+		..setHotkey(ARCHER_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
-		..setNormalAbilities(FIGHTER_ABILITIES)
-		..setUpgradesUsed(FIGHTER_UPGRADES)
+		..setNormalAbilities(ARCHER_ABILITIES)
+		..setUpgradesUsed(ARCHER_UPGRADES)
 		..setStructuresBuilt(commaList(""))
 		// Speed
 		..setSpeedBase(300)
@@ -36,24 +36,25 @@ import Ids
 		..setManaInitialAmount(0)
 		..setManaMaximum(0)
 		// Cost
-		..setGoldCost(FIGHTER_COST_GOLD)
-		..setLumberCost(FIGHTER_COST_LUMBER)
-		..setFoodCost(FIGHTER_COST_FOOD)
+		..setGoldCost(ARCHER_COST_GOLD)
+		..setLumberCost(ARCHER_COST_LUMBER)
+		..setFoodCost(ARCHER_COST_FOOD)
 		// Shop
-		..setStockMaximum(FIGHTER_RESTOCK_MAX)
-		..setStockStartDelay(FIGHTER_RESTOCK_DELAY)
-		..setStockReplenishInterval(FIGHTER_RESTOCK_INTERVAL)
+		..setStockMaximum(ARCHER_RESTOCK_MAX)
+		..setStockStartDelay(ARCHER_RESTOCK_INTERVAL)
+		..setStockReplenishInterval(ARCHER_RESTOCK_INTERVAL)
 		// Armor
 		..setDefenseBase(0)
-		..setArmorType(ArmorType.Unarmored)
+		..setArmorType(ArmorType.Normal)
 		// Health
-		..setHitPointsMaximumBase(220)
+		..setHitPointsMaximumBase(200)
 		// Attack (1)
-		..setAttack1AttackType(AttackType.Normal)
-		..setAttack1CooldownTime(1)
+		..setAttack1AttackType(AttackType.Pierce)
+		..setAttack1CooldownTime(2)
 		..setAttack1DamageBase(6)
-		..setAttack1DamageNumberofDice(1)
-		..setAttack1DamageSidesperDie(2)
+		..setAttack1DamageNumberofDice(8)
+		..setAttack1DamageSidesperDie(8)
+		..setAttack1Range(600)
 		// Attack (2)
 		..setAttack2AttackType(AttackType.Unknown)
 		..setAttack2CooldownTime(0)

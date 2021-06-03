@@ -15,7 +15,14 @@ import ObjectIds
 @configurable public let FOOTMAN_ABILITIES = commaList("")
 @configurable public let FOOTMAN_UPGRADES = commaList("")
 
-@configurable public let FOOTMAN_HOTKEY = "M"
+@configurable public let FOOTMAN_HOTKEY = "Q"
+@configurable public let FOOTMAN_BUTTON_X = 0
+@configurable public let FOOTMAN_BUTTON_Y = 0
+
+@configurable public let FOOTMAN_COST_GOLD = 25
+@configurable public let FOOTMAN_COST_LUMBER = 0
+@configurable public let FOOTMAN_COST_FOOD = 0
+
 @configurable public let FOOTMAN_RESTOCK_INTERVAL = 10
-@configurable public let FOOTMAN_RESTOCK_MAXIMUM = 10
-@configurable public let FOOTMAN_RESTOCK_DELAY = 10
+@configurable public let FOOTMAN_RESTOCK_MAX = 10
+@configurable public let FOOTMAN_RESTOCK_DELAY = 0

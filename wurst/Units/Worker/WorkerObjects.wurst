@@ -15,6 +15,9 @@ import Ids
 		..setRace(Race.Commoner)
 		..setCanFlee(true)
 		//..setCollisionSize(0.0)
+		// Button Placement
+		..setButtonPositionX(WORKER_BUTTON_X)
+		..setButtonPositionY(WORKER_BUTTON_Y)
 		// Icon / Model
 		..setIconGameInterface(WORKER_ICON)
 		..setModelFile(WORKER_MODEL)
@@ -36,12 +39,12 @@ import Ids
 		..setManaInitialAmount(0)
 		..setManaMaximum(0)
 		// Cost
-		..setGoldCost(0)
-		..setLumberCost(0)
-		..setFoodCost(0)
+		..setGoldCost(WORKER_COST_GOLD)
+		..setLumberCost(WORKER_COST_LUMBER)
+		..setFoodCost(WORKER_COST_FOOD)
 		// Shop
-		..setStockMaximum(1)
-		..setStockStartDelay(10)
+		..setStockMaximum(WORKER_RESTOCK_MAX)
+		..setStockStartDelay(WORKER_RESTOCK_DELAY)
 		..setStockReplenishInterval(WORKER_RESTOCK_INTERVAL)
 		// Armor
 		..setDefenseBase(0)

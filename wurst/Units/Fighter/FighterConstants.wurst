@@ -15,5 +15,14 @@ import Ids
 @configurable public let FIGHTER_ABILITIES = commaList("")
 @configurable public let FIGHTER_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID)
 
-@configurable public let FIGHTER_HOTKEY = "M"
+@configurable public let FIGHTER_HOTKEY = "W"
+@configurable public let FIGHTER_BUTTON_X = 1
+@configurable public let FIGHTER_BUTTON_Y = 0
+
+@configurable public let FIGHTER_COST_GOLD = 25
+@configurable public let FIGHTER_COST_LUMBER = 0
+@configurable public let FIGHTER_COST_FOOD = 0
+
 @configurable public let FIGHTER_RESTOCK_INTERVAL = 5
+@configurable public let FIGHTER_RESTOCK_MAX = 10
+@configurable public let FIGHTER_RESTOCK_DELAY = 60

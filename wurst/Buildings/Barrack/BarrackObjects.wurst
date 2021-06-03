@@ -17,8 +17,8 @@ import Ids
 		..setIconGameInterface(BARRACK_ICON)
 		..setModelFile(BARRACK_MODEL)
 		// Button Placement
-		..setButtonPositionX(i != 0 ? 3 : 1)
-		..setButtonPositionY(i != 0 ? 2 : 0)
+		..setButtonPositionX(i != 0 ? 3 : BARRACK_BUTTON_X)
+		..setButtonPositionY(i != 0 ? 2 : BARRACK_BUTTON_Y)
 		// Hotkey
 		..setHotkey(BARRACK_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
@@ -28,8 +28,8 @@ import Ids
 		..setUnitsSold(BARRACK_UNITS_SOLD)
 		// Build / Cost
 		..setBuildTime(1)
-		..setGoldCost(i==0 ? 200 : 150)
-		..setLumberCost(i==0 ? 1 : 0)
+		..setGoldCost(BARRACK_COST_GOLD+i*BARRACK_COST_GOLD_INCREMENT)
+		..setLumberCost(i==0 ? BARRACK_COST_LUMBER : 0)
 		// Health
 		..setHitPointsMaximumBase(1000)
 		// Other

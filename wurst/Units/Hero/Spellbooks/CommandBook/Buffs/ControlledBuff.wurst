@@ -3,7 +3,7 @@ package ControlledBuff
 import HashMap
 import ClosureTimers
 import HeroConstants
-import SoldierEntity
+import initlater SoldierEntity
 import BuffObjEditing
 import initlater Hero
 
@@ -23,6 +23,7 @@ abstract class ControlledBuff
 			_buffMap.remove(soldier)
 			soldier.getUnit().removeAbility(buffId)
 			Hero.removeControlledSoldier(soldier)
+			soldier.decideNext()
 		
 
 	static function add(SoldierEntity soldier, Hero hero, real duration)
@@ -38,6 +39,7 @@ abstract class ControlledBuff
 					_buffMap.remove(soldier)
 					soldier.getUnit().removeAbility(buffId)
 					Hero.removeControlledSoldier(soldier)
+					soldier.decideNext()
 			_buffMap.put(soldier, cb)
 		else
 			_buffMap.put(soldier, null)

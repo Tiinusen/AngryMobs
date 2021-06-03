@@ -18,8 +18,8 @@ import Ids
 		..setIconGameInterface(WORKER_HALL_ICON)
 		..setModelFile(WORKER_HALL_MODEL)
 		// Button Placement
-		..setButtonPositionX(i != 0 ? 3 : 0)
-		..setButtonPositionY(i != 0 ? 2 : 0)
+		..setButtonPositionX(i != 0 ? 3 : WORKER_HALL_BUTTON_X)
+		..setButtonPositionY(i != 0 ? 2 : WORKER_HALL_BUTTON_Y)
 		// Hotkey
 		..setHotkey(WORKER_HALL_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
@@ -35,8 +35,8 @@ import Ids
 		..setUnitsSold(WORKER_HALL_UNITS_SOLD)
 		// Build / Cost
 		..setBuildTime(1)
-		..setGoldCost(i*400)
-		..setLumberCost(0)
+		..setGoldCost(WORKER_HALL_COST_GOLD+i*WORKER_HALL_COST_GOLD_INCREMENT)
+		..setLumberCost(i==0?WORKER_HALL_COST_LUMBER:0)
 		// Health
 		..setHitPointsMaximumBase(1000)
 		// Other

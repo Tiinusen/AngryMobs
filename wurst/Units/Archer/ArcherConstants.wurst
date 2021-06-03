@@ -1,0 +1,28 @@
+package ArcherConstants
+import public Assets
+import Ids
+
+
+@configurable public let ARCHER_ORIGINAL_ID = UnitIds.archer
+
+@configurable public let ARCHER_ICON = Icons.bTNArcher
+@configurable public let ARCHER_MODEL = Units.archer
+
+@configurable public let ARCHER_NAME = "Archer"
+@configurable public let ARCHER_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Archer"
+@configurable public let ARCHER_TOOL_TIP_EXTENDED = "A worthy ranged soldier, with decent amount of damage"
+
+@configurable public let ARCHER_ABILITIES = commaList("")
+@configurable public let ARCHER_UPGRADES = commaList(WORKER_HALL_MOVEMENT_SPEED_ID)
+
+@configurable public let ARCHER_HOTKEY = "W"
+@configurable public let ARCHER_BUTTON_X = 1
+@configurable public let ARCHER_BUTTON_Y = 0
+
+@configurable public let ARCHER_COST_GOLD = 35
+@configurable public let ARCHER_COST_LUMBER = 0
+@configurable public let ARCHER_COST_FOOD = 0
+
+@configurable public let ARCHER_RESTOCK_INTERVAL = 10
+@configurable public let ARCHER_RESTOCK_MAX = 5
+@configurable public let ARCHER_RESTOCK_DELAY = 0

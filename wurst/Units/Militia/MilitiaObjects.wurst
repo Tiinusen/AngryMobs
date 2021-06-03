@@ -14,6 +14,9 @@ import Ids
 		..setRace(Race.Commoner)
 		..setCanFlee(false)
 		//..setCollisionSize(0.0)
+		// Button Placement
+		..setButtonPositionX(MILITIA_BUTTON_X)
+		..setButtonPositionY(MILITIA_BUTTON_Y)
 		// Icon / Model
 		..setIconGameInterface(MILITIA_ICON)
 		..setModelFile(MILITIA_MODEL)
@@ -33,12 +36,12 @@ import Ids
 		..setManaInitialAmount(0)
 		..setManaMaximum(0)
 		// Cost
-		..setGoldCost(0)
-		..setLumberCost(0)
-		..setFoodCost(0)
+		..setGoldCost(MILITIA_COST_GOLD)
+		..setLumberCost(MILITIA_COST_LUMBER)
+		..setFoodCost(MILITIA_COST_FOOD)
 		// Shop
-		..setStockMaximum(1)
-		..setStockStartDelay(10)
+		..setStockMaximum(MILITIA_RESTOCK_MAX)
+		..setStockStartDelay(MILITIA_RESTOCK_DELAY)
 		..setStockReplenishInterval(MILITIA_RESTOCK_INTERVAL)
 		// Armor
 		..setDefenseBase(1)
