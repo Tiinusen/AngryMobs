@@ -1,7 +1,7 @@
 package Side
 
 import LinkedList
-import Gate
+import initlater Gate
 import initlater Owner
 
 public class Side
@@ -30,6 +30,13 @@ public class Side
         if this == Side.west
             return Side.east
         return Side.west
+
+    /** called during init when gate is set */
+    function setGate(Gate g)
+        this._gate = g
+
+    function getGate() returns Gate
+        return this._gate
 
     /** makes player join this side */
     function join(Owner u)

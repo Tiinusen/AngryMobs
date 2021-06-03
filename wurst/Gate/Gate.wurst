@@ -1,4 +1,112 @@
 package Gate
 
+import EventEntity
+import Ids
+import ClosureTimers
+import Destructables
+import Side
+
+init
+    Destructables.filter(GATE_LEVEL_1_ID).forEach() (destructable t) ->
+        Side side = Side.west
+        if t.getX() > 0
+            side = Side.east
+        side.setGate(new Gate(gate(t), GetUnitsOfPlayerAndTypeId(side.getSidePlayer(), UnitIds.scouttower).getRandomUnit()))
+    
+
 public class Gate
+    private gate _gate
+    private GateControl _gateControl = null
+    private bool _open = false
+    private real _health
+    private real _maxHealth
+    private bool _dead = false
+
+    private CallbackPeriodic _run = null
+
+    construct(gate gate, unit gateControl)
+        this._gate = gate
+        this._gateControl = new GateControl(gateControl, this)
+        nullTimer() -> 
+            this.initialize()
+
+    ondestroy
+        destroy this._gateControl
+        destroy this._run
+        
+    function initialize()
+        // this.open()
+        this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
+            if not this._dead and this.isDestroyed()
+                this._dead = true
+                print("I died")
+            
+        
+
+    function isDamaged() returns bool
+        return this.getHealth() < this.getMaxHealth()
+
+    function isDestroyed() returns bool
+        return this.getHealth() < 1
+
+    function getHealth() returns real
+        if this.isOpen()
+            return this._health
+        return this._gate.killable.getLife()
+
+    function getMaxHealth() returns real
+        if this.isOpen()
+            return this._maxHealth
+        return this._gate.killable.getMaxLife()
+
+    function isOpen() returns bool
+        return this._open
+
+    function open()
+        if this._open
+            return
+        this._open = true
+        this._gate.open()
+
+    function close()
+        if not this._open
+            return
+        this._open = false
+        this._health = this._gate.killable.getLife()
+        this._maxHealth = this._gate.killable.getMaxLife()
+        this._gate.close()
+
+class GateControl extends EventEntity
+    private Gate _gate
+    private player _selectedBy
+
+    construct(unit u, Gate g)
+        super(ReplaceUnitBJ(u, GATE_CONTROL_ID, bj_UNIT_STATE_METHOD_RELATIVE))
+        this._gate = g
+
+    override protected function initalize()
+        this.getUnit().setInvulnerable(true)
+        this.onCast(GATE_CONTROL_TOGGLE_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            if not this._gate.isOpen()
+                this._gate.open()
+                this.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
+            else
+                this._gate.close()
+                this.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
+
+        this.onSelected() (player p) ->
+            if p.getSide() == this.getOwner().getSide()
+                if this._selectedBy != null
+                    this._selectedBy.unselect(this.getUnit())
+                this._selectedBy = p
+                this.getUnit().setOwner(this._selectedBy, true)
+
+        this.onDeSelected() (player p) ->
+            if this._selectedBy != null and this._selectedBy == p
+                this._selectedBy.unselect(this.getUnit())
+                this._selectedBy = null
+                this.getUnit().setOwner(this.getOwner().getPlayer(), true)
+                
+        
+    
         

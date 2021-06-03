@@ -1,0 +1,49 @@
+package GateObjects
+
+import public Assets
+import ChannelAbilityPreset
+import Ids
+
+@compiletime function generate()
+	// Gate Control
+	new BuildingDefinition(GATE_CONTROL_ID, UnitIds.scouttower)
+		..setNameEditorSuffix("(Gate)")
+		..setName("Gate Control")
+		..setTooltipBasic("Controls the gate")
+		// Icon / Model
+		..setIconGameInterface(Icons.bTNTower)
+		..setModelFile(Buildings.humanTower1)
+		// Hotkey
+		..setHotkey("")
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(commaList(GATE_CONTROL_TOGGLE_ID))
+		..setUpgradesTo(commaList(""))
+		..setResearchesAvailable(commaList(""))
+		..setUnitsTrained(commaList(""))
+		..setUnitsSold(commaList(""))
+		// Health
+		..setHitPointsMaximumBase(1000)
+		// Other
+		..setIsaBuilding(true)
+		..setHideMinimapDisplay(false)
+
+	// Toggle
+	new ChannelAbilityPreset(GATE_CONTROL_TOGGLE_ID,1,true)
+	..setEditorSuffix("(Gate Control)")
+	..setName("Toggle")
+	..setTooltipNormal(1, "Open")
+	..setTooltipNormalExtended(1, "Opens the gate|n|n|cc7cfc20cMight look like it get's destroyed in reforged but it isn't")
+	..setTooltipNormal(2, "Close")
+	..setTooltipNormalExtended(2, "Closes the gate")
+	// Icon
+	..presetIcon(Icons.bTNDemonGate)
+	// Hotkey
+	..presetHotkey("Z")
+	// Button Placement
+	..presetButtonPosNormal(0, 2)
+	// Cost
+	..presetCooldown(lvl -> 1)
+	..presetManaCost(lvl -> 0)
+	// Target
+	..presetTargetTypes(Targettype.NONE)
+	// ..presetOption(Option.TARGETIMAGE, true)

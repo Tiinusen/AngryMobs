@@ -129,8 +129,8 @@ import Ids
 		// Icon
 		..presetIcon((int lvl) -> Icons.bTNBootsOfSpeed)
 		// Button Placement
-		..setButtonPositionX(3)
-		..setButtonPositionY(0)
+		..setButtonPositionX(1)
+		..setButtonPositionY(2)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
@@ -154,7 +154,7 @@ import Ids
 		..setIcon(2, Icons.bTNHumanArmorUpTwo)
 		// Button Placement
 		..setButtonPositionX(2)
-		..setButtonPositionY(0)
+		..setButtonPositionY(1)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
@@ -179,7 +179,7 @@ import Ids
 		..setIcon(3, "ReplaceableTextures\\CommandButtons\\BTNArcaniteMelee.blp")
 		// Button Placement
 		..setButtonPositionX(1)
-		..setButtonPositionY(0)
+		..setButtonPositionY(1)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)

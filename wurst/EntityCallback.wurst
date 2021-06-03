@@ -18,6 +18,10 @@ public abstract class CallbackSold extends Callback
     abstract function call(unit sold, CallbackSold callback)
     int typeID
 
+public abstract class CallbackSelection extends Callback
+    abstract function call(player p)
+    player p
+
 public abstract class CallbackResearch extends Callback
     abstract function call(int techid)
     int techID

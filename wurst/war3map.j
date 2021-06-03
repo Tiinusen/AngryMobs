@@ -39,6 +39,28 @@ endfunction
 //***************************************************************************
 
 //===========================================================================
+function CreateBuildingsForPlayer12 takes nothing returns nothing
+    local player p= Player(12)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'hwtw', 4160.0, - 384.0, 270.000, 'hwtw')
+endfunction
+
+//===========================================================================
+function CreateBuildingsForPlayer13 takes nothing returns nothing
+    local player p= Player(13)
+    local unit u
+    local integer unitID
+    local trigger t
+    local real life
+
+    set u=BlzCreateUnitWithSkin(p, 'hwtw', - 4160.0, - 384.0, 270.000, 'hwtw')
+endfunction
+
+//===========================================================================
 function CreateNeutralPassiveBuildings takes nothing returns nothing
     local player p= Player(PLAYER_NEUTRAL_PASSIVE)
     local unit u
@@ -54,6 +76,8 @@ endfunction
 
 //===========================================================================
 function CreatePlayerBuildings takes nothing returns nothing
+    call CreateBuildingsForPlayer12()
+    call CreateBuildingsForPlayer13()
 endfunction
 
 //===========================================================================
@@ -127,7 +151,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(6), 6)
     call ForcePlayerStartLocation(Player(6), 6)
     call SetPlayerColor(Player(6), ConvertPlayerColor(6))
-    call SetPlayerRacePreference(Player(6), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(6), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(6), false)
     call SetPlayerController(Player(6), MAP_CONTROL_USER)
 
@@ -135,7 +159,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(7), 7)
     call ForcePlayerStartLocation(Player(7), 7)
     call SetPlayerColor(Player(7), ConvertPlayerColor(7))
-    call SetPlayerRacePreference(Player(7), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(7), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(7), false)
     call SetPlayerController(Player(7), MAP_CONTROL_USER)
 
@@ -143,7 +167,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(8), 8)
     call ForcePlayerStartLocation(Player(8), 8)
     call SetPlayerColor(Player(8), ConvertPlayerColor(8))
-    call SetPlayerRacePreference(Player(8), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(8), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(8), false)
     call SetPlayerController(Player(8), MAP_CONTROL_USER)
 
@@ -151,7 +175,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(9), 9)
     call ForcePlayerStartLocation(Player(9), 9)
     call SetPlayerColor(Player(9), ConvertPlayerColor(9))
-    call SetPlayerRacePreference(Player(9), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(9), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(9), false)
     call SetPlayerController(Player(9), MAP_CONTROL_USER)
 
@@ -159,7 +183,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(10), 10)
     call ForcePlayerStartLocation(Player(10), 10)
     call SetPlayerColor(Player(10), ConvertPlayerColor(10))
-    call SetPlayerRacePreference(Player(10), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(10), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(10), false)
     call SetPlayerController(Player(10), MAP_CONTROL_USER)
 
@@ -167,7 +191,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(11), 11)
     call ForcePlayerStartLocation(Player(11), 11)
     call SetPlayerColor(Player(11), ConvertPlayerColor(11))
-    call SetPlayerRacePreference(Player(11), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(11), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(11), false)
     call SetPlayerController(Player(11), MAP_CONTROL_USER)
 
@@ -175,7 +199,7 @@ function InitCustomPlayerSlots takes nothing returns nothing
     call SetPlayerStartLocation(Player(12), 12)
     call ForcePlayerStartLocation(Player(12), 12)
     call SetPlayerColor(Player(12), ConvertPlayerColor(12))
-    call SetPlayerRacePreference(Player(12), RACE_PREF_UNDEAD)
+    call SetPlayerRacePreference(Player(12), RACE_PREF_HUMAN)
     call SetPlayerRaceSelectable(Player(12), false)
     call SetPlayerController(Player(12), MAP_CONTROL_COMPUTER)
 
@@ -530,20 +554,20 @@ function config takes nothing returns nothing
     call SetTeams(14)
     call SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
 
-    call DefineStartLocation(0, - 6784.0, - 768.0)
-    call DefineStartLocation(1, - 6784.0, - 768.0)
-    call DefineStartLocation(2, - 6784.0, - 768.0)
-    call DefineStartLocation(3, - 6784.0, - 768.0)
-    call DefineStartLocation(4, - 6784.0, - 768.0)
-    call DefineStartLocation(5, - 6784.0, - 768.0)
-    call DefineStartLocation(6, 6528.0, - 1216.0)
-    call DefineStartLocation(7, 6528.0, - 1216.0)
-    call DefineStartLocation(8, 6528.0, - 1216.0)
-    call DefineStartLocation(9, 6528.0, - 1216.0)
-    call DefineStartLocation(10, 6528.0, - 1216.0)
-    call DefineStartLocation(11, 6528.0, - 1216.0)
-    call DefineStartLocation(12, 6528.0, - 1216.0)
-    call DefineStartLocation(13, - 6784.0, - 768.0)
+    call DefineStartLocation(0, - 6720.0, 0.0)
+    call DefineStartLocation(1, - 6720.0, 0.0)
+    call DefineStartLocation(2, - 6720.0, 0.0)
+    call DefineStartLocation(3, - 6720.0, 0.0)
+    call DefineStartLocation(4, - 6720.0, 0.0)
+    call DefineStartLocation(5, - 6720.0, 0.0)
+    call DefineStartLocation(6, 6720.0, 0.0)
+    call DefineStartLocation(7, 6720.0, 0.0)
+    call DefineStartLocation(8, 6720.0, 0.0)
+    call DefineStartLocation(9, 6720.0, 0.0)
+    call DefineStartLocation(10, 6720.0, 0.0)
+    call DefineStartLocation(11, 6720.0, 0.0)
+    call DefineStartLocation(12, 6720.0, 0.0)
+    call DefineStartLocation(13, - 6720.0, 0.0)
 
     // Player setup
     call InitCustomPlayerSlots()
