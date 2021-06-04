@@ -3,6 +3,7 @@ package UnitEntity
 import public EventEntity
 import Orders
 import LinkedList
+import initlater Gate
 import initlater Owner
 
 public tuple damage(int base, int dices, int sides)
@@ -12,22 +13,30 @@ public function damage.op_plus( damage v ) returns damage
 
 abstract public class UnitEntity extends EventEntity
 
-	private CallbackWithin _goToCallback = null
+	private CallbackOrder _orderCallback = null
 
-	private static LinkedList<UnitEntity> _units = new LinkedList<UnitEntity>()
+	private static LinkedList<UnitEntity> _units = null
 
 	construct(unit obj)
 		super(obj)
+		_init()
 		_units.add(this)
 		this.applyUpgrades()
 
 	ondestroy
-		if this._goToCallback != null
-			destroy this._goToCallback
+		_init()
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			destroy this._orderCallback
 		_units.remove(this)
+
+	static private function _init()
+		if _units == null
+			_units = new LinkedList<UnitEntity>()
 		
 
 	static function applyUpgradesOnAllUnits()
+		_init()
 		_units.forEach() (UnitEntity t) ->
 			t.applyUpgrades()
 
@@ -35,6 +44,7 @@ abstract public class UnitEntity extends EventEntity
 		UnitEntity.applyUpgradesOnPlayerUnits(o.getPlayer())
 
 	static function applyUpgradesOnPlayerUnits(player p)
+		_init()
 		_units.forEach() (UnitEntity t) ->
 			if t.getOwner().getPlayer() == p
 				t.applyUpgrades()
@@ -171,49 +181,156 @@ abstract public class UnitEntity extends EventEntity
 	function applyTurnSpeed(real speed)
 		this.setTurnSpeed(this.getTurnSpeed(true)+speed)
 		
+	/*
+	 * Orders
+	 */
+
+	/** Issues attack order towards unit */
+	function orderAttack(UnitEntity obj)
+		this.orderAttack(obj.getUnit())
+
+	/** Issues attack order towards unit */
+	function orderAttack(UnitEntity obj, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.orderAttack(obj)
+		this._orderCallback = callback
+		let cbd1 = obj.onDeath() (unit _, CallbackDeath cbd) ->
+			this._orderCallback = null
+			this.orderStop()
+			callback.call(true)
+			callback.cancel.call()
+			destroy callback
+		callback.cancel = () ->
+			destroy cbd1
+		return callback
+		
+	/** Issues attack order towards destructable */
+	function orderAttack(destructable obj)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.getUnit().issueTargetOrderById(Orders.attack, obj) 
+
+	/** Issues attack order towards a gate */
+	function orderAttack(Gate obj)
+		this.orderAttack(obj.getGate().killable)
+
+	/** Issues attack order towards a gate */
+	function orderAttack(Gate obj, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.orderAttack(obj)
+		this._orderCallback = callback
+		let cbd1 = obj.onDeath() (unit _, CallbackDeath cbd) ->
+			this._orderCallback = null
+			this.orderStop()
+			callback.call(true)
+			callback.cancel.call()
+			destroy callback
+		callback.cancel = () ->
+			cbd1.cancel.call()
+			destroy cbd1
+		return callback
 		
 
+	/** Issues attack order towards unit */
+	function orderAttack(unit obj)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.getUnit().issueTargetOrderById(Orders.attack, obj) 
+
+	/** Issues attack order towards point */
+	function orderAttack(vec2 pos)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.getUnit().issuePointOrderById(Orders.attack, pos)
+
+	/** Issues attack order towards point */
+	function orderAttack(vec2 pos, CallbackOrder callback) returns CallbackOrder
+		return this.orderAttack(pos, 256, callback)
+
+	/** Issues attack order towards point */
+	function orderAttack(vec2 pos, real distance, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.orderAttack(pos)
+		this._orderCallback = callback
+		let cbwo = this.onWithinOnce(pos, distance) (bool reached, CallbackWithin cbwo) ->
+			this._orderCallback = null
+			callback.call(true)
+			destroy callback
+		callback.cancel = cbwo.cancel
+		return callback
+
 	/** Issues move order towards unit and fires callback if reached or if unit disappears */
-	function orderMove(Entity obj, real distance, CallbackWithin callback) returns CallbackWithin
+	function orderMove(UnitEntity obj, real distance, CallbackOrder callback) returns CallbackOrder
 		return this.orderMove(obj.getUnit(), distance, callback)
 
 	/** Issues follow order towards unit */
 	function orderFollow(unit obj)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
 		this.getUnit().issueTargetOrderById(Orders.move, obj)    
 
 	/** Issues move order towards unit and fires callback if reached or if unit disappears */
-	function orderMove(unit obj, real distance, CallbackWithin callback) returns CallbackWithin
-		if this._goToCallback != null
-			this._goToCallback.cancel.call()
+	function orderMove(unit obj, real distance, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
 		this.orderFollow(obj)
+		this._orderCallback = callback
 		if distance <= 512
 			// This since a normal move order with a target unit often results with unit never triggering callback since it stops to far away
-			this._goToCallback = this.onWithinOnce(obj, 512) (boolean reached, CallbackWithin wc) ->
-				this._goToCallback = null
+			let cbwo = this.onWithinOnce(obj, 512) (boolean reached, CallbackWithin wc) ->
+				this._orderCallback = null
 				if reached
 					this.getUnit().issuePointOrderById(Orders.move, obj.getPos())
-					this._goToCallback = this.onWithinOnce(obj, distance) (bool reached, CallbackWithin wc2) ->
-						this._goToCallback = null
-						callback.call(reached, wc2)
+					let cbwo2 = this.onWithinOnce(obj, distance) (bool reached, CallbackWithin wc2) ->
+						this._orderCallback = null
+						callback.call(reached)
 						destroy callback
+					callback.cancel = cbwo2.cancel
 				else
-					callback.call(false, wc)
+					callback.call(false)
 					destroy callback
+			callback.cancel = cbwo.cancel
 		else
-			this._goToCallback = this.onWithinOnce(obj, distance) (bool reached, CallbackWithin wc) ->
-				callback.call(reached, wc)
+			let cbwo = this.onWithinOnce(obj, distance) (bool reached, CallbackWithin wc) ->
+				this._orderCallback = null
+				callback.call(reached)
 				destroy callback
-		return this._goToCallback
+			callback.cancel = cbwo.cancel
+		return this._orderCallback
+
+	/** Issues move order towards position */
+	function orderMove(vec2 pos)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.getUnit().issuePointOrderById(Orders.move, pos)
 	
 	/** Issues move order towards position and fires callback if reached or if unit disappears */
-	function orderMove(vec2 pos, real distance, CallbackWithin callback) returns CallbackWithin
+	function orderMove(vec2 pos, real distance, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
 		this.getUnit().issuePointOrderById(Orders.move, pos)
-		if this._goToCallback != null
-			this._goToCallback.cancel.call()
-		this._goToCallback = this.onWithinOnce(pos, distance) (bool reached, CallbackWithin wc) ->
-			callback.call(reached, wc)
-		return this._goToCallback
+		this._orderCallback = callback
+		let cbwo = this.onWithinOnce(pos, distance) (bool reached, CallbackWithin wc) ->
+			callback.call(reached)
+			destroy callback
+		callback.cancel = cbwo.cancel
+		return this._orderCallback
 
 	/** Issues stop order immediately */
 	function orderStop()
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
 		this.getUnit().issueImmediateOrderById(Orders.stop)

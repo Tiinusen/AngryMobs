@@ -1,7 +1,8 @@
 package Side
 
 import LinkedList
-import Gate
+import initlater King
+import initlater Gate
 import initlater Owner
 
 public class Side
@@ -10,6 +11,7 @@ public class Side
     private LinkedList<Owner> _players = new LinkedList<Owner>()
 
     private Gate _gate
+    private King _king
 
     static var west = new Side(Player(13))
     static var east = new Side(Player(12))
@@ -30,6 +32,22 @@ public class Side
         if this == Side.west
             return Side.east
         return Side.west
+
+    /** called during init when gate is set */
+    function setGate(Gate g)
+        this._gate = g
+
+    /** gets the gate primitive */
+    function getGate() returns Gate
+        return this._gate
+
+    /** called during init when gate is set */
+    function setKing(King king)
+        this._king = king
+
+    /** gets the king of this side */
+    function getKing() returns King
+        return this._king
 
     /** makes player join this side */
     function join(Owner u)

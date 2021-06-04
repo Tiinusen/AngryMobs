@@ -5,9 +5,12 @@ import Map
 import Side
 import Owner
 import ClosureTimers
+import King
+import EntityCallback
 
 init
-	spawnHeroes()
+	spawn()
+	createVictoryCondition()
 	Owner.getActive().forEach() (Owner owner) ->
 		owner.getPlayer().addGold(10000)
 		owner.getPlayer().addLumber(10)
@@ -15,7 +18,10 @@ init
 	doPeriodically(30) (CallbackPeriodic cb) ->
 		SetTimeOfDay(12)
 	
-function spawnHeroes()
+function spawn()
+	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))
+	Side.east.setKing(new King(Side.east.getSidePlayer().getStartLocation(), Side.east.getSidePlayer()))
+
 	Side.west.getPlayers().forEach() (Owner owner) ->
 		new Hero(owner.getPlayer(), Map.WEST_SPAWN)
 			..focus()
@@ -24,3 +30,23 @@ function spawnHeroes()
 		new Hero(owner.getPlayer(), Map.EAST_SPAWN)
 			..focus()
 			..select()
+	
+function createHelp()
+	let q = CreateQuest()
+	QuestSetRequired(q, true)
+	QuestSetTitle(q, "Goal")
+	QuestSetDescription(q, "The goal with this game mode is to kill the enemy King")
+
+function createVictoryCondition()
+	Side.west.getKing().onDeath() (unit killer, CallbackDeath callback) ->
+		Side.east.getPlayers().forEach() (Owner t) ->
+			print("You have defeated the enemy king")
+		Side.west.getPlayers().forEach() (Owner t) ->
+			print("Your king has been slayed")
+		EndGame(false)
+	Side.east.getKing().onDeath() (unit killer, CallbackDeath callback) ->
+		Side.west.getPlayers().forEach() (Owner t) ->
+			print("You have defeated the enemy king")
+		Side.east.getPlayers().forEach() (Owner t) ->
+			print("Your king has been slayed")
+		EndGame(false)

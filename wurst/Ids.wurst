@@ -2,6 +2,16 @@ package Ids
 
 import ObjectIdGenerator
 import public ObjectIds
+import public UnitIds
+import public Buildings
+
+/*
+ * Destructables
+ */
+ public let GATE_LEVEL_1_ID = 'B000'
+ public let GATE_LEVEL_2_ID = 'B001'
+ public let GATE_LEVEL_3_ID = 'B002'
+ public let GATE_LEVEL_4_ID = 'B003'
 
 /*
  * Unit
@@ -9,6 +19,9 @@ import public ObjectIds
 
 // Hero
 public let HERO_ID = compiletime(HERO_ID_GEN.next())
+
+// King
+public let KING_ID = compiletime(UNIT_ID_GEN.next())
 
 // Worker
 public let WORKER_ID = compiletime(UNIT_ID_GEN.next())
@@ -46,6 +59,10 @@ public let CONTROLLED_BUFF_ID = compiletime(BUFF_ID_GEN.next())
 /*
  * Buildings
  */
+
+// Gate Control
+public let GATE_CONTROL_ID = compiletime(UNIT_ID_GEN.next())
+public let GATE_CONTROL_TOGGLE_ID = compiletime(ABIL_ID_GEN.next())
 
 // Barrack
 public let BARRACK_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())

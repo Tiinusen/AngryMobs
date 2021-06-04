@@ -2,6 +2,8 @@ package WorkerHall
 
 import RunnerEntity
 import Worker
+import Militia
+import Fighter
 import WorkerHallConstants
 import LinkedList
 import Owner
@@ -65,6 +67,12 @@ public class WorkerHall extends RunnerEntity
                 this.workers.add(worker2)
                 worker2.onRemove() ->
                     this.workers.remove(worker2)
+
+        this.onSold(FIGHTER_ID) (unit sold, CallbackSold callback) ->
+            new Fighter(sold)
+
+        this.onSold(MILITIA_ID) (unit sold, CallbackSold callback) ->
+            new Militia(sold)
 
         this.onCast(WORKER_HALL_SELECT_MINE_ID) (unit target, vec2 pos, CallbackCast callback) ->
             this._selectedMine = mines.filter((unit mine) -> mine != this.getSelectedMine()).getFirst()

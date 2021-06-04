@@ -20,8 +20,6 @@ import Ids
 		// Button Placement
 		..setButtonPositionX(i != 0 ? 3 : WORKER_HALL_BUTTON_X)
 		..setButtonPositionY(i != 0 ? 2 : WORKER_HALL_BUTTON_Y)
-		// Hotkey
-		..setHotkey(WORKER_HALL_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
 		..setNormalAbilities(WORKER_HALL_ABILITIES)
 		..setResearchesAvailable(commaList(
@@ -47,6 +45,10 @@ import Ids
 			b..setUpgradesTo(commaList(ids[i+1]))
 		if i == 0
 			b..setRequirements(commaList(WORKER_HALL_LIMIT_REACHED_ID))
+			// Hotkey
+			b..setHotkey(WORKER_HALL_HOTKEY)
+		else
+			b..setHotkey("V")
 
 	// Select Mine
 	new ChannelAbilityPreset(WORKER_HALL_SELECT_MINE_ID,1,true)
@@ -57,7 +59,7 @@ import Ids
 		// Icon
 		..presetIcon(WORKER_HALL_SELECT_MINE_ICON)
 		// Hotkey
-		..presetHotkey("Q")
+		..presetHotkey("Z")
 		// Button Placement
 		..presetButtonPosNormal(0, 2)
 		// Cost
@@ -80,6 +82,8 @@ import Ids
 	new UpgradeDefinition(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID)
 		..setLevels(3)
 		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		// Hotkey
+		..presetHotkey(lvl -> "F")
 		// Button Placement
 		..setButtonPositionX(3)
 		..setButtonPositionY(1)
@@ -110,6 +114,8 @@ import Ids
 		..presetTooltipExtended((int lvl) -> "Increase the amount of trips each worker do between the mine and the hero\n\n|c81d9dd06Increases trips to "+(lvl+1).toString())
 		// Icon
 		..presetIcon((int lvl) -> Icons.bTNBox)
+		// Hotkey
+		..presetHotkey(lvl -> "A")
 		// Button Placement
 		..setButtonPositionX(0)
 		..setButtonPositionY(1)
@@ -128,9 +134,11 @@ import Ids
 		..presetTooltipExtended((int lvl) -> "Increases the movement speed of the workers, fighters and militia")
 		// Icon
 		..presetIcon((int lvl) -> Icons.bTNBootsOfSpeed)
+		// Hotkey
+		..presetHotkey(lvl -> "X")
 		// Button Placement
-		..setButtonPositionX(3)
-		..setButtonPositionY(0)
+		..setButtonPositionX(1)
+		..setButtonPositionY(2)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
@@ -149,12 +157,14 @@ import Ids
 		// Requirements
 		..presetRequirements((int lvl) -> commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
 		..presetRequirementsLevels((int lvl) -> commaList("2"))
+		// Hotkey
+		..presetHotkey(lvl -> "D")
 		// Icon
 		..setIcon(1, Icons.bTNHumanArmorUpOne)
 		..setIcon(2, Icons.bTNHumanArmorUpTwo)
 		// Button Placement
 		..setButtonPositionX(2)
-		..setButtonPositionY(0)
+		..setButtonPositionY(1)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
@@ -173,13 +183,15 @@ import Ids
 		// Requirements
 		..presetRequirements((int lvl) -> commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
 		..presetRequirementsLevels((int lvl) -> commaList("1"))
+		// Hotkey
+		..presetHotkey(lvl -> "S")
 		// Icon
 		..setIcon(1, "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp")
 		..setIcon(2, "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp")
 		..setIcon(3, "ReplaceableTextures\\CommandButtons\\BTNArcaniteMelee.blp")
 		// Button Placement
 		..setButtonPositionX(1)
-		..setButtonPositionY(0)
+		..setButtonPositionY(1)
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)

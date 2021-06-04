@@ -10,6 +10,8 @@ abstract public class EventEntity extends Entity
     // To prevent closures from triggering after entity has been destructed
     protected ClosureTerminator _closureTerminator = new ClosureTerminator()
 
+    private LinkedList<CallbackSelection> _onSelected = null
+    private LinkedList<CallbackSelection> _onDeSelected = null
     private LinkedList<CallbackVoid> _onRemove = null
     private LinkedList<CallbackUpgrade> _onUpgraded = null
     private LinkedList<CallbackDeath> _onDeath = null
@@ -18,6 +20,9 @@ abstract public class EventEntity extends Entity
     private LinkedList<CallbackWithin> _onWithin = null
     private static LinkedList<CallbackConstruction> _onConstructionFinished = new LinkedList<CallbackConstruction>()    
     
+    private EventListener _onSelectedEventListener = null
+    private EventListener _onDeSelectedEventListener = null
+    private EventListener _onUpgradedEventListener = null
     private EventListener _onDeathEventListener = null
     private EventListener _onSoldEventListener = null
     private OnCast _onCastEventListener = null
@@ -43,6 +48,10 @@ abstract public class EventEntity extends Entity
             destroy this._onSoldEventListener
         if this._onCastEventListener != null
             destroy this._onCastEventListener
+        if this._onSelectedEventListener != null
+            destroy this._onSelectedEventListener
+        if this._onDeSelectedEventListener != null
+            destroy this._onDeSelectedEventListener
 
         EventEntity.removeEntityFromWithinChecker(this)
 
@@ -134,7 +143,7 @@ abstract public class EventEntity extends Entity
                         this._onDeath.forEach() (CallbackDeath callback2) ->
                             if this._onDeath.has(callback)
                                 callback2.call(EventData.getKillingUnit(), callback2)
-            this._onDeath.add(callback)
+        this._onDeath.add(callback)
         callback.cancel = () ->
             if this._onDeath != null
                 this._onDeath.remove(callback)
@@ -166,7 +175,7 @@ abstract public class EventEntity extends Entity
         return callback
 
     //
-    // On Sold
+    // On Upgraded
     //
     /** callback when this unit is upgraded */
     function onUpgraded(CallbackUpgrade callback) returns CallbackUpgrade
@@ -178,7 +187,7 @@ abstract public class EventEntity extends Entity
         if this._onUpgraded == null
             this._onUpgraded = new LinkedList<CallbackUpgrade>()
             nullTimer() -> 
-                this._onSoldEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_UPGRADE_FINISH) ->
+                this._onUpgradedEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_UPGRADE_FINISH) ->
                     let u = EventData.getConstructedStructure()
                     this._onUpgraded.forEach() (CallbackUpgrade callback) ->
                         if this._onUpgraded.has(callback)
@@ -188,6 +197,56 @@ abstract public class EventEntity extends Entity
         callback.cancel = () ->
             if this._onUpgraded != null
                 this._onUpgraded.remove(callback)
+        return callback
+
+    //
+    // On Selected
+    //
+    /** callback when this unit is upgraded */
+    function onSelected(CallbackSelection callback) returns CallbackSelection
+        return this.onSelected(null, callback)
+
+    /** callback when this unit is upgraded to a specific type */
+    function onSelected(player p, CallbackSelection callback) returns CallbackSelection
+        callback.p = p
+        if this._onSelected == null
+            this._onSelected = new LinkedList<CallbackSelection>()
+            nullTimer() -> 
+                this._onSelectedEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_SELECTED) ->
+                    let tp = EventData.getTriggerPlayer()
+                    this._onSelected.forEach() (CallbackSelection callback) ->
+                        if this._onSelected.has(callback)
+                            if callback.p == null or tp == callback.p
+                                callback.call(tp)
+        this._onSelected.add(callback)
+        callback.cancel = () ->
+            if this._onSelected != null
+                this._onSelected.remove(callback)
+        return callback
+
+    //
+    // On Deselected
+    //
+    /** callback when this unit is upgraded */
+    function onDeSelected(CallbackSelection callback) returns CallbackSelection
+        return this.onDeSelected(null, callback)
+
+    /** callback when this unit is upgraded to a specific type */
+    function onDeSelected(player p, CallbackSelection callback) returns CallbackSelection
+        callback.p = p
+        if this._onDeSelected == null
+            this._onDeSelected = new LinkedList<CallbackSelection>()
+            nullTimer() -> 
+                this._onDeSelectedEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_DESELECTED) ->
+                    let tp = EventData.getTriggerPlayer()
+                    this._onDeSelected.forEach() (CallbackSelection callback) ->
+                        if this._onDeSelected.has(callback)
+                            if callback.p == null or tp == callback.p
+                                callback.call(tp)
+        this._onDeSelected.add(callback)
+        callback.cancel = () ->
+            if this._onDeSelected != null
+                this._onDeSelected.remove(callback)
         return callback
 
     //
@@ -319,6 +378,10 @@ abstract public class EventEntity extends Entity
             return this.distanceTo(callback.target)
         else
             return this.distanceTo(callback.pos)
+
+    /** returns distance to unit */
+    function distanceTo(Entity u) returns real
+        return this.distanceTo(u.getPos())
 
     /** returns distance to unit */
     function distanceTo(unit u) returns real

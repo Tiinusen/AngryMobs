@@ -25,6 +25,10 @@ abstract public class Entity
     function getUnit() returns unit
         return this._obj
 
+    /** gets position of unit */
+    function getPos() returns vec2
+        return this.getUnit().getPos()
+
     /** returns level of entity */
     function getLevel() returns int
         return this._level
