@@ -19,8 +19,6 @@ import Ids
 		// Button Placement
 		..setButtonPositionX(i != 0 ? 3 : BARRACK_BUTTON_X)
 		..setButtonPositionY(i != 0 ? 2 : BARRACK_BUTTON_Y)
-		// Hotkey
-		..setHotkey(BARRACK_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
 		..setNormalAbilities(BARRACK_ABILITIES)
 		..setResearchesAvailable(commaList(BARRACK_WORKER_TO_MILITIA_UPGRADE_ID, BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID))
@@ -38,3 +36,9 @@ import Ids
 		// Upgrades To
 		if i < 3
 			b..setUpgradesTo(commaList(ids[i+1]))
+			
+		if i == 0
+			// Hotkey
+			b..setHotkey(BARRACK_HOTKEY)
+		else
+			b..setHotkey("V")

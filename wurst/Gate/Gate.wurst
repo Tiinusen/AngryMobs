@@ -5,6 +5,7 @@ import Ids
 import ClosureTimers
 import Destructables
 import Side
+import Abilities
 
 init
     Destructables.filter(GATE_LEVEL_1_ID).forEach() (destructable t) ->
@@ -36,11 +37,16 @@ public class Gate
         
     function initialize()
         // this.open()
+        this.setHealth(20)
+
         this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
-            if not this._dead and this.isDestroyed()
+            if not this._dead and not this.isOpen() and this.isDestroyed()
                 this._dead = true
-                print("I died")
+                flashEffect(Abilities.fireLordDeathExplode, this._gateControl.getUnit().getPos())
+                this._gateControl.getUnit().hide()
             
+    function getGate() returns gate
+        return this._gate
         
 
     function isDamaged() returns bool
@@ -48,6 +54,16 @@ public class Gate
 
     function isDestroyed() returns bool
         return this.getHealth() < 1
+
+    function setHealth(real life)
+        if this.isOpen()
+            this._health = life
+        this._gate.killable.setLife(life)
+
+    function setMaxHealth(real life)
+        if this.isOpen()
+            this._maxHealth = life
+        this._gate.killable.setMaxLife(life)
 
     function getHealth() returns real
         if this.isOpen()
@@ -66,15 +82,24 @@ public class Gate
         if this._open
             return
         this._open = true
+        this._health = this._gate.killable.getLife()
+        this._maxHealth = this._gate.killable.getMaxLife()
         this._gate.open()
+        if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
+            this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
 
     function close()
         if not this._open
             return
         this._open = false
-        this._health = this._gate.killable.getLife()
-        this._maxHealth = this._gate.killable.getMaxLife()
         this._gate.close()
+        this.apply()
+        if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
+            this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
+    
+    function apply()
+        this._gate.killable.setMaxLife(this._maxHealth)
+        this._gate.killable.setLife(this._health)
 
 class GateControl extends EventEntity
     private Gate _gate

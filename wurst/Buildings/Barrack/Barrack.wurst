@@ -1,6 +1,7 @@
 package Barrack
 
 import Footman
+import Archer
 import Ids
 import BarrackConstants
 import RunnerEntity
@@ -32,6 +33,9 @@ public class Barrack extends RunnerEntity
 
         this.onSold(FOOTMAN_ID) (unit sold, CallbackSold callback) ->
             new Footman(sold)
+
+        this.onSold(ARCHER_ID) (unit sold, CallbackSold callback) ->
+            new Archer(sold)
             
     override function run()
         for i = 1 to this.getLevel()

@@ -3,7 +3,8 @@ package SoldierEntity
 import public UnitEntity
 import Worker
 import LinkedList
-import ControlledBuff       
+import ControlledBuff
+import ClosureTimers
 
 abstract public class SoldierEntity extends UnitEntity
     private static LinkedList<SoldierEntity> _units = new LinkedList<SoldierEntity>()
@@ -24,6 +25,8 @@ abstract public class SoldierEntity extends UnitEntity
         super(this.castIfNeeded(worker.getUnit(), typeID))
         worker.remove(false)
         SoldierEntity._units.add(this)
+        nullTimer() -> 
+            this.decideNext()
 
     ondestroy
         SoldierEntity._units.remove(this)
@@ -42,6 +45,8 @@ abstract public class SoldierEntity extends UnitEntity
     function decideNext()
         if ControlledBuff.has(this)
             return
+        let g = this.getOwner().getSide().getEnemySide().getGate()
+        this.orderAttack(g.getGate().killable.getPos())
         
 
     override function initalize()

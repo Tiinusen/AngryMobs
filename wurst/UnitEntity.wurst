@@ -181,6 +181,14 @@ abstract public class UnitEntity extends EventEntity
 	function orderFollow(unit obj)
 		this.getUnit().issueTargetOrderById(Orders.move, obj)    
 
+	/** Issues attack order towards unit */
+	function orderAttack(unit obj)
+		this.getUnit().issueTargetOrderById(Orders.attack, obj) 
+
+	/** Issues attack order towards unit */
+	function orderAttack(vec2 pos)
+		this.getUnit().issuePointOrderById(Orders.attack, pos)
+
 	/** Issues move order towards unit and fires callback if reached or if unit disappears */
 	function orderMove(unit obj, real distance, CallbackWithin callback) returns CallbackWithin
 		if this._goToCallback != null
