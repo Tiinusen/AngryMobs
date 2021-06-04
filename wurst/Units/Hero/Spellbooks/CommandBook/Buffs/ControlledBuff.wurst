@@ -23,7 +23,7 @@ abstract class ControlledBuff
 			_buffMap.remove(soldier)
 			soldier.getUnit().removeAbility(buffId)
 			Hero.removeControlledSoldier(soldier)
-			soldier.decideNext()
+			soldier.decideNextAction()
 		
 
 	static function add(SoldierEntity soldier, Hero hero, real duration)
@@ -39,7 +39,7 @@ abstract class ControlledBuff
 					_buffMap.remove(soldier)
 					soldier.getUnit().removeAbility(buffId)
 					Hero.removeControlledSoldier(soldier)
-					soldier.decideNext()
+					soldier.decideNextAction()
 			_buffMap.put(soldier, cb)
 		else
 			_buffMap.put(soldier, null)

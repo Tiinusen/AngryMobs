@@ -1,0 +1,30 @@
+package King
+
+import LinkedList
+import SoldierEntity
+import Ids
+
+public class King extends UnitEntity
+    LinkedList<SoldierEntity> _protectors = new LinkedList<SoldierEntity>()
+
+    construct(unit obj)
+        super(obj)
+
+    construct(vec2 pos, player owner)
+        super(CreateUnit(owner, KING_ID, pos.x, pos.y, 270))
+
+    construct(vec2 pos, player owner, real dir)
+        super(CreateUnit(owner, KING_ID, pos.x, pos.y, dir))
+    
+    override function applyUpgrades()
+
+    function isInNeedOfGuards() returns bool
+        return this._protectors.size() < 10
+
+    function addGuard(SoldierEntity s)
+        if not this._protectors.has(s)
+            this._protectors.add(s)
+
+    function removeGuard(SoldierEntity s)
+        this._protectors.remove(s)
+

@@ -1,0 +1,28 @@
+package KingConstants
+import public Assets
+import ObjectIds
+
+
+@configurable public let KING_ORIGINAL_ID = UnitIds.thecaptain
+
+@configurable public let KING_ICON = Icons.bTNTheCaptain
+@configurable public let KING_MODEL = Units.theCaptain1
+
+@configurable public let KING_NAME = "King"
+@configurable public let KING_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29King"
+@configurable public let KING_TOOL_TIP_EXTENDED = "The king of almost all of this land, but soon hopefully will be"
+
+@configurable public let KING_ABILITIES = commaList("")
+@configurable public let KING_UPGRADES = commaList("")
+
+@configurable public let KING_HOTKEY = ""
+@configurable public let KING_BUTTON_X = 0
+@configurable public let KING_BUTTON_Y = 0
+
+@configurable public let KING_COST_GOLD = 0
+@configurable public let KING_COST_LUMBER = 0
+@configurable public let KING_COST_FOOD = 0
+
+@configurable public let KING_RESTOCK_INTERVAL = 10
+@configurable public let KING_RESTOCK_MAX = 10
+@configurable public let KING_RESTOCK_DELAY = 0

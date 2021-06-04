@@ -42,6 +42,8 @@ public abstract class CallbackWithin extends Callback
     vec2 lastEntityPos
     int lastEntityPosTimes = 0
 
+public abstract class CallbackOrder extends Callback
+    abstract function call(bool fulfilled)
 
 public abstract class CallbackConstruction extends Callback
     abstract function call(unit building)

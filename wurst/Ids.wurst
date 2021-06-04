@@ -20,6 +20,9 @@ import public Buildings
 // Hero
 public let HERO_ID = compiletime(HERO_ID_GEN.next())
 
+// King
+public let KING_ID = compiletime(UNIT_ID_GEN.next())
+
 // Worker
 public let WORKER_ID = compiletime(UNIT_ID_GEN.next())
 

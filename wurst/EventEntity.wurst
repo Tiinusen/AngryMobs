@@ -143,7 +143,7 @@ abstract public class EventEntity extends Entity
                         this._onDeath.forEach() (CallbackDeath callback2) ->
                             if this._onDeath.has(callback)
                                 callback2.call(EventData.getKillingUnit(), callback2)
-            this._onDeath.add(callback)
+        this._onDeath.add(callback)
         callback.cancel = () ->
             if this._onDeath != null
                 this._onDeath.remove(callback)
@@ -378,6 +378,10 @@ abstract public class EventEntity extends Entity
             return this.distanceTo(callback.target)
         else
             return this.distanceTo(callback.pos)
+
+    /** returns distance to unit */
+    function distanceTo(Entity u) returns real
+        return this.distanceTo(u.getPos())
 
     /** returns distance to unit */
     function distanceTo(unit u) returns real

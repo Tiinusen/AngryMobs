@@ -3,12 +3,16 @@ package Destructables
 import LinkedList
 
 abstract class Destructables
-    static LinkedList<destructable> _destructables = new LinkedList<destructable>()
-    static bool _initialized = Destructables._init()
+    static LinkedList<destructable> _destructables = null
+    
     private static function _init() returns bool
+        if _destructables != null
+            return true
+        _destructables = new LinkedList<destructable>()
         EnumDestructablesInRectAll(GetWorldBounds()) ->
             _destructables.add(GetEnumDestructable())
         return true
 
     static function filter(int typeid) returns LinkedList<destructable>
+        _init()
         return _destructables.filter((destructable t) -> t.getTypeId() == typeid)

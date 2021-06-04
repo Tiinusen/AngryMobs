@@ -1,30 +1,30 @@
-package ArcherObjects
+package KingObjects
 
-import ArcherConstants
+import KingConstants
 import UnitObjEditing
 import Ids
 
 @compiletime function generate()
-	new UnitDefinition(ARCHER_ID, ARCHER_ORIGINAL_ID)
-		..setName(ARCHER_NAME)
+	new UnitDefinition(KING_ID, KING_ORIGINAL_ID)
+		..setName(KING_NAME)
 		..setNameEditorSuffix("")
-		..setTooltipBasic(ARCHER_TOOL_TIP_BASIC)
-		..setTooltipExtended(ARCHER_TOOL_TIP_EXTENDED)
+		..setTooltipBasic(KING_TOOL_TIP_BASIC)
+		..setTooltipExtended(KING_TOOL_TIP_EXTENDED)
 		..setUnitClassification("_")
 		..setRace(Race.Commoner)
 		..setCanFlee(false)
 		//..setCollisionSize(0.0)
 		// Button Placement
-		..setButtonPositionX(ARCHER_BUTTON_X)
-		..setButtonPositionY(ARCHER_BUTTON_Y)
+		..setButtonPositionX(KING_BUTTON_X)
+		..setButtonPositionY(KING_BUTTON_Y)
 		// Icon / Model
-		..setIconGameInterface(ARCHER_ICON)
-		..setModelFile(ARCHER_MODEL)
+		..setIconGameInterface(KING_ICON)
+		..setModelFile(KING_MODEL)
 		// Hotkey
-		..setHotkey(ARCHER_HOTKEY)
+		..setHotkey(KING_HOTKEY)
 		// Abilities / Upgrades / Building / Training / Selling
-		..setNormalAbilities(ARCHER_ABILITIES)
-		..setUpgradesUsed(ARCHER_UPGRADES)
+		..setNormalAbilities(KING_ABILITIES)
+		..setUpgradesUsed(KING_UPGRADES)
 		..setStructuresBuilt(commaList(""))
 		// Speed
 		..setSpeedBase(300)
@@ -36,25 +36,25 @@ import Ids
 		..setManaInitialAmount(0)
 		..setManaMaximum(0)
 		// Cost
-		..setGoldCost(ARCHER_COST_GOLD)
-		..setLumberCost(ARCHER_COST_LUMBER)
-		..setFoodCost(ARCHER_COST_FOOD)
+		..setGoldCost(KING_COST_GOLD)
+		..setLumberCost(KING_COST_LUMBER)
+		..setFoodCost(KING_COST_FOOD)
 		// Shop
-		..setStockMaximum(ARCHER_RESTOCK_MAX)
-		..setStockStartDelay(ARCHER_RESTOCK_DELAY)
-		..setStockReplenishInterval(ARCHER_RESTOCK_INTERVAL)
+		..setStockMaximum(KING_RESTOCK_MAX)
+		..setStockStartDelay(KING_RESTOCK_DELAY)
+		..setStockReplenishInterval(KING_RESTOCK_INTERVAL)
 		// Armor
-		..setDefenseBase(0)
-		..setArmorType(ArmorType.Normal)
+		..setDefenseBase(3)
+		..setDefenseUpgradeBonus(2)
+		..setArmorType(ArmorType.Medium)
 		// Health
-		..setHitPointsMaximumBase(200)
+		..setHitPointsMaximumBase(520)
 		// Attack (1)
-		..setAttack1AttackType(AttackType.Pierce)
-		..setAttack1CooldownTime(2)
-		..setAttack1DamageBase(6)
-		..setAttack1DamageNumberofDice(8)
+		..setAttack1AttackType(AttackType.Normal)
+		..setAttack1CooldownTime(1.5)
+		..setAttack1DamageBase(18)
+		..setAttack1DamageNumberofDice(3)
 		..setAttack1DamageSidesperDie(8)
-		..setAttack1Range(600)
 		// Attack (2)
 		..setAttack2AttackType(AttackType.Unknown)
 		..setAttack2CooldownTime(0)

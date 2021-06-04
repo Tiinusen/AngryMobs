@@ -7,9 +7,17 @@ import LinkedList
 import ClosureEvents
 import ClosureTimers
 
-LinkedList<Owner> _owners = new LinkedList<Owner>()
+LinkedList<Owner> _owners = null
 
 init
+    _init()
+
+bool _initialized
+function _init()
+    if _initialized
+        return
+    _initialized = true
+    _owners = new LinkedList<Owner>()
     for i = 0 to 13
         let p = Player(i)
         if p.getSlotState() == PLAYER_SLOT_STATE_PLAYING
@@ -19,11 +27,11 @@ init
                 UnitEntity.applyUpgradesOnPlayerUnits(p)
                 owner.onResearch() (int typeid) ->
                     UnitEntity.applyUpgradesOnPlayerUnits(owner)
-
                     
 
 /** finds owner type linked to player primitive */
 public function player.toOwnerType() returns Owner
+    _init()
     return _owners.filter((Owner owner) -> owner.getPlayer() == this).getFirst()
         
     
@@ -127,6 +135,7 @@ public class Owner
     
     /** Gets active players */
     static function getActive() returns LinkedList<Owner>
+        _init()
         return _owners.filter((Owner t) -> t.isPlaying() and t.getPlayer() != Side.east.getSidePlayer() and t.getPlayer() != Side.west.getSidePlayer())
             
 /** wrapper for SetPlayerTechResearched */

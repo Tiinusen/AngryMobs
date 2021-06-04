@@ -1,13 +1,22 @@
 package Gate
 
-import EventEntity
 import Ids
 import ClosureTimers
 import Destructables
+import SoldierEntity
 import Side
 import Abilities
+import LinkedList
+import ClosureEvents
 
 init
+    _init()
+
+bool _initialized
+function _init()
+    if _initialized
+        return
+    _initialized = true
     Destructables.filter(GATE_LEVEL_1_ID).forEach() (destructable t) ->
         Side side = Side.west
         if t.getX() > 0
@@ -25,6 +34,10 @@ public class Gate
 
     private CallbackPeriodic _run = null
 
+    private LinkedList<CallbackDeath> _onDeath = null
+
+    private EventListener _onDeathEventListener = null
+
     construct(gate gate, unit gateControl)
         this._gate = gate
         this._gateControl = new GateControl(gateControl, this)
@@ -34,19 +47,61 @@ public class Gate
     ondestroy
         destroy this._gateControl
         destroy this._run
+
+        if this._onDeathEventListener != null
+            destroy this._onDeathEventListener
+
+        // Destroy callbacks and lists
+        if this._onDeath != null
+            this._onDeath.forEach() (CallbackDeath t) ->
+                destroy t
+            destroy this._onDeath
+            this._onDeath = null
         
     function initialize()
-        // this.open()
-        this.setHealth(20)
+        this.open()
+        this.setHealth(1000)
+        this.setMaxHealth(1000)
 
         this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
+
+            // Check if destroyed
             if not this._dead and not this.isOpen() and this.isDestroyed()
                 this._dead = true
                 flashEffect(Abilities.fireLordDeathExplode, this._gateControl.getUnit().getPos())
                 this._gateControl.getUnit().hide()
+                if this._onDeath != null
+                    this._onDeath.forEach() (CallbackDeath callback) ->
+                        if this._onDeath.has(callback)
+                            callback.call(EventData.getKillingUnit(), callback)
+            
+            // Check if enemies are nearby
+            bool nearbyEnemies = false
+            for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
+                if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer())
+                    nearbyEnemies = true
+                    break
+            
+            if nearbyEnemies and not this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                // Enemies are near and the gate is still open, let's close it
+                this._gateControl.getUnit().addAbility(GATE_CONTROL_TOGGLE_ID, 1)
+                this.close()
+            else if not nearbyEnemies and this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                // Enemies are no longer near so let's open the gate
+                this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
+                this.open()
+
+
+
+
+        this.onDeath() (unit killer, CallbackDeath callback) ->
+            SoldierEntity.allDecideNextAction()
             
     function getGate() returns gate
         return this._gate
+
+    function getPos() returns vec2
+        return this._gate.killable.getPos()
         
 
     function isDamaged() returns bool
@@ -87,6 +142,7 @@ public class Gate
         this._gate.open()
         if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
             this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
+        SoldierEntity.allDecideNextAction()
 
     function close()
         if not this._open
@@ -96,10 +152,25 @@ public class Gate
         this.apply()
         if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
             this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
+        SoldierEntity.allDecideNextAction()
     
     function apply()
         this._gate.killable.setMaxLife(this._maxHealth)
         this._gate.killable.setLife(this._health)
+
+    //
+    // On Death
+    //
+
+    /** callback when unit dies */
+    function onDeath(CallbackDeath callback) returns CallbackDeath
+        if this._onDeath == null
+            this._onDeath = new LinkedList<CallbackDeath>()
+        this._onDeath.add(callback)
+        callback.cancel = () ->
+            if this._onDeath != null
+                this._onDeath.remove(callback)
+        return callback
 
 class GateControl extends EventEntity
     private Gate _gate

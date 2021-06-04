@@ -15,6 +15,10 @@ import Ids
 		..setModelFile(Buildings.humanTower1)
 		// Hotkey
 		..setHotkey("")
+		// Build / Cost
+		..setBuildTime(1)
+		..setGoldCost(0)
+		..setLumberCost(0)
 		// Abilities / Upgrades / Building / Training / Selling
 		..setNormalAbilities(commaList(GATE_CONTROL_TOGGLE_ID))
 		..setUpgradesTo(commaList(""))
