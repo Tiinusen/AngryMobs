@@ -29,5 +29,5 @@ init
 		
 		EventListener.onCast(COMMAND_CONTROL_RELEASE_ID) (unit caster) ->
 			let hero = caster.toHeroType()
-			hero.getControlledSoldier().forEach() (SoldierEntity soldier) ->
+			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
 				ControlledBuff.remove(soldier)

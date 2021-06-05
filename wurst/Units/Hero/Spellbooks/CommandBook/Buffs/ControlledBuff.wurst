@@ -21,6 +21,7 @@ abstract class ControlledBuff
 		if _buffMap.has(soldier)
 			destroy _buffMap.get(soldier)
 			_buffMap.remove(soldier)
+			soldier.orderStop()
 			soldier.getUnit().removeAbility(buffId)
 			Hero.removeControlledSoldier(soldier)
 			soldier.decideNextAction()
@@ -28,15 +29,21 @@ abstract class ControlledBuff
 
 	static function add(SoldierEntity soldier, Hero hero, real duration)
 		if _buffMap.has(soldier)
-			destroy _buffMap.get(soldier)
+			let cb = _buffMap.get(soldier)
+			if cb != null
+				destroy cb
 		if not soldier.getUnit().hasAbility(buffId)
 			soldier.getUnit().addAbility(buffId)
 		Hero.removeControlledSoldier(soldier)
+
+		soldier.getOwner().getSide().getKing().removeGuard(soldier)
+
 		hero.addControlledSoldier(soldier)
 		if duration > 0
 			let cb = doAfter(duration) ->
 				if _buffMap.has(soldier)
 					_buffMap.remove(soldier)
+					soldier.orderStop()
 					soldier.getUnit().removeAbility(buffId)
 					Hero.removeControlledSoldier(soldier)
 					soldier.decideNextAction()

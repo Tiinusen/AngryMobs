@@ -17,7 +17,7 @@ init
 
     mines = GetUnitsOfTypeIdAll(UnitIds.goldmine).asList()
 
-    EventEntity.onConstructionFinished(WORKER_HALL_ID_LEVEL_1) (unit building) ->
+    EventEntity.onConstructionFinished(WORKER_HALL_ID_LEVEL_1) (unit building, CallbackConstruction callback) ->
         let workerhall = new WorkerHall(building)
 
         workerhall.onRemove() () ->
@@ -54,7 +54,9 @@ public class WorkerHall extends RunnerEntity
     override function initalize()
         this._selectedMine = mines.getFirst()
 
+        this.getUnit().setInvulnerable(true)
         this.onUpgraded() (int typeid) ->
+            this.getUnit().setInvulnerable(true)
             this.setLevel(this.getLevel()+1)
 
         this.onSold(WORKER_ID) (unit sold, CallbackSold callback) ->

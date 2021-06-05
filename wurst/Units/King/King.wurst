@@ -24,6 +24,11 @@ public class King extends UnitEntity
     function addGuard(SoldierEntity s)
         if not this._protectors.has(s)
             this._protectors.add(s)
+            s.orderMove(this.getPos(), 600) (boolean fulfilled) ->
+                s.orderStop()
+
+    function isGuard(SoldierEntity s) returns bool
+        return this._protectors.has(s)
 
     function removeGuard(SoldierEntity s)
         this._protectors.remove(s)

@@ -54,7 +54,7 @@ import Ids
 		..setAttack1DamageBase(6)
 		..setAttack1DamageNumberofDice(8)
 		..setAttack1DamageSidesperDie(8)
-		..setAttack1Range(600)
+		..setAttack1Range(1000)
 		// Attack (2)
 		..setAttack2AttackType(AttackType.Unknown)
 		..setAttack2CooldownTime(0)

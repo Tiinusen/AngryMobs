@@ -46,5 +46,5 @@ public abstract class CallbackOrder extends Callback
     abstract function call(bool fulfilled)
 
 public abstract class CallbackConstruction extends Callback
-    abstract function call(unit building)
+    abstract function call(unit building, CallbackConstruction cb)
     int typeID

@@ -27,12 +27,53 @@ function _init()
                 UnitEntity.applyUpgradesOnPlayerUnits(p)
                 owner.onResearch() (int typeid) ->
                     UnitEntity.applyUpgradesOnPlayerUnits(owner)
-                    
+
+    // Prevent building outside of castle
+    EventEntity.onConstructionStarted() (unit building, CallbackConstruction callback) ->
+        let side = building.getOwner().toOwnerType().getSide() 
+        if side == Side.west and side.getGate().getPos().x < building.getPos().x
+            building
+                ..cancel()
+                .getOwner()
+                .print("You are not allowed to build outside of the castle")
+        else if side == Side.east and building.getPos().x < side.getGate().getPos().x
+            building
+                ..cancel()
+                .getOwner()
+                .print("You are not allowed to build outside of the castle")
+
+    EventEntity.onConstructionFinished() (unit building, CallbackConstruction callback) ->
+        let side = building.getOwner().toOwnerType().getSide() 
+        if side == Side.west and side.getGate().getPos().x < building.getPos().x
+            building.remove()
+            nullTimer() ->
+                building
+                .getOwner()
+                .print("I can't say that I didn't give you a warning |cd1c9ae18;)")
+                building.getOwner().toOwnerType().getHero().getUnit().kill()
+        else if side == Side.east and building.getPos().x < side.getGate().getPos().x
+            building.remove()
+            nullTimer() ->
+                building
+                .getOwner()
+                .print("I can't say that I didn't give you a warning |cd1c9ae18;)")
+                building.getOwner().toOwnerType().getHero().getUnit().kill()
+            
+public function unit.cancel()
+    let owner = this.getOwner()
+    owner.clearSelection()
+    nullTimer() -> 
+        owner.select(this)
+        doAfter(0.1) -> 
+            ForceUICancelBJ(owner)
 
 /** finds owner type linked to player primitive */
 public function player.toOwnerType() returns Owner
     _init()
     return _owners.filter((Owner owner) -> owner.getPlayer() == this).getFirst()
+
+public function player.isComputer() returns bool
+    return this.getController() == MAP_CONTROL_COMPUTER
         
     
 public class Owner

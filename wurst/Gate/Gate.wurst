@@ -13,6 +13,7 @@ init
     _init()
 
 bool _initialized
+
 function _init()
     if _initialized
         return
@@ -22,7 +23,7 @@ function _init()
         if t.getX() > 0
             side = Side.east
         side.setGate(new Gate(gate(t), GetUnitsOfPlayerAndTypeId(side.getSidePlayer(), UnitIds.scouttower).getRandomUnit()))
-    
+
 
 public class Gate
     private gate _gate
@@ -57,11 +58,24 @@ public class Gate
                 destroy t
             destroy this._onDeath
             this._onDeath = null
+
+    /** upgrades tower to next level */
+    function upgrade()
+        let hp = this.getHealth()
+        let maxHP = this.getMaxHealth()
+        let ratio = hp/maxHP
+        this._gate = gate(this._gate.killable.replace(GATE_LEVEL_2_ID))
+        if this.isOpen()
+            this._gate.open()
+        this.setMaxHealth(maxHP+10000)
+        this.setHealth(ratio*this.getMaxHealth())
+        
         
     function initialize()
         this.open()
         this.setHealth(1000)
         this.setMaxHealth(1000)
+        this.upgrade()
 
         this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
 
@@ -78,7 +92,7 @@ public class Gate
             // Check if enemies are nearby
             bool nearbyEnemies = false
             for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
-                if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer())
+                if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer()) and u.isAliveTrick()
                     nearbyEnemies = true
                     break
             
@@ -90,9 +104,6 @@ public class Gate
                 // Enemies are no longer near so let's open the gate
                 this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
                 this.open()
-
-
-
 
         this.onDeath() (unit killer, CallbackDeath callback) ->
             SoldierEntity.allDecideNextAction()
@@ -203,6 +214,3 @@ class GateControl extends EventEntity
                 this._selectedBy = null
                 this.getUnit().setOwner(this.getOwner().getPlayer(), true)
                 
-        
-    
-        

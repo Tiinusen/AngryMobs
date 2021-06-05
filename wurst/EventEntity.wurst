@@ -19,6 +19,7 @@ abstract public class EventEntity extends Entity
     private LinkedList<CallbackCast> _onCast = null
     private LinkedList<CallbackWithin> _onWithin = null
     private static LinkedList<CallbackConstruction> _onConstructionFinished = new LinkedList<CallbackConstruction>()    
+    private static LinkedList<CallbackConstruction> _onConstructionStarted = new LinkedList<CallbackConstruction>()    
     
     private EventListener _onSelectedEventListener = null
     private EventListener _onDeSelectedEventListener = null
@@ -27,6 +28,7 @@ abstract public class EventEntity extends Entity
     private EventListener _onSoldEventListener = null
     private OnCast _onCastEventListener = null
     private static EventListener _onConstructionFinishedEventListener = null
+    private static EventListener _onConstructionStartedEventListener = null
 
     construct(unit obj)
         super(obj)
@@ -396,10 +398,29 @@ abstract public class EventEntity extends Entity
     // Static
     //
 
+    //
+    // On construction started
+    /** callback when a building is being constructed */
+    static function onConstructionStarted(CallbackConstruction callback) returns CallbackConstruction
+        return onConstructionStarted(0, callback)
 
+    /** callback when a building is being constructed of specific type */
+    static function onConstructionStarted(int typeID, CallbackConstruction callback) returns CallbackConstruction
+        callback.typeID = typeID
+        if _onConstructionStartedEventListener == null
+            _onConstructionStartedEventListener = new NullEventListener()
+            nullTimer() -> 
+                destroy _onConstructionStartedEventListener
+                _onConstructionStartedEventListener = EventListener.add(EVENT_PLAYER_UNIT_CONSTRUCT_START) ->
+                    let u = GetConstructingStructure()
+                    _onConstructionStarted.forEach() (CallbackConstruction callback) ->
+                        if callback.typeID == 0 or u.getTypeId() == callback.typeID
+                            callback.call(u, callback)
+        _onConstructionStarted.add(callback)
+        return callback
 
     //
-    // On Constructed
+    // On construction finished
     /** callback when a building has been constructed */
     static function onConstructionFinished(CallbackConstruction callback) returns CallbackConstruction
         return onConstructionFinished(0, callback)
@@ -415,8 +436,10 @@ abstract public class EventEntity extends Entity
                     let u = EventData.getConstructedStructure()
                     _onConstructionFinished.forEach() (CallbackConstruction callback) ->
                         if callback.typeID == 0 or u.getTypeId() == callback.typeID
-                            callback.call(u)
+                            callback.call(u, callback)
         _onConstructionFinished.add(callback)
+        callback.cancel = () ->
+            _onConstructionFinished.remove(callback)
         return callback
 
 /** keeps track on closures and destroys them ondestruction */

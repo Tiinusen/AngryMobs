@@ -1,0 +1,89 @@
+package AI
+
+import Owner
+import Hero
+import ClosureTimers
+import Ids
+import EntityCallback
+import LinkedList
+
+public class AI
+    Owner _owner
+    
+    private LinkedList<unit> _workerHalls = new LinkedList<unit>()
+    private LinkedList<unit> _barracks = new LinkedList<unit>()
+
+    construct(Owner owner)
+        this._owner = owner
+        nullTimer() ->
+            this.initialize()
+
+    function initialize()
+        this.getOwner().getHero().onDeath() (unit killer, CallbackDeath callback) ->
+            this.decideNextAction()
+        this.decideNextAction()
+        
+    function getPlayer() returns player
+        return this.getOwner().getPlayer()
+
+    function getOwner() returns Owner
+        return this._owner
+
+    function getHero() returns Hero
+        return this.getOwner().getHero()
+
+    function getGold() returns int
+        return this.getOwner().getPlayer().getGold()
+
+    function getLumber() returns int
+        return this.getOwner().getPlayer().getLumber()
+
+    function countBuildings()
+        this._workerHalls.clear()
+        this._barracks.clear()
+
+        for unit u in GetUnitsOfPlayerAll(this.getPlayer()).iterator()
+            let typeid = u.getTypeId()
+            if typeid == WORKER_HALL_ID_LEVEL_1 or typeid == WORKER_HALL_ID_LEVEL_2 or typeid == WORKER_HALL_ID_LEVEL_3 or typeid == WORKER_HALL_ID_LEVEL_4
+                this._workerHalls.add(u)
+            else if typeid == BARRACK_ID_LEVEL_1 or typeid == BARRACK_ID_LEVEL_2 or typeid == BARRACK_ID_LEVEL_3 or typeid == BARRACK_ID_LEVEL_4
+                this._barracks.add(u)
+
+    function decideNextAction()
+        this.countBuildings()
+
+        if this.getHero().isAlive()
+            // Check if king needs attention
+            if this.getOwner().getSide().getKing().isInNeedOfGuards() and (this.getGold() > 200 or this.getOwner().getSide().getGate().isDamaged())
+                // King dosen't have enough guards, so let's give him some
+                let rint = GetRandomInt(1, 2) // To pick what unit should be attempted, to create some diversity
+
+                if rint == 1 and this._barracks.size() > 0 and IssueTrainOrderByIdBJ(this._barracks.getRandomElement(), FOOTMAN_ID)
+                    // Footman
+                else if rint == 2 and this._barracks.size() > 0 and IssueTrainOrderByIdBJ(this._barracks.getRandomElement(), ARCHER_ID)
+                    // Archer
+            
+            // Let's build if we can
+            if this._workerHalls.size() < 1
+                // Let's build a worker hall
+                this.build(WORKER_HALL_ID_LEVEL_1)
+            else if this.getGold() > 200 and this.getLumber() > 0 and this._barracks.size() < 1
+                // Let's build a barrack
+                this.build(BARRACK_ID_LEVEL_1)
+            else
+                doAfter(1) ->
+                    this.decideNextAction()
+                    
+
+    function build(int typeid)
+        rect r
+        let kx = this.getOwner().getSide().getKing().getPos().x
+        let gx = this.getOwner().getSide().getGate().getPos().x
+        let w = GetWorldBounds()
+        if gx < 0
+            r = Rect(kx, w.getMinY(), gx-500, w.getMaxY())
+        else
+            r = Rect(kx, w.getMinY(), gx+500, w.getMaxY())
+        this.getHero().orderBuild(typeid, r) (bool success) ->
+            doAfter(1) ->
+                this.decideNextAction()

@@ -8,7 +8,7 @@ import RunnerEntity
 import Owner
 
 init
-    EventEntity.onConstructionFinished(BARRACK_ID_LEVEL_1) (unit building) ->
+    EventEntity.onConstructionFinished(BARRACK_ID_LEVEL_1) (unit building, CallbackConstruction callback) ->
         new Barrack(building)
 
 public class Barrack extends RunnerEntity
@@ -28,7 +28,9 @@ public class Barrack extends RunnerEntity
         return this.getOwner().getResearch(BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
 
     override function initalize()
+        this.getUnit().setInvulnerable(true)
         this.onUpgraded() (int typeid) ->
+            this.getUnit().setInvulnerable(true)
             this.setLevel(this.getLevel()+1)
 
         this.onSold(FOOTMAN_ID) (unit sold, CallbackSold callback) ->

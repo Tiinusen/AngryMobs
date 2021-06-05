@@ -70,7 +70,7 @@ function CreateNeutralPassiveBuildings takes nothing returns nothing
 
     set u=BlzCreateUnitWithSkin(p, 'ngol', 0.0, 2368.0, 270.000, 'ngol')
     call SetResourceAmount(u, 12500)
-    set u=BlzCreateUnitWithSkin(p, 'ngol', 0.0, - 3328.0, 270.000, 'ngol')
+    set u=BlzCreateUnitWithSkin(p, 'ngol', 64.0, - 2816.0, 270.000, 'ngol')
     call SetResourceAmount(u, 12500)
 endfunction
 

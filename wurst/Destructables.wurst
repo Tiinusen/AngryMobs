@@ -16,3 +16,9 @@ abstract class Destructables
     static function filter(int typeid) returns LinkedList<destructable>
         _init()
         return _destructables.filter((destructable t) -> t.getTypeId() == typeid)
+
+public function destructable.replace(int typeid) returns destructable
+    let pos = this.getPos()
+    this.remove()
+    let newDest = CreateDestructable(typeid, pos.x, pos.y, 0, 1, 0)
+    return newDest

@@ -59,9 +59,11 @@ public class Worker extends UnitEntity
             if this.isCarryingGold()
                 if killer.getOwner().toOwnerType() != this.getOwner()
                     killer.getOwner().toOwnerType().getPlayer().addGold(50)
-                killer.getOwner().toOwnerType().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
+                if killer.getOwner() != killer.getOwner().toOwnerType().getSide().getSidePlayer()
+                    killer.getOwner().toOwnerType().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
 
-        this.goToMine(this.getWorkerHall().getSelectedMine())
+        this.decideNextAction()
+
     function goToMine(unit mine)
         if this._orderCallback != null
             this._orderCallback.cancel.call()
@@ -74,13 +76,15 @@ public class Worker extends UnitEntity
                 this._closureTerminator.after(1) -> 
                     this.getUnit().show()
                     this.getUnit().addAnimationProperties("gold", true)
-                    this.decideNextGoTo()
+                    this.decideNextAction()
             else
                 this._closureTerminator.after(1) -> 
-                    this.goToMine(mine)
+                    this.decideNextAction()
 
-    function decideNextGoTo()
-        if this.getOwner().getHero().isAlive()
+    function decideNextAction()
+        if not this.isCarryingGold()
+            this.goToMine(this.getWorkerHall().getSelectedMine())  
+        else if this.getOwner().getHero().isAlive()
             this.orderMove(this.getOwner().getHero(), 126) (boolean reached) ->
                 if reached
                     this.getUnit().removeAnimationProperties("gold")
@@ -103,7 +107,7 @@ public class Worker extends UnitEntity
                         this.remove(true)
                 else
                     this.orderStop()
-                    this.decideNextGoTo()
+                    this.decideNextAction()
         else
             this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
                 if reached
@@ -111,8 +115,8 @@ public class Worker extends UnitEntity
                     this._closureTerminator.periodically(2) (CallbackClosureTerminator terminator) ->
                         if this.getOwner().getHero().isAlive()
                             terminator.terminate(terminator)
-                            this.decideNextGoTo()
+                            this.decideNextAction()
                 else
                     this.orderStop()
                     this._closureTerminator.after(1) -> 
-                        this.decideNextGoTo()
+                        this.decideNextAction()

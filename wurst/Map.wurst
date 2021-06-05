@@ -1,6 +1,0 @@
-package Map
-
-/** Defined point constants for map */
-abstract class Map
-    static constant WEST_SPAWN = vec2(-1700, 0)
-    static constant EAST_SPAWN = vec2(1700, 0)

@@ -5,6 +5,7 @@ import Orders
 import LinkedList
 import initlater Gate
 import initlater Owner
+import ClosureTimers
 
 public tuple damage(int base, int dices, int sides)
 
@@ -185,6 +186,27 @@ abstract public class UnitEntity extends EventEntity
 	 * Orders
 	 */
 
+	function orderBuild(int typeid, rect area, CallbackOrder callback) returns CallbackOrder
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		let cb = doPeriodically(1) (CallbackPeriodic cb) ->
+			let p = area.randomPoint()
+			if IssueBuildOrderById(this.getUnit(), typeid, p.x, p.y)
+				destroy cb
+				let cbc = EventEntity.onConstructionFinished() (unit building, CallbackConstruction cbc) ->
+					if building.getTypeId() == typeid and building.getOwner() == this.getOwner().getPlayer()
+						destroy cbc
+						this._orderCallback = null
+						callback.call(true)
+						destroy callback
+				callback.cancel = () ->
+					cbc.cancel.call()
+					destroy cbc
+		callback.cancel = () ->
+			destroy cb		
+		return callback
+
 	/** Issues attack order towards unit */
 	function orderAttack(UnitEntity obj)
 		this.orderAttack(obj.getUnit())
@@ -234,7 +256,6 @@ abstract public class UnitEntity extends EventEntity
 			cbd1.cancel.call()
 			destroy cbd1
 		return callback
-		
 
 	/** Issues attack order towards unit */
 	function orderAttack(unit obj)

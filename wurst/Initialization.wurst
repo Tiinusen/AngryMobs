@@ -1,7 +1,7 @@
 package Initialization
 
 import Hero
-import Map
+import AI
 import Side
 import Owner
 import ClosureTimers
@@ -23,13 +23,17 @@ function spawn()
 	Side.east.setKing(new King(Side.east.getSidePlayer().getStartLocation(), Side.east.getSidePlayer()))
 
 	Side.west.getPlayers().forEach() (Owner owner) ->
-		new Hero(owner.getPlayer(), Map.WEST_SPAWN)
+		new Hero(owner.getPlayer(), owner.getPlayer().getStartLocation())
 			..focus()
 			..select()
+		if owner.getPlayer().isComputer()
+			new AI(owner)
 	Side.east.getPlayers().forEach() (Owner owner) ->
-		new Hero(owner.getPlayer(), Map.EAST_SPAWN)
+		new Hero(owner.getPlayer(), owner.getPlayer().getStartLocation())
 			..focus()
 			..select()
+		if owner.getPlayer().isComputer()
+			new AI(owner)
 	
 function createHelp()
 	let q = CreateQuest()
@@ -43,10 +47,12 @@ function createVictoryCondition()
 			print("You have defeated the enemy king")
 		Side.west.getPlayers().forEach() (Owner t) ->
 			print("Your king has been slayed")
-		EndGame(false)
+		doAfter(5) -> 
+			EndGame(false)
 	Side.east.getKing().onDeath() (unit killer, CallbackDeath callback) ->
 		Side.west.getPlayers().forEach() (Owner t) ->
 			print("You have defeated the enemy king")
 		Side.east.getPlayers().forEach() (Owner t) ->
 			print("Your king has been slayed")
-		EndGame(false)
+		doAfter(5) -> 
+			EndGame(false)

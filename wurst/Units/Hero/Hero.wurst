@@ -36,8 +36,11 @@ public class Hero extends UnitEntity
                 hero._controlledSoldiers.remove(soldier)
                 soldier.orderStop()
 
-    function getControlledSoldier() returns LinkedList<SoldierEntity>
+    function getControlledSoldiers() returns LinkedList<SoldierEntity>
         return this._controlledSoldiers.copy()
+
+    function isSoldierControlled(SoldierEntity soldier) returns bool
+        return this._controlledSoldiers.has(soldier)
 
     function addControlledSoldier(SoldierEntity soldier)
         this._controlledSoldiers.add(soldier)
