@@ -36,6 +36,7 @@ public class Gate
     private CallbackPeriodic _run = null
 
     private LinkedList<CallbackDeath> _onDeath = null
+    private LinkedList<CallbackHealthChange> _onHealthChange = null
 
     private EventListener _onDeathEventListener = null
 
@@ -59,30 +60,47 @@ public class Gate
             destroy this._onDeath
             this._onDeath = null
 
+        if this._onHealthChange != null
+            this._onHealthChange.forEach() (CallbackHealthChange t) ->
+                destroy t
+            destroy this._onHealthChange
+            this._onHealthChange = null
+
     /** upgrades tower to next level */
     function upgrade()
         let hp = this.getHealth()
         let maxHP = this.getMaxHealth()
         let ratio = hp/maxHP
-        this._gate = gate(this._gate.killable.replace(GATE_LEVEL_2_ID))
+        if this.getGate().killable.getTypeId() == GATE_LEVEL_1_ID
+            this._gate = gate(this._gate.killable.replace(GATE_LEVEL_2_ID))
+        else if this.getGate().killable.getTypeId() == GATE_LEVEL_2_ID
+            this._gate = gate(this._gate.killable.replace(GATE_LEVEL_3_ID))
+        else if this.getGate().killable.getTypeId() == GATE_LEVEL_3_ID
+            this._gate = gate(this._gate.killable.replace(GATE_LEVEL_4_ID))
         if this.isOpen()
             this._gate.open()
         this.setMaxHealth(maxHP+10000)
         this.setHealth(ratio*this.getMaxHealth())
         
         
+    private real _lastLifeCheck
     function initialize()
         this.open()
         this.setHealth(1000)
         this.setMaxHealth(1000)
 
+        this._lastLifeCheck = this.getHealth()
+
         this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
+            let currentLife = this.getHealth()
+            if this._lastLifeCheck != currentLife
+                this._lastLifeCheck = currentLife
+                this._onHealthChange.forEach() (CallbackHealthChange cbhc) ->
+                    cbhc.call(currentLife,cbhc)
 
             // Check if destroyed
             if not this._dead and not this.isOpen() and this.isDestroyed()
                 this._dead = true
-                flashEffect(Abilities.fireLordDeathExplode, this._gateControl.getUnit().getPos())
-                this._gateControl.getUnit().hide()
                 if this._onDeath != null
                     this._onDeath.forEach() (CallbackDeath callback) ->
                         if this._onDeath.has(callback)
@@ -104,7 +122,7 @@ public class Gate
                 this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
                 this.open()
 
-        this.onDeath() (unit killer, CallbackDeath callback) ->
+        this.onDestroyed() (unit killer, CallbackDeath callback) ->
             SoldierEntity.allDecideNextAction()
             
     function getGate() returns gate
@@ -172,8 +190,8 @@ public class Gate
     // On Death
     //
 
-    /** callback when unit dies */
-    function onDeath(CallbackDeath callback) returns CallbackDeath
+    /** callback when gate dies */
+    function onDestroyed(CallbackDeath callback) returns CallbackDeath
         if this._onDeath == null
             this._onDeath = new LinkedList<CallbackDeath>()
         this._onDeath.add(callback)
@@ -182,16 +200,50 @@ public class Gate
                 this._onDeath.remove(callback)
         return callback
 
+    /** callback when gate HP changes */
+    function onHealthChange(CallbackHealthChange callback) returns CallbackHealthChange
+        if this._onHealthChange == null
+            this._onHealthChange = new LinkedList<CallbackHealthChange>()
+        this._onHealthChange.add(callback)
+        callback.cancel = () ->
+            if this._onHealthChange != null
+                this._onHealthChange.remove(callback)
+        return callback
+
 class GateControl extends EventEntity
     private Gate _gate
     private player _selectedBy
+    private texttag _text
 
     construct(unit u, Gate g)
         super(ReplaceUnitBJ(u, GATE_CONTROL_ID, bj_UNIT_STATE_METHOD_RELATIVE))
         this._gate = g
 
+    function getGate() returns Gate
+        return this._gate
+
+    function refreshText()
+        let hp = this.getGate().getHealth().toInt()
+        let maxHP = this.getGate().getMaxHealth().toInt()
+        let ratio = hp/maxHP
+        let text = "HP: "+hp.toString()+"/"+maxHP.toString()
+        SetTextTagTextBJ(this._text, text, 10)
+        SetTextTagColorBJ(this._text, 100.0*(1-ratio), 100.0*ratio, 0, 100)
+            
+
     override protected function initalize()
         this.getUnit().setInvulnerable(true)
+        this._text = CreateTextTagLocBJ("", Location(this.getUnit().getPos().x-50, this.getUnit().getPos().y), 0, 10, 0, 0, 0, 0)
+        nullTimer() -> 
+            this.refreshText()
+
+        this.getGate().onDestroyed() (unit killer, CallbackDeath callback) ->
+            flashEffect(Abilities.fireLordDeathExplode, this.getUnit().getPos())
+            this.getUnit().hide()
+
+        this.getGate().onHealthChange() (real life, CallbackHealthChange callback) ->
+            this.refreshText()
+
         this.onCast(GATE_CONTROL_TOGGLE_ID) (unit target, vec2 pos, CallbackCast callback) ->
             if not this._gate.isOpen()
                 this._gate.open()

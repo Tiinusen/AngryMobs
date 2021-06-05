@@ -264,7 +264,7 @@ abstract public class UnitEntity extends EventEntity
 			this._orderCallback = null
 		this.orderAttack(obj)
 		this._orderCallback = callback
-		let cbd1 = obj.onDeath() (unit _, CallbackDeath cbd) ->
+		let cbd1 = obj.onDestroyed() (unit _, CallbackDeath cbd) ->
 			this._orderCallback = null
 			this.orderStop()
 			callback.call(true)

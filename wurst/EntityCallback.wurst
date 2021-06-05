@@ -14,6 +14,9 @@ public abstract class CallbackVoid
 public abstract class CallbackDeath extends Callback
     abstract function call(unit killer, CallbackDeath callback)
 
+public abstract class CallbackHealthChange extends Callback
+    abstract function call(real life, CallbackHealthChange callback)
+
 public abstract class CallbackSold extends Callback
     abstract function call(unit sold, CallbackSold callback)
     int typeID
