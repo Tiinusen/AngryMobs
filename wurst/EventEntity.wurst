@@ -470,10 +470,7 @@ public class ClosureTerminator
                 destroy ctsh.cbp
                 ctsh.cbp = null
         ctsh.cbp = doPeriodically(time) (CallbackPeriodic cb) ->
-            if ctsh.cbp == null
-                destroy cb
-            else
-                callback.terminate(cbct)
+            callback.terminate(cbct)
         cbct.state = ctsh
         return cbct
 
@@ -488,6 +485,12 @@ public abstract class CallbackClosureTerminator
 class ClosureTerminatorStateHolder
     CallbackSingle cbs = null
     CallbackPeriodic cbp = null
+
+    ondestroy
+        if this.cbs != null
+            destroy this.cbs
+        if this.cbp != null
+            destroy this.cbp
 
 class NullEventListener extends EventListener
     override function onEvent()

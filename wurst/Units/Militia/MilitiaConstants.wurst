@@ -23,6 +23,6 @@ import Ids
 @configurable public let MILITIA_COST_LUMBER = 0
 @configurable public let MILITIA_COST_FOOD = 0
 
-@configurable public let MILITIA_RESTOCK_INTERVAL = 10
+@configurable public let MILITIA_RESTOCK_INTERVAL = 20
 @configurable public let MILITIA_RESTOCK_MAX = 5
 @configurable public let MILITIA_RESTOCK_DELAY = 30

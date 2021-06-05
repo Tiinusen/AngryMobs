@@ -8,6 +8,7 @@ import Side
 import Abilities
 import LinkedList
 import ClosureEvents
+import initlater Worker
 
 init
     _init()
@@ -86,8 +87,8 @@ public class Gate
     private real _lastLifeCheck
     function initialize()
         this.open()
-        this.setHealth(1000)
         this.setMaxHealth(1000)
+        this.setHealth(1000)
 
         this._lastLifeCheck = this.getHealth()
 
@@ -99,8 +100,9 @@ public class Gate
                     cbhc.call(currentLife,cbhc)
 
             // Check if destroyed
-            if not this._dead and not this.isOpen() and this.isDestroyed()
+            if not this._dead and this.getHealth() < 1
                 this._dead = true
+                this.open()
                 if this._onDeath != null
                     this._onDeath.forEach() (CallbackDeath callback) ->
                         if this._onDeath.has(callback)
@@ -110,39 +112,49 @@ public class Gate
                 // Check if enemies are nearby
                 bool nearbyEnemies = false
                 for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
-                    if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer()) and u.isAliveTrick()
+                    if u.getOwner().isEnemyOf(this.getGateControl().getOwner().getPlayer()) and u.isAliveTrick()
                         nearbyEnemies = true
                         break
                 
-                if nearbyEnemies and not this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                if nearbyEnemies and not this.getGateControl().getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
                     // Enemies are near and the gate is still open, let's close it
-                    this._gateControl.getUnit().addAbility(GATE_CONTROL_TOGGLE_ID, 1)
+                    this.getGateControl().getUnit().addAbility(GATE_CONTROL_TOGGLE_ID, 1)
                     this.close()
-                else if not nearbyEnemies and this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                else if not nearbyEnemies and this.getGateControl().getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
                     // Enemies are no longer near so let's open the gate
-                    this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
+                    this.getGateControl().getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
                     this.open()
 
         this.onDestroyed() (unit killer, CallbackDeath callback) ->
             SoldierEntity.allDecideNextAction()
+
+    function getGateControl() returns GateControl
+        return this._gateControl
             
     function getGate() returns gate
         return this._gate
 
     function getPos() returns vec2
         return this._gate.killable.getPos()
-        
+
+    function revive()
+        this._dead = false
+        this.getGate().killable.restoreLife(this.getMaxHealth(), true)
+        this.open()
 
     function isDamaged() returns bool
         return this.getHealth() < this.getMaxHealth()
 
     function isDestroyed() returns bool
-        return this.getHealth() < 1
+        return this._dead
 
     function setHealth(real life)
+        var _life = life
+        if _life > this.getMaxHealth()
+            _life = this.getMaxHealth()
         if this.isOpen()
-            this._health = life
-        this._gate.killable.setLife(life)
+            this._health = _life
+        this._gate.killable.setLife(_life)
 
     function setMaxHealth(real life)
         if this.isOpen()
@@ -169,8 +181,8 @@ public class Gate
         this._health = this._gate.killable.getLife()
         this._maxHealth = this._gate.killable.getMaxLife()
         this._gate.open()
-        if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
-            this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
+        if this.getGateControl().getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
+            this.getGateControl().getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
         SoldierEntity.allDecideNextAction()
 
     function close()
@@ -179,8 +191,8 @@ public class Gate
         this._open = false
         this._gate.close()
         this.apply()
-        if this._gateControl.getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
-            this._gateControl.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
+        if this.getGateControl().getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
+            this.getGateControl().getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
         SoldierEntity.allDecideNextAction()
     
     function apply()
@@ -230,7 +242,6 @@ class GateControl extends EventEntity
         let text = "HP: "+hp.toString()+"/"+maxHP.toString()
         SetTextTagTextBJ(this._text, text, 10)
         SetTextTagColorBJ(this._text, 100.0*(1-ratio), 100.0*ratio, 0, 100)
-            
 
     override protected function initalize()
         this.getUnit().setInvulnerable(true)
@@ -244,6 +255,10 @@ class GateControl extends EventEntity
 
         this.getGate().onHealthChange() (real life, CallbackHealthChange callback) ->
             this.refreshText()
+            if this.getGate().isDestroyed() and this.getGate().getHealth() == this.getGate().getMaxHealth()
+                flashEffect(Abilities.reviveHuman1, this.getUnit().getPos())
+                this.getGate().revive()
+                this.getUnit().show()
 
         this.onCast(GATE_CONTROL_TOGGLE_ID) (unit target, vec2 pos, CallbackCast callback) ->
             if not this._gate.isOpen()

@@ -14,6 +14,9 @@ import Ids
 		..setRace(Race.Commoner)
 		..setCanFlee(false)
 		//..setCollisionSize(0.0)
+		// Requirements
+		..setRequirements(commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
+		..setRequirementsLevels(commaList("1"))
 		// Button Placement
 		..setButtonPositionX(FIGHTER_BUTTON_X)
 		..setButtonPositionY(FIGHTER_BUTTON_Y)

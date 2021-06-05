@@ -4,6 +4,7 @@ import ObjectIdGenerator
 import public ObjectIds
 import public UnitIds
 import public Buildings
+import public Icons
 
 /*
  * Destructables

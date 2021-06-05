@@ -28,7 +28,7 @@ buildMapData:
   - id: 1
     name: West Player 2
     race: HUMAN
-    controller: COMPUTER
+    controller: USER
     fixedStartLoc: true
   - id: 2
     name: West Player 3

@@ -374,3 +374,10 @@ abstract public class UnitEntity extends EventEntity
 			this._orderCallback.cancel.call()
 			this._orderCallback = null
 		this.getUnit().issueImmediateOrderById(Orders.stop)
+
+	/** Issues hold position order immediately */
+	function orderHoldPosition()
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
+		this.getUnit().issueImmediateOrderById(Orders.holdposition)

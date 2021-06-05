@@ -7,16 +7,24 @@ import Owner
 import ClosureTimers
 import King
 import EntityCallback
+import Ids
 
 init
 	spawn()
 	createVictoryCondition()
+	createHelp()
 	Owner.getActive().forEach() (Owner owner) ->
 		owner.getPlayer().addGold(100)
 		owner.getPlayer().addLumber(1)
 	SetTimeOfDay(12)
 	doPeriodically(30) (CallbackPeriodic cb) ->
 		SetTimeOfDay(12)
+	doPeriodically(60) (CallbackPeriodic cb) ->
+		Owner.getActive().forEach() (Owner owner) ->
+			owner.getPlayer().addGold(100)
+	doPeriodically(300) (CallbackPeriodic cb) ->
+		Owner.getActive().forEach() (Owner owner) ->
+			owner.getPlayer().addLumber(100)
 	
 function spawn()
 	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))
@@ -36,12 +44,11 @@ function spawn()
 			new AI(owner)
 
 function createHelp()
-	let q = CreateQuest()
-	QuestSetRequired(q, true)
-	QuestSetTitle(q, "Goal")
-	QuestSetDescription(q, "The goal with this game mode is to kill the enemy King")
-	QuestSetEnabled(q, true)
-	QuestSetDiscovered(q, true)
+	nullTimer() -> 
+		CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED, "About", "The goal with this game mode is to |cffff0800kill|r the enemy |cd3fffb00King|r, fair and simple|n|nSince this game mode might be unorthodox |cff33ff00you should read|r the other sections aswell to not miss out on core mechanics that might alter the game experience if left un-used", Icons.bTNCommand)
+		CreateQuestBJ(bj_QUESTTYPE_REQ_DISCOVERED, "Income", "Thera are a few ways to get income in this game|nEach |cd419d4c5one minute|r each player receives |cd5dab511100g|r of income|n|cd5dab51550g|r per worker carrying gold reaching hero|n|cd5dab51550g|r per killed enemy worker carrying gold|n|nAll gold accumulated by king is shared amongst the players|n|nEach |cd419d4c5five minute|r |cd413cc2bone lumber|r is given to each player", Icons.bTNChestOfGold)
+		CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED, "The King", "The |cd3fffb00King|r is your teams most important character, keep him alive at all cost.|n|nYou can accomplish this task by controlling him, upgrading him and keeping him safe and away from danger", Icons.bTNTheCaptain)
+		CreateQuestBJ(bj_QUESTTYPE_OPT_DISCOVERED, "The Gate", "The |cffb61aaeGate|r protects you and the |cd3fffb00King|r and does so by closing the enemy outside|n|nIt does so by automatically closing when enemies are near|nNext to the |cffb61aaeGate|r is the |cffb61aaeGate|r control, this building can perform open/close actions of the |cffb61aaeGate|r and also allows upgrading the |cffb61aaeGate|r|nIf the |cffb61aaeGate|r gets damaged or destroyed then workers will prioritizing repairing or rebuilding it", Icons.bTNDemonGate)
 
 function createVictoryCondition()
 	Side.west.getKing().onDeath() (unit killer, CallbackDeath callback) ->

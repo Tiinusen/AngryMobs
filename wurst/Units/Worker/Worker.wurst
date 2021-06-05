@@ -91,11 +91,50 @@ public class Worker extends UnitEntity
 					this.decideNextAction()
 
 	function decideNextAction()
-		if not this.isCarryingGold()
+		if not this.isCarryingGold() and this.getOwner().getSide().getGate().isDamaged()
+			// The gate needs repair, let's go to the worker hall and fetch lumber
+			this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
+				// Let's go inside and get lumber
+				if reached and this.getOwner().getSide().getGate().isDamaged()
+					this.getUnit().hide()
+					this.getUnit().addAnimationProperties("lumber", true)
+					this._closureTerminator.after(1) -> 
+						// Let's go outside and head towards the gate control
+						this.getUnit().show()
+						this.orderMove(this.getOwner().getSide().getGate().getGateControl().getUnit(), 200) (boolean reached) ->
+							if reached and this.getOwner().getSide().getGate().isDamaged()
+								// We have reached the gate control, let's start working
+								this.orderHoldPosition()
+								this.getUnit().setAnimation("attack")
+
+								// Each stroke of the hammer rebuilds the gate
+								let cbp = this._closureTerminator.periodically(1) (CallbackClosureTerminator terminator) ->
+									this.getOwner().getSide().getGate().setHealth(this.getOwner().getSide().getGate().getHealth()+10)
+									this.getUnit().setAnimation("attack")
+								
+								// After a little while the lumber ran out
+								this._closureTerminator.after(5) -> 
+									destroy cbp
+									this.getUnit().removeAnimationProperties("lumber")
+									this.decideNextAction()
+							else
+								// We were unable to reach the gate control for some reason
+								this.getUnit().removeAnimationProperties("lumber")
+								this.decideNextAction()
+				else
+					// No needs to repair the gate
+					this.decideNextAction()
+					
+							
+					
+		else if not this.isCarryingGold()
+			// I should go to the mine
 			this.goToMine(this.getWorkerHall().getSelectedMine())  
 		else if this.getOwner().getHero().isAlive()
+			// I have gold, let's go for the hero
 			this.orderMove(this.getOwner().getHero(), 126) (boolean reached) ->
 				if reached
+					// I have reached my hero, let's give him my gold
 					this.getUnit().removeAnimationProperties("gold")
 					this.getOwner().getPlayer().addGold(50)
 					this.getOwner().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
@@ -115,9 +154,11 @@ public class Worker extends UnitEntity
 					else
 						this.remove(true)
 				else
+					// I was unable to find the hero
 					this.orderStop()
 					this.decideNextAction()
 		else
+			// My hero is dead, I should go back to the worker hall and await for him to respawn
 			this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
 				if reached
 					this.orderStop()
