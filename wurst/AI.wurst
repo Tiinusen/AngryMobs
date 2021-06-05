@@ -65,12 +65,15 @@ public class AI
                 // Gate needs attention
                 if  GetRandomInt(1, 2) == 1 and this._barracks.size() > 0 and IssueTrainOrderByIdBJ(this._barracks.getRandomElement(), ARCHER_ID)
                     // Archer
+
+            if this._workerHalls.size() > 0 and GetRandomInt(1, 2) == 1 and IssueTrainOrderByIdBJ(this._workerHalls.getRandomElement(), WORKER_ID)
+                // Sends a expedition
             
             // Let's build if we can
             if this._workerHalls.size() < 1
                 // Let's build a worker hall
                 this.build(WORKER_HALL_ID_LEVEL_1)
-            else if this.getGold() > 200 and this.getLumber() > 0 and this._barracks.size() < 1
+            else if this.getGold() > (this._barracks.size()<1 ? 200 : 1000) and this.getLumber() > 0 and this._barracks.size() < 4
                 // Let's build a barrack
                 this.build(BARRACK_ID_LEVEL_1)
             else

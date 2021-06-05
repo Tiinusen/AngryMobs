@@ -106,21 +106,22 @@ public class Gate
                         if this._onDeath.has(callback)
                             callback.call(EventData.getKillingUnit(), callback)
             
-            // Check if enemies are nearby
-            bool nearbyEnemies = false
-            for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
-                if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer()) and u.isAliveTrick()
-                    nearbyEnemies = true
-                    break
-            
-            if nearbyEnemies and not this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
-                // Enemies are near and the gate is still open, let's close it
-                this._gateControl.getUnit().addAbility(GATE_CONTROL_TOGGLE_ID, 1)
-                this.close()
-            else if not nearbyEnemies and this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
-                // Enemies are no longer near so let's open the gate
-                this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
-                this.open()
+            if not this._dead
+                // Check if enemies are nearby
+                bool nearbyEnemies = false
+                for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
+                    if u.getOwner().isEnemyOf(this._gateControl.getOwner().getPlayer()) and u.isAliveTrick()
+                        nearbyEnemies = true
+                        break
+                
+                if nearbyEnemies and not this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                    // Enemies are near and the gate is still open, let's close it
+                    this._gateControl.getUnit().addAbility(GATE_CONTROL_TOGGLE_ID, 1)
+                    this.close()
+                else if not nearbyEnemies and this._gateControl.getUnit().hasAbility(GATE_CONTROL_TOGGLE_ID)
+                    // Enemies are no longer near so let's open the gate
+                    this._gateControl.getUnit().removeAbility(GATE_CONTROL_TOGGLE_ID)
+                    this.open()
 
         this.onDestroyed() (unit killer, CallbackDeath callback) ->
             SoldierEntity.allDecideNextAction()

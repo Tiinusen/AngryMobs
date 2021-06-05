@@ -8,7 +8,7 @@ import Ids
 @configurable public let BARRACK_MODEL = Buildings.humanBarracks
 
 @configurable public let BARRACK_NAME = "Barrack"
-@configurable public let BARRACK_TOOL_TIP_BASIC = "|cffFFCC00Build |cffFF7B29Barrack [B]"
+@configurable public let BARRACK_TOOL_TIP_BASIC = "|cffFFCC00Build |cffFF7B29Barrack"
 @configurable public let BARRACK_TOOL_TIP_EXTENDED = "Automatically spawns levels amount of units each level"
 
 @configurable public let BARRACK_UNITS_SOLD = commaList(FOOTMAN_ID, ARCHER_ID)
