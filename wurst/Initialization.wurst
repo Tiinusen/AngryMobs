@@ -34,12 +34,14 @@ function spawn()
 			..select()
 		if owner.getPlayer().isComputer()
 			new AI(owner)
-	
+
 function createHelp()
 	let q = CreateQuest()
 	QuestSetRequired(q, true)
 	QuestSetTitle(q, "Goal")
 	QuestSetDescription(q, "The goal with this game mode is to kill the enemy King")
+	QuestSetEnabled(q, true)
+	QuestSetDiscovered(q, true)
 
 function createVictoryCondition()
 	Side.west.getKing().onDeath() (unit killer, CallbackDeath callback) ->

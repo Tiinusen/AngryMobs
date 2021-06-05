@@ -32,10 +32,6 @@ abstract public class EventEntity extends Entity
 
     construct(unit obj)
         super(obj)
-        // This might have a performance impact due to it forcing usage of triggers
-        this.onDeath() (unit killer, CallbackDeath callback) ->
-            this._closureTerminator.after(5) -> 
-                this.remove(false)
                     
     
     // Use remove() instead of destroy when it comes to event entities

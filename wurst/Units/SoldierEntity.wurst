@@ -28,12 +28,16 @@ abstract public class SoldierEntity extends UnitEntity
 		worker.remove(false)
 		this._init()
 
+	ondestroy
+		SoldierEntity._units.remove(this)
+		Hero.removeControlledSoldier(this)
+
 	private function _init()
+		SoldierEntity._units.add(this)
+		this.onDeath() (unit killer, CallbackDeath callback) ->
+			this._closureTerminator.after(5) -> 
+				this.remove(false)
 		nullTimer() -> 
-			SoldierEntity._units.add(this)
-			this.onRemove() ->     
-				SoldierEntity._units.remove(this)
-				Hero.removeControlledSoldier(this)
 			this.decideNextAction()
 
 	static function getSoldiers() returns LinkedList<SoldierEntity>
@@ -72,14 +76,14 @@ abstract public class SoldierEntity extends UnitEntity
 				if friendly.getKing().isInNeedOfGuards()
 					// The king is in need of more protectors
 					friendly.getKing().addGuard(this)
-				else if not friendly.getGate().isOpen() and friendly.getGate().isDamaged()
-					// The gate is damaged and not open, Let's kill everything inbetween here and the enemy gate
-					this.orderAttack(enemy.getGate().getPos(), 300) (boolean fulfilled) ->
-						this.decideNextAction()
-				else
+				else if not friendly.getGate().isOpen()
 					// The gate is closed, let's protect it
 					this.orderAttack(friendly.getGate().getPos(), 300) (boolean fulfilled) ->
 						this.orderStop()
+				else
+					// Let's kill everything inbetween here and the enemy gate
+					this.orderAttack(enemy.getGate().getPos(), 300) (boolean fulfilled) ->
+						this.decideNextAction()
 			else
 				// Is outside walls
 				if not friendly.getGate().isOpen() or friendly.getGate().isDamaged()

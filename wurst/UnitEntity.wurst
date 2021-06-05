@@ -316,7 +316,8 @@ abstract public class UnitEntity extends EventEntity
 		if this._orderCallback != null
 			this._orderCallback.cancel.call()
 			this._orderCallback = null
-		this.getUnit().issueTargetOrderById(Orders.move, obj)    
+		nullTimer() -> 
+			this.getUnit().issueTargetOrderById(Orders.move, obj)    
 
 	/** Issues move order towards unit and fires callback if reached or if unit disappears */
 	function orderMove(unit obj, real distance, CallbackOrder callback) returns CallbackOrder

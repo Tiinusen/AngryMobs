@@ -11,112 +11,121 @@ import Ids
 import initlater WorkerHall
 
 public class Worker extends UnitEntity
-    private WorkerHall _workerHall = null
-    private int _tripsToMine = 0
-    private bool _carryingGold = false
+	private WorkerHall _workerHall = null
+	private int _tripsToMine = 0
+	private bool _carryingGold = false
 
-    CallbackOrder _orderCallback
+	CallbackOrder _orderCallback
 
-    construct(unit obj, WorkerHall workerHall)
-        super(obj)
-        this._workerHall = workerHall
+	construct(unit obj, WorkerHall workerHall)
+		super(obj)
+		this._workerHall = workerHall
+		this.onDeath() (unit killer, CallbackDeath callback) ->
+			this._closureTerminator.after(5) -> 
+				this.remove(false)
 
-    construct(vec2 pos, player owner, WorkerHall workerHall)
-        super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, 270))
-        this._workerHall = workerHall
+	construct(vec2 pos, player owner, WorkerHall workerHall)
+		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, 270))
+		this._workerHall = workerHall
+		this.onDeath() (unit killer, CallbackDeath callback) ->
+			this._closureTerminator.after(5) -> 
+				this.remove(false)
 
-    construct(vec2 pos, player owner, real dir, WorkerHall workerHall)
-        super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, dir))
-        this._workerHall = workerHall
+	construct(vec2 pos, player owner, real dir, WorkerHall workerHall)
+		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, dir))
+		this._workerHall = workerHall
+		this.onDeath() (unit killer, CallbackDeath callback) ->
+			this._closureTerminator.after(5) -> 
+				this.remove(false)
 
-    ondestroy
-        if this._orderCallback != null
-            this._orderCallback.cancel.call()
-            this._orderCallback = null
+	ondestroy
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+			this._orderCallback = null
 
-    /** returns the worker hall this unit belongs to */
-    function getWorkerHall() returns WorkerHall
-        return this._workerHall
+	/** returns the worker hall this unit belongs to */
+	function getWorkerHall() returns WorkerHall
+		return this._workerHall
 
-    /** returns the amount of trips this worker has made to the mines */
-    function getTripsToMine() returns int
-        return this._tripsToMine
+	/** returns the amount of trips this worker has made to the mines */
+	function getTripsToMine() returns int
+		return this._tripsToMine
 
-    /** returns true if worker is carrying gold */
-    function isCarryingGold() returns bool
-        return this._carryingGold
+	/** returns true if worker is carrying gold */
+	function isCarryingGold() returns bool
+		return this._carryingGold
 
-    override function applyUpgrades()
-        this.applyMoveSpeed(this.getOwner().getResearch(WORKER_HALL_MOVEMENT_SPEED_ID)*75.)
+	override function applyUpgrades()
+		this.applyMoveSpeed(this.getOwner().getResearch(WORKER_HALL_MOVEMENT_SPEED_ID)*75.)
 
-    override function initalize()
-        if this.getOwner().getPlayer() != this.getOwner().getSide().getSidePlayer()
-            this.getUnit().setOwner(this.getOwner().getSide().getSidePlayer(), false)
-        this.getUnit().setColor(this.getOwner().getPlayer().getColor())
+	override function initalize()
+		if this.getOwner().getPlayer() != this.getOwner().getSide().getSidePlayer()
+			this.getUnit().setOwner(this.getOwner().getSide().getSidePlayer(), false)
+		this.getUnit().setColor(this.getOwner().getPlayer().getColor())
 
-        this.onDeath() (unit killer, CallbackDeath callback) ->
-            this.getUnit().addEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", AttachmentPoints.chest).destrAfter(0.5)
-            if this.isCarryingGold()
-                if killer.getOwner().toOwnerType() != this.getOwner()
-                    killer.getOwner().toOwnerType().getPlayer().addGold(50)
-                if killer.getOwner() != killer.getOwner().toOwnerType().getSide().getSidePlayer()
-                    killer.getOwner().toOwnerType().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
+		this.onDeath() (unit killer, CallbackDeath callback) ->
+			this.getUnit().addEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", AttachmentPoints.chest).destrAfter(0.5)
+			if this.isCarryingGold()
+				if killer.getOwner().toOwnerType() != this.getOwner()
+					killer.getOwner().toOwnerType().getPlayer().addGold(50)
+				if killer.getOwner() != killer.getOwner().toOwnerType().getSide().getSidePlayer()
+					killer.getOwner().toOwnerType().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
 
-        this.decideNextAction()
+		this.decideNextAction()
 
-    function goToMine(unit mine)
-        if this._orderCallback != null
-            this._orderCallback.cancel.call()
-        this._orderCallback = this.orderMove(mine, WORKER_MINE_DISTANCE) (boolean reached) ->
-            this._orderCallback = null
-            this.orderStop()
-            if reached
-                this._carryingGold = true
-                this.getUnit().hide()
-                this._closureTerminator.after(1) -> 
-                    this.getUnit().show()
-                    this.getUnit().addAnimationProperties("gold", true)
-                    this.decideNextAction()
-            else
-                this._closureTerminator.after(1) -> 
-                    this.decideNextAction()
+	function goToMine(unit mine)
+		if this._orderCallback != null
+			this._orderCallback.cancel.call()
+		this._orderCallback = this.orderMove(mine, WORKER_MINE_DISTANCE) (boolean reached) ->
+			this._orderCallback = null
+			this.orderStop()
+			if reached
+				this._carryingGold = true
+				this.getUnit().hide()
+				this._closureTerminator.after(1) -> 
+					this.getUnit().show()
+					this.getUnit().addAnimationProperties("gold", true)
+					this.decideNextAction()
+			else
+				this._closureTerminator.after(1) -> 
+					this.decideNextAction()
 
-    function decideNextAction()
-        if not this.isCarryingGold()
-            this.goToMine(this.getWorkerHall().getSelectedMine())  
-        else if this.getOwner().getHero().isAlive()
-            this.orderMove(this.getOwner().getHero(), 126) (boolean reached) ->
-                if reached
-                    this.getUnit().removeAnimationProperties("gold")
-                    this.getOwner().getPlayer().addGold(50)
-                    this.getOwner().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
-                    this._carryingGold = false
-                    this._tripsToMine++
-                    if this._tripsToMine < this.getWorkerHall().getWorkerTripsToMineLevel()+1
-                        this.goToMine(this.getWorkerHall().getSelectedMine())
-                    else if this.getWorkerHall().getWorkerToMilitiaLevel() == 1
-                        this.getUnit().setOwner(this.getOwner().getPlayer(), false)
-                        new Fighter(this)
-                    else if this.getWorkerHall().getWorkerToMilitiaLevel() == 2
-                        this.getUnit().setOwner(this.getOwner().getPlayer(), false)
-                        new Militia(this)
-                    else if this.getWorkerHall().getWorkerToMilitiaLevel() == 3
-                        this.getUnit().setOwner(this.getOwner().getPlayer(), false)
-                        new Footman(this)
-                    else
-                        this.remove(true)
-                else
-                    this.orderStop()
-                    this.decideNextAction()
-        else
-            this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
-                if reached
-                    this.orderStop()
-                    this._closureTerminator.periodically(2) (CallbackClosureTerminator terminator) ->
-                        if this.getOwner().getHero().isAlive()
-                            terminator.terminate(terminator)
-                            this.decideNextAction()
-                else
-                    this.orderStop()
-                    this._closureTerminator.after(1) -> 
-                        this.decideNextAction()
+	function decideNextAction()
+		if not this.isCarryingGold()
+			this.goToMine(this.getWorkerHall().getSelectedMine())  
+		else if this.getOwner().getHero().isAlive()
+			this.orderMove(this.getOwner().getHero(), 126) (boolean reached) ->
+				if reached
+					this.getUnit().removeAnimationProperties("gold")
+					this.getOwner().getPlayer().addGold(50)
+					this.getOwner().getHero().getUnit().addEffect("UI\\Feedback\\GoldCredit\\GoldCredit.mdl", AttachmentPoints.chest).destrAfter(1)
+					this._carryingGold = false
+					this._tripsToMine++
+					if this._tripsToMine < this.getWorkerHall().getWorkerTripsToMineLevel()+1
+						this.goToMine(this.getWorkerHall().getSelectedMine())
+					else if this.getWorkerHall().getWorkerToMilitiaLevel() == 1
+						this.getUnit().setOwner(this.getOwner().getPlayer(), false)
+						new Fighter(this)
+					else if this.getWorkerHall().getWorkerToMilitiaLevel() == 2
+						this.getUnit().setOwner(this.getOwner().getPlayer(), false)
+						new Militia(this)
+					else if this.getWorkerHall().getWorkerToMilitiaLevel() == 3
+						this.getUnit().setOwner(this.getOwner().getPlayer(), false)
+						new Footman(this)
+					else
+						this.remove(true)
+				else
+					this.orderStop()
+					this.decideNextAction()
+		else
+			this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
+				if reached
+					this.orderStop()
+					this._closureTerminator.periodically(2) (CallbackClosureTerminator terminator) ->
+						if this.getOwner().getHero().isAlive()
+							terminator.terminate(terminator)
+							this.decideNextAction()
+				else
+					this.orderStop()
+					this._closureTerminator.after(1) -> 
+						this.decideNextAction()
