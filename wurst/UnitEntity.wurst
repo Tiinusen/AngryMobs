@@ -18,6 +18,8 @@ abstract public class UnitEntity extends EventEntity
 
 	private static LinkedList<UnitEntity> _units = null
 
+	CallbackSingle _orderTimeout = null
+
 	construct(unit obj)
 		super(obj)
 		_init()
@@ -29,6 +31,8 @@ abstract public class UnitEntity extends EventEntity
 		if this._orderCallback != null
 			this._orderCallback.cancel.call()
 			destroy this._orderCallback
+		if this._orderTimeout != null
+			destroy this._orderTimeout
 		_units.remove(this)
 
 	static private function _init()
@@ -185,7 +189,6 @@ abstract public class UnitEntity extends EventEntity
 	/*
 	 * Orders
 	 */
-
 	function orderBuild(int typeid, rect area, CallbackOrder callback) returns CallbackOrder
 		if this._orderCallback != null
 			this._orderCallback.cancel.call()
@@ -196,13 +199,28 @@ abstract public class UnitEntity extends EventEntity
 				destroy cb
 				let cbc = EventEntity.onConstructionFinished() (unit building, CallbackConstruction cbc) ->
 					if building.getTypeId() == typeid and building.getOwner() == this.getOwner().getPlayer()
+						cbc.cancel.call()
 						destroy cbc
 						this._orderCallback = null
+						if this._orderTimeout != null
+							destroy this._orderTimeout
+							this._orderTimeout = null
 						callback.call(true)
 						destroy callback
+				this._orderTimeout = doAfter(30) ->
+					this._orderTimeout = null
+					cbc.cancel.call()
+					destroy cbc
+					this._orderCallback = null
+					this.orderStop()
+					callback.call(false)
+					destroy callback
 				callback.cancel = () ->
 					cbc.cancel.call()
 					destroy cbc
+					if this._orderTimeout != null
+						destroy this._orderTimeout
+						this._orderTimeout = null
 		callback.cancel = () ->
 			destroy cb		
 		return callback

@@ -34,7 +34,6 @@ public class Hero extends UnitEntity
         _heroes.forEach() (Hero hero) ->
             if hero._controlledSoldiers.has(soldier)
                 hero._controlledSoldiers.remove(soldier)
-                soldier.orderStop()
 
     function getControlledSoldiers() returns LinkedList<SoldierEntity>
         return this._controlledSoldiers.copy()

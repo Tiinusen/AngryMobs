@@ -44,15 +44,15 @@ function createHelp()
 function createVictoryCondition()
 	Side.west.getKing().onDeath() (unit killer, CallbackDeath callback) ->
 		Side.east.getPlayers().forEach() (Owner t) ->
-			print("You have defeated the enemy king")
+			t.print("You have defeated the enemy king")
 		Side.west.getPlayers().forEach() (Owner t) ->
-			print("Your king has been slayed")
+			t.print("Your king has been slayed")
 		doAfter(5) -> 
 			EndGame(false)
 	Side.east.getKing().onDeath() (unit killer, CallbackDeath callback) ->
 		Side.west.getPlayers().forEach() (Owner t) ->
-			print("You have defeated the enemy king")
+			t.print("You have defeated the enemy king")
 		Side.east.getPlayers().forEach() (Owner t) ->
-			print("Your king has been slayed")
+			t.print("Your king has been slayed")
 		doAfter(5) -> 
 			EndGame(false)

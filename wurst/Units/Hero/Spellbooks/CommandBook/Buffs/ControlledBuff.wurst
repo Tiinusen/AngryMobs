@@ -24,6 +24,7 @@ abstract class ControlledBuff
 			soldier.orderStop()
 			soldier.getUnit().removeAbility(buffId)
 			Hero.removeControlledSoldier(soldier)
+			soldier.orderStop()
 			soldier.decideNextAction()
 		
 
@@ -35,9 +36,8 @@ abstract class ControlledBuff
 		if not soldier.getUnit().hasAbility(buffId)
 			soldier.getUnit().addAbility(buffId)
 		Hero.removeControlledSoldier(soldier)
-
 		soldier.getOwner().getSide().getKing().removeGuard(soldier)
-
+		soldier.orderStop()
 		hero.addControlledSoldier(soldier)
 		if duration > 0
 			let cb = doAfter(duration) ->
@@ -46,6 +46,7 @@ abstract class ControlledBuff
 					soldier.orderStop()
 					soldier.getUnit().removeAbility(buffId)
 					Hero.removeControlledSoldier(soldier)
+					soldier.orderStop()
 					soldier.decideNextAction()
 			_buffMap.put(soldier, cb)
 		else

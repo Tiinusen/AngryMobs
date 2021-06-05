@@ -48,7 +48,7 @@ import Ids
 		..setDefenseUpgradeBonus(2)
 		..setArmorType(ArmorType.Medium)
 		// Health
-		..setHitPointsMaximumBase(1000)
+		..setHitPointsMaximumBase(2000)
 		// Attack (1)
 		..setAttack1AttackType(AttackType.Normal)
 		..setAttack1CooldownTime(2)
