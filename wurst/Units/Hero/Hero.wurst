@@ -5,6 +5,7 @@ import CommandBook
 import Owner
 import LinkedList
 import SoldierEntity
+import initlater CommandControl
 import ControlledBuff
 
 LinkedList<Hero> _heroes = new LinkedList<Hero>()    
@@ -117,7 +118,12 @@ public class Hero extends UnitEntity
         this._respawnText = CreateTextTagUnitBJ("", this._ghost, 0, 10, 0, 100, 0, 0)
         SetTextTagVisibility(this._respawnText, false)
 
-        new CommandBook(this.getUnit())
+        new CommandAttack(this.getUnit())
+        new CommandRecruitUnit(this.getUnit())
+        new CommandMove(this.getUnit())
+        new CommandRecruitArea(this.getUnit())
+        new CommandFollow(this.getUnit())
+        new CommandRelease(this.getUnit())
         
         this.onDeath() (unit killer, CallbackDeath callback) ->
             this._controlledSoldiers.forEach() (SoldierEntity t) ->

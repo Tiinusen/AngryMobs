@@ -1,13 +1,34 @@
 package CommandControlObjects
 
 import ChannelAbilityPreset
+import ItemObjEditing
+import ItemIds
 import Ids
 
 @compiletime function generate()
 	// Control one Soldier
+	new ItemDefinition(COMMAND_CONTROL_UNIT_ITEM_ID, ItemIds.potionofDivinity)
+		..setName("Recruit")
+		..setTooltipBasic("Recruit")
+		..setTooltipExtended("Recruit a friendly minion to follow you|n|n|cbae4e014Follows you for 120 seconds")
+		..setDescription("Give's the hero the possibility to issue commands to friendly minions")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNMilitia)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_CONTROL_UNIT_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_CONTROL_UNIT_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Control Unit")
+		..setEditorSuffix("(Hero Ability)")
+		..setName("Recruit")
 		..presetTooltipNormal(lvl -> "Recruit")
 		..presetTooltipNormalExtended(lvl -> "Recruit a friendly minion to follow you|n|n|cbae4e014Follows you for 120 seconds")
 		// Icon
@@ -17,16 +38,36 @@ import Ids
 		// Button Placement
 		..presetButtonPosNormal(0, 0)
 		// Cost
-		..presetCooldown(lvl -> 1)
-		..presetManaCost(lvl -> 25)
+		..presetCooldown(lvl -> 10)
+		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetTargetTypes(Targettype.UNIT)
 		// ..presetOption(Option.VISIBLE, true)
 
 
 	// Control area of Soldier
+	new ItemDefinition(COMMAND_CONTROL_AREA_ITEM_ID, ItemIds.potionofInvisibility)
+		..setName("Recruit Area")
+		..setTooltipBasic("Recruit Area")
+		..setTooltipExtended("Recruit friendly minions within circle to follow you|n|n|cbae4e014Follows you for 30 seconds")
+		..setDescription("Recruit friendly minions within circle to follow you|n|n|cbae4e014Follows you for 30 seconds")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNCallToArms)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_CONTROL_AREA_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_CONTROL_AREA_ID,1,true)
-		..setEditorSuffix("(Command Book)")
+		..setEditorSuffix("(Hero Ability)")
 		..setName("Control Area")
 		..presetTooltipNormal(lvl -> "Recruit Area")
 		..presetTooltipNormalExtended(lvl -> "Recruit a friendly minion to follow you|n|n|cbae4e014Follows you for 30 seconds")
@@ -37,22 +78,42 @@ import Ids
 		// Button Placement
 		..presetButtonPosNormal(1, 0)
 		// Cost
-		..presetCooldown(lvl -> 1)
-		..presetManaCost(lvl -> 100)
+		..presetCooldown(lvl -> 60)
+		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetCastRange((int lvl) -> 1000)
 		..presetAreaofEffect((int lvl) -> 600)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
 
 	// Release control
+	new ItemDefinition(COMMAND_CONTROL_RELEASE_ITEM_ID, ItemIds.potionofHealing)
+		..setName("Dismiss")
+		..setTooltipBasic("Dismiss")
+		..setTooltipExtended("Release control of all units under your command")
+		..setDescription("Release control of all units under your command")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNCancel)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_CONTROL_RELEASE_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_CONTROL_RELEASE_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Release")
-		..presetTooltipNormal(lvl -> "Release Control")
+		..setEditorSuffix("(Hero Ability)")
+		..setName("Dismiss")
+		..presetTooltipNormal(lvl -> "Dismiss")
 		..presetTooltipNormalExtended(lvl -> "Release control of all units under your command")
 		// Icon
-		..presetIcon(Icons.bTNSpy)
+		..presetIcon(Icons.bTNCancel)
 		// Hotkey
 		..presetHotkey("E")
 		// Button Placement
@@ -61,14 +122,34 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetTargetTypes(Targettype.NONE)
 		// ..presetOption(Option.VISIBLE, true)
 
 	// Attack
+	new ItemDefinition(COMMAND_ATTACK_ITEM_ID, ItemIds.potionofMana)
+		..setName("Attack")
+		..setTooltipBasic("Attack")
+		..setTooltipExtended("Orders all controlled units to attack location|n|nKeep in mind that they won't automatically attack gate if used behind it, release control will make them go for the gate")
+		..setDescription("Orders all controlled units to attack location|n|nKeep in mind that they won't automatically attack gate if used behind it, release control will make them go for the gate")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNAttack)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_ATTACK_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_ATTACK_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Command Attack")
-		..presetTooltipNormal(lvl -> "Order Attack")
+		..setEditorSuffix("(Hero Ability)")
+		..setName("Attack")
+		..presetTooltipNormal(lvl -> "Attack")
 		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to attack location|n|nKeep in mind that they won't automatically attack gate if used behind it, release control will make them go for the gate")
 		// Icon
 		..presetIcon(Icons.bTNAttack)
@@ -80,14 +161,34 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetCastRange((int lvl) -> 2000)
 		..presetAreaofEffect((int lvl) -> 200)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
 
 	// Follow
+	new ItemDefinition(COMMAND_FOLLOW_ITEM_ID, ItemIds.potionofMana)
+		..setName("Follow")
+		..setTooltipBasic("Follow")
+		..setTooltipExtended("Orders all controlled units to follow hero without attacking")
+		..setDescription("Orders all controlled units to follow hero without attacking")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNRallyPoint)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_FOLLOW_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_FOLLOW_ID,1,true)
-		..setEditorSuffix("(Command Book)")
+		..setEditorSuffix("(Hero Ability)")
 		..setName("Command Follow")
 		..presetTooltipNormal(lvl -> "Order Follow")
 		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to follow hero without attacking")
@@ -101,14 +202,34 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetTargetTypes(Targettype.NONE)
 		// ..presetOption(Option.VISIBLE, true)
 
 	// Move
+	new ItemDefinition(COMMAND_MOVE_ITEM_ID, ItemIds.potionofMana)
+		..setName("Move")
+		..setTooltipBasic("Move")
+		..setTooltipExtended("Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
+		..setDescription("Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
+		// Icon / Model
+		..setInterfaceIcon(Icons.bTNMove)
+		..setModelUsed("")
+		// Abilities
+		..setAbilities(commaList(COMMAND_MOVE_ID))
+		// Cost
+		..setGoldCost(0)
+		..setLumberCost(0)
+		// Other
+		..setDroppedWhenCarrierDies(false)
+		..setCanBeDropped(false)
+		..setCanBeSoldByMerchants(false)
+		..setCanBeSoldToMerchants(false)
+		..setNumberofCharges(0)
 	new ChannelAbilityPreset(COMMAND_MOVE_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Command Move")
-		..presetTooltipNormal(lvl -> "Order Move")
+		..setEditorSuffix("(Hero Ability)")
+		..setName("Move")
+		..presetTooltipNormal(lvl -> "Move")
 		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
 		// Icon
 		..presetIcon(Icons.bTNMove)
@@ -120,6 +241,7 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
+		..setItemAbility(true)
 		..presetCastRange((int lvl) -> 2000)
 		..presetAreaofEffect((int lvl) -> 200)
 		..presetTargetTypes(Targettype.POINT)

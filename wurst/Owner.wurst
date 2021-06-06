@@ -36,23 +36,23 @@ function _init()
             nullTimer() ->
                 building
                 .getOwner()
-                ..print("You are not allowed to build outside of castle")
+                ..print("You are not allowed to build outside of the castle")
                 if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
                     building
                     .getOwner()
-                    ..setGold(200)
-                    ..setLumber(1)
+                    ..addGold(200)
+                    ..addLumber(1)
                 building.remove()
         else if side == Side.east and building.getPos().x < side.getGate().getPos().x
             nullTimer() ->
                 building
                 .getOwner()
-                ..print("You are not allowed to build outside of castle")
+                ..print("You are not allowed to build outside of the castle")
                 if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
                     building
                     .getOwner()
-                    ..setGold(200)
-                    ..setLumber(1)
+                    ..addGold(200)
+                    ..addLumber(1)
                 building.remove()
             
 public function unit.cancel()

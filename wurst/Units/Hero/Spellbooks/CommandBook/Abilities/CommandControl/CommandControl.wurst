@@ -6,6 +6,7 @@ import ClosureTimers
 import Hero
 import Owner
 import SoldierEntity
+import ItemObject
 import Ids
 
 init
@@ -46,3 +47,63 @@ init
 			let hero = caster.toHeroType()
 			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
 				soldier.orderFollow(hero.getUnit())
+
+public class CommandRecruitUnit extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_CONTROL_UNIT_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_CONTROL_UNIT_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_CONTROL_UNIT_ITEM_ID)
+
+public class CommandRecruitArea extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_CONTROL_AREA_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_CONTROL_AREA_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_CONTROL_AREA_ITEM_ID)
+
+public class CommandRelease extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_CONTROL_RELEASE_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_CONTROL_RELEASE_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_CONTROL_RELEASE_ITEM_ID)
+
+public class CommandMove extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_MOVE_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_MOVE_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_MOVE_ITEM_ID)
+
+public class CommandAttack extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_ATTACK_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_ATTACK_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_ATTACK_ITEM_ID)
+
+public class CommandFollow extends ItemObject
+	construct(item obj)
+		super(obj, COMMAND_FOLLOW_ITEM_ID)
+
+	construct(vec2 pos)
+		super(pos, COMMAND_FOLLOW_ITEM_ID)
+
+	construct(unit u)
+		super(u, COMMAND_FOLLOW_ITEM_ID)
