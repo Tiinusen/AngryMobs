@@ -14,7 +14,7 @@ init
 	createVictoryCondition()
 	createHelp()
 	Owner.getActive().forEach() (Owner owner) ->
-		owner.getPlayer().addGold(100000)
+		owner.getPlayer().addGold(bj_isSinglePlayer?100000:100)
 		owner.getPlayer().addLumber(1)
 	SetTimeOfDay(12)
 	doPeriodically(30) (CallbackPeriodic cb) ->
