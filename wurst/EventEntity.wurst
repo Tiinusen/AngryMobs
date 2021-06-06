@@ -444,34 +444,32 @@ public class ClosureTerminator
 
     ondestroy
         this._list.forEach() (CallbackClosureTerminator cct) ->
-            cct.terminate(null)
-            destroy cct
+            cct.terminate(cct)
         destroy this._list
 
     /** like a normal doAfter except these are cancelled if destructed */
     function after(real timeToWait, CallbackVoid callback) returns CallbackClosureTerminator
         let ctsh = new ClosureTerminatorStateHolder()
         CallbackClosureTerminator cbct =  (CallbackClosureTerminator terminator) ->
-            if ctsh.cbs != null
-                destroy ctsh.cbs
-                ctsh.cbs = null
-        this._list.add(cbct)
+            destroy terminator
         ctsh.cbs = doAfter(timeToWait) -> 
+            this._list.remove(cbct)
             ctsh.cbs = null
             callback.call()
         cbct.state = ctsh
+        this._list.add(cbct)
         return cbct
 
     /** like a normal doPeriodically except these are cancelled if destructed */
     function periodically(real time, CallbackClosureTerminator callback) returns CallbackClosureTerminator
         let ctsh = new ClosureTerminatorStateHolder()
         CallbackClosureTerminator cbct = (CallbackClosureTerminator terminator) ->
-            if ctsh.cbp != null
-                destroy ctsh.cbp
-                ctsh.cbp = null
+            this._list.remove(terminator)
+            destroy terminator
         ctsh.cbp = doPeriodically(time) (CallbackPeriodic cb) ->
             callback.terminate(cbct)
         cbct.state = ctsh
+        this._list.add(cbct)
         return cbct
 
 public abstract class CallbackClosureTerminator

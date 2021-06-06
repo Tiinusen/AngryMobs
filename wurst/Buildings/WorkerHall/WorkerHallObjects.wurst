@@ -96,15 +96,18 @@ import Ids
 		// Level 1
 		..setIcon(1, Icons.bTNCallToArms)
 		..setName(1, "Call to Fighter")
-		..setTooltip(1, "Worker becomes a fighter once his gold is collected by hero")
+		..setTooltip(1, "Upgrade Worker becomes a Fighter")
+		..setTooltipExtended(1, "Worker becomes a Fighter once his gold is collected by hero")
 		// Level 2
 		..setIcon(2, Icons.bTNMilitia)
 		..setName(2, "Call to Militia")
-		..setTooltip(2, "Worker becomes a militia once his gold is collected by hero")
+		..setTooltip(2, "Upgrade Worker becomes a Militia")
+		..setTooltipExtended(2, "Worker becomes a Militia once his gold is collected by hero")
 		// Level 3
 		..setIcon(3, Icons.bTNFootman)
 		..setName(3, "Call to Footman")
-		..setTooltip(3, "Worker becomes a footman once his gold is collected by hero")
+		..setTooltip(3, "Upgrade Worker becomes a Footman")
+		..setTooltipExtended(3, "Worker becomes a Footman once his gold is collected by hero")
 
 	// Trips to Mine
 	new UpgradeDefinition(WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID)

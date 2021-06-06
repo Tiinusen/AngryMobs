@@ -188,6 +188,7 @@ public class Gate
         this._health = this._gate.killable.getLife()
         this._maxHealth = this._gate.killable.getMaxLife()
         this._gate.open()
+        this._gate.killable.setInvulnerable(true)
         if this.getGateControl().getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
             this.getGateControl().getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 2)
         SoldierEntity.allDecideNextAction()
@@ -197,6 +198,7 @@ public class Gate
             return
         this._open = false
         this._gate.close()
+        this._gate.killable.setInvulnerable(false)
         this.apply()
         if this.getGateControl().getUnit().getAbilityLevel(GATE_CONTROL_TOGGLE_ID) > 0
             this.getGateControl().getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
