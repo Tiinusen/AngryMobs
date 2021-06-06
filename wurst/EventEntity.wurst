@@ -315,7 +315,7 @@ abstract public class EventEntity extends Entity
         if EventEntity._onWithinEntities == null
             EventEntity._onWithinEntities = new LinkedList<EventEntity>()
             EventEntity._onWithinEntities.add(ee)
-            doPeriodically(0.5) (CallbackPeriodic cb) ->
+            doPeriodically(1) (CallbackPeriodic cb) ->
                 EventEntity._onWithinEntities.forEach() (EventEntity ee) ->
                     if EventEntity._onWithinEntities.has(ee)
                         if ee._onWithin != null

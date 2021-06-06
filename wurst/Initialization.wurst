@@ -24,7 +24,7 @@ init
 			owner.getPlayer().addGold(100)
 	doPeriodically(300) (CallbackPeriodic cb) ->
 		Owner.getActive().forEach() (Owner owner) ->
-			owner.getPlayer().addLumber(100)
+			owner.getPlayer().addLumber(1)
 	
 function spawn()
 	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))

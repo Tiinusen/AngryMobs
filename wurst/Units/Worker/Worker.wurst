@@ -113,8 +113,8 @@ public class Worker extends UnitEntity
 									this.getUnit().setAnimation("attack")
 								
 								// After a little while the lumber ran out
-								this._closureTerminator.after(2) -> 
-									destroy cbp
+								this._closureTerminator.after(2) ->
+									cbp.terminate(cbp)
 									this.getUnit().removeAnimationProperties("lumber")
 									this.decideNextAction()
 							else
@@ -132,7 +132,7 @@ public class Worker extends UnitEntity
 			this.goToMine(this.getWorkerHall().getSelectedMine())  
 		else if this.getOwner().getHero().isAlive()
 			// I have gold, let's go for the hero
-			this.orderMove(this.getOwner().getHero(), 126) (boolean reached) ->
+			this.orderMove(this.getOwner().getHero(), 200) (boolean reached) ->
 				if reached
 					// I have reached my hero, let's give him my gold
 					this.getUnit().removeAnimationProperties("gold")

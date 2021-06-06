@@ -29,8 +29,8 @@ import Ids
 		..setSightRadiusNight(300)
 		// Mana
 		..setManaRegeneration(1)
-		..setManaInitialAmount(100)
-		..setManaMaximum(100)
+		..setManaInitialAmount(200)
+		..setManaMaximum(200)
 		// Cost
 		..setGoldCost(0)
 		..setLumberCost(0)

@@ -32,7 +32,7 @@ import OrderStringer
 	..setLevels(1)
 	..setHeroAbility (false)
 	..setItemAbility (false)
-	..setMaximumSpells(1, 11)
+	..setMaximumSpells(1, 6)
 	..setBaseOrderID(1, OrderStringer.getOrderString())
 	..setSpellList(1, commaList(
 		COMMAND_CONTROL_UNIT_ID, 

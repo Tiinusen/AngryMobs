@@ -4,25 +4,6 @@ import ChannelAbilityPreset
 import Ids
 
 @compiletime function generate()
-	// Release control
-	new ChannelAbilityPreset(COMMAND_CONTROL_RELEASE_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Release")
-		..presetTooltipNormal(lvl -> "Release Control")
-		..presetTooltipNormalExtended(lvl -> "Release control of all units under your command")
-		// Icon
-		..presetIcon(Icons.bTNCallToArms)
-		// Hotkey
-		..presetHotkey("V")
-		// Button Placement
-		..presetButtonPosNormal(3, 2)
-		// Cost
-		..presetCooldown(lvl -> 1)
-		..presetManaCost(lvl -> 0)
-		// Target
-		..presetTargetTypes(Targettype.NONE)
-		// ..presetOption(Option.VISIBLE, true)
-
 	// Control one Soldier
 	new ChannelAbilityPreset(COMMAND_CONTROL_UNIT_ID,1,true)
 		..setEditorSuffix("(Command Book)")
@@ -30,7 +11,7 @@ import Ids
 		..presetTooltipNormal(lvl -> "Recruit")
 		..presetTooltipNormalExtended(lvl -> "Recruit a friendly minion to follow you|n|n|cbae4e014Follows you for 120 seconds")
 		// Icon
-		..presetIcon(Icons.bTNCallToArms)
+		..presetIcon(Icons.bTNMilitia)
 		// Hotkey
 		..presetHotkey("Q")
 		// Button Placement
@@ -41,6 +22,7 @@ import Ids
 		// Target
 		..presetTargetTypes(Targettype.UNIT)
 		// ..presetOption(Option.VISIBLE, true)
+
 
 	// Control area of Soldier
 	new ChannelAbilityPreset(COMMAND_CONTROL_AREA_ID,1,true)
@@ -58,9 +40,29 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 100)
 		// Target
+		..presetCastRange((int lvl) -> 1000)
 		..presetAreaofEffect((int lvl) -> 600)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
+
+	// Release control
+	new ChannelAbilityPreset(COMMAND_CONTROL_RELEASE_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Release")
+		..presetTooltipNormal(lvl -> "Release Control")
+		..presetTooltipNormalExtended(lvl -> "Release control of all units under your command")
+		// Icon
+		..presetIcon(Icons.bTNSpy)
+		// Hotkey
+		..presetHotkey("E")
+		// Button Placement
+		..presetButtonPosNormal(2, 0)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetTargetTypes(Targettype.NONE)
+		// ..presetOption(Option.VISIBLE, true)
 
 	// Attack
 	new ChannelAbilityPreset(COMMAND_ATTACK_ID,1,true)
@@ -69,7 +71,7 @@ import Ids
 		..presetTooltipNormal(lvl -> "Order Attack")
 		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to attack location|n|nKeep in mind that they won't automatically attack gate if used behind it, release control will make them go for the gate")
 		// Icon
-		..presetIcon(Icons.bTNCallToArms)
+		..presetIcon(Icons.bTNAttack)
 		// Hotkey
 		..presetHotkey("A")
 		// Button Placement
@@ -78,26 +80,7 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
-		..presetAreaofEffect((int lvl) -> 200)
-		..presetTargetTypes(Targettype.POINT)
-		..presetOption(Option.TARGETIMAGE, true)
-
-	// Move
-	new ChannelAbilityPreset(COMMAND_MOVE_ID,1,true)
-		..setEditorSuffix("(Command Book)")
-		..setName("Command Move")
-		..presetTooltipNormal(lvl -> "Order Move")
-		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
-		// Icon
-		..presetIcon(Icons.bTNCallToArms)
-		// Hotkey
-		..presetHotkey("S")
-		// Button Placement
-		..presetButtonPosNormal(1, 1)
-		// Cost
-		..presetCooldown(lvl -> 1)
-		..presetManaCost(lvl -> 0)
-		// Target
+		..presetCastRange((int lvl) -> 2000)
 		..presetAreaofEffect((int lvl) -> 200)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
@@ -109,7 +92,26 @@ import Ids
 		..presetTooltipNormal(lvl -> "Order Follow")
 		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to follow hero without attacking")
 		// Icon
-		..presetIcon(Icons.bTNCallToArms)
+		..presetIcon(Icons.bTNRallyPoint)
+		// Hotkey
+		..presetHotkey("S")
+		// Button Placement
+		..presetButtonPosNormal(1, 1)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetTargetTypes(Targettype.NONE)
+		// ..presetOption(Option.VISIBLE, true)
+
+	// Move
+	new ChannelAbilityPreset(COMMAND_MOVE_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Command Move")
+		..presetTooltipNormal(lvl -> "Order Move")
+		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
+		// Icon
+		..presetIcon(Icons.bTNMove)
 		// Hotkey
 		..presetHotkey("D")
 		// Button Placement
@@ -118,5 +120,7 @@ import Ids
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)
 		// Target
-		..presetTargetTypes(Targettype.NONE)
-		// ..presetOption(Option.VISIBLE, true)
+		..presetCastRange((int lvl) -> 2000)
+		..presetAreaofEffect((int lvl) -> 200)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)
