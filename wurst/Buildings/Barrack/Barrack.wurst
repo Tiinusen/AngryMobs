@@ -27,6 +27,30 @@ public class Barrack extends RunnerEntity
             this.getUnit().setInvulnerable(true)
             this.setLevel(this.getLevel()+1)
 
+        this.onCast(BARRACK_SLOT_1_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            var lvl = this.getUnit().getAbilityLevel(BARRACK_SLOT_1_ID)+1
+            if lvl > 2
+                lvl = 1
+            this.getUnit().setAbilityLevel(BARRACK_SLOT_1_ID, lvl)
+
+        this.onCast(BARRACK_SLOT_2_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            var lvl = this.getUnit().getAbilityLevel(BARRACK_SLOT_2_ID)+1
+            if lvl > 2
+                lvl = 1
+            this.getUnit().setAbilityLevel(BARRACK_SLOT_2_ID, lvl)
+
+        this.onCast(BARRACK_SLOT_3_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            var lvl = this.getUnit().getAbilityLevel(BARRACK_SLOT_3_ID)+1
+            if lvl > 2
+                lvl = 1
+            this.getUnit().setAbilityLevel(BARRACK_SLOT_3_ID, lvl)
+
+        this.onCast(BARRACK_SLOT_4_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            var lvl = this.getUnit().getAbilityLevel(BARRACK_SLOT_4_ID)+1
+            if lvl > 2
+                lvl = 1
+            this.getUnit().setAbilityLevel(BARRACK_SLOT_4_ID, lvl)
+
         this.onSold(FOOTMAN_ID) (unit sold, CallbackSold callback) ->
             new Footman(sold)
 
@@ -34,5 +58,26 @@ public class Barrack extends RunnerEntity
             new Archer(sold)
             
     override function run()
-        for i = 1 to this.getLevel()
+        // Slot 1
+        if this.getUnit().getAbilityLevel(BARRACK_SLOT_1_ID) == 1
             new Footman(this.getUnit().getPos(), this.getOwner().getPlayer())
+        else if this.getUnit().getAbilityLevel(BARRACK_SLOT_1_ID) == 2
+            new Archer(this.getUnit().getPos(), this.getOwner().getPlayer())
+
+        // Slot 2
+        if this.getUnit().getAbilityLevel(BARRACK_SLOT_2_ID) == 1
+            new Footman(this.getUnit().getPos(), this.getOwner().getPlayer())
+        else if this.getUnit().getAbilityLevel(BARRACK_SLOT_2_ID) == 2
+            new Archer(this.getUnit().getPos(), this.getOwner().getPlayer())
+
+        // Slot 3
+        if this.getUnit().getAbilityLevel(BARRACK_SLOT_3_ID) == 1
+            new Footman(this.getUnit().getPos(), this.getOwner().getPlayer())
+        else if this.getUnit().getAbilityLevel(BARRACK_SLOT_3_ID) == 2
+            new Archer(this.getUnit().getPos(), this.getOwner().getPlayer())
+
+        // Slot 4
+        if this.getUnit().getAbilityLevel(BARRACK_SLOT_4_ID) == 1
+            new Footman(this.getUnit().getPos(), this.getOwner().getPlayer())
+        else if this.getUnit().getAbilityLevel(BARRACK_SLOT_4_ID) == 2
+            new Archer(this.getUnit().getPos(), this.getOwner().getPlayer())

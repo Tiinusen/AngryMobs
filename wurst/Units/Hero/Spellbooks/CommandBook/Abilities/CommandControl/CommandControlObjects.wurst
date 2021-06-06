@@ -1,7 +1,6 @@
 package CommandControlObjects
 
 import ChannelAbilityPreset
-import Icons
 import Ids
 
 @compiletime function generate()

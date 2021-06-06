@@ -75,6 +75,10 @@ public let BARRACK_ID_LEVEL_4 = compiletime(UNIT_ID_GEN.next())
 public let BARRACK_ARCHER_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
 public let BARRACK_FOOTMAN_DAMAGE_ID = compiletime(ABIL_ID_GEN.next())
 public let BARRACK_FOOTMAN_ARMOR_ID = compiletime(ABIL_ID_GEN.next())
+public let BARRACK_SLOT_1_ID = compiletime(ABIL_ID_GEN.next())
+public let BARRACK_SLOT_2_ID = compiletime(ABIL_ID_GEN.next())
+public let BARRACK_SLOT_3_ID = compiletime(ABIL_ID_GEN.next())
+public let BARRACK_SLOT_4_ID = compiletime(ABIL_ID_GEN.next())
 
 // Worker Hall
 public let WORKER_HALL_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())

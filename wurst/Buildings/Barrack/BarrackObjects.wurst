@@ -6,9 +6,16 @@ import UpgradeObjEditing
 import Ids
 
 @compiletime function generate()
-	// Worker Hall
 	let ids = [BARRACK_ID_LEVEL_1,BARRACK_ID_LEVEL_2,BARRACK_ID_LEVEL_3,BARRACK_ID_LEVEL_4]
+	let slotIDs = [BARRACK_SLOT_1_ID,BARRACK_SLOT_2_ID,BARRACK_SLOT_3_ID,BARRACK_SLOT_4_ID]
+	
+	// Worker Hall
 	for i = 0 to 3
+		var abilities = BARRACK_ABILITIES
+		for ii = 0 to i
+			if abilities.length() > 0
+				abilities += ","
+			abilities += slotIDs[ii].toRawCode()
 		let b = new BuildingDefinition(ids[i], UnitIds.humanbarracks)
 		..setNameEditorSuffix("(Barrack)")
 		..setName(BARRACK_NAME+" - Level "+(i+1).toString())
@@ -21,7 +28,7 @@ import Ids
 		..setButtonPositionX(i != 0 ? 3 : BARRACK_BUTTON_X)
 		..setButtonPositionY(i != 0 ? 2 : BARRACK_BUTTON_Y)
 		// Abilities / Upgrades / Building / Training / Selling
-		..setNormalAbilities(BARRACK_ABILITIES)
+		..setNormalAbilities(abilities)
 		..setResearchesAvailable(commaList(
 			BARRACK_FOOTMAN_ARMOR_ID, 
 			BARRACK_FOOTMAN_DAMAGE_ID, 
@@ -47,6 +54,31 @@ import Ids
 			b..setHotkey(BARRACK_HOTKEY)
 		else
 			b..setHotkey("V")
+
+	// Spwan Slots
+	let hotkeys = ["A","S","D","F"]
+	for i = 0 to 3
+		let slotID = slotIDs[i]
+		new ChannelAbilityPreset(slotID,2,true)
+			..setEditorSuffix("(Worker Hall)")
+			..setName("Slot "+(i+1).toString())
+			..presetIcon("ReplaceableTextures\\WorldEditUI\\DoodadPlaceholder.blp")
+			// Footman
+			..setTooltipNormal(1, "|cffffcc00Spawn slot "+(i+1).toString()+"|r : |cff33ff00Footman|r selected")
+			..setTooltipNormalExtended(1, "Press to change which type is spawned each spawn cycle")
+			// Archer
+			..setTooltipNormal(2, "|cffffcc00Spawn slot "+(i+1).toString()+"|r : |cff33ff00Archer|r selected")
+			..setTooltipNormalExtended(2, "Press to change which type is spawned each spawn cycle")
+			// Hotkey
+			..presetHotkey(hotkeys[i])
+			// Button Placement
+			..presetButtonPosNormal(i, 1)
+			// Cost
+			..presetCooldown(lvl -> 1)
+			..presetManaCost(lvl -> 0)
+			// Target
+			..presetTargetTypes(Targettype.NONE)
+			..presetOption(Option.TARGETIMAGE, true)
 
 	// Footman Armor
 	new UpgradeDefinition(BARRACK_FOOTMAN_ARMOR_ID)
