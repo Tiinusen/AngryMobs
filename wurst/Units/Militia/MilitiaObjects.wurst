@@ -13,7 +13,7 @@ import Ids
 		..setUnitClassification("_")
 		..setRace(Race.Commoner)
 		..setCanFlee(false)
-		//..setCollisionSize(0.0)
+		..setCollisionSize(1.0)
 		// Requirements
 		..setRequirements(commaList(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID))
 		..setRequirementsLevels(commaList("2"))

@@ -1,17 +1,17 @@
 ---
 projectName: AngryMobs
 buildMapData:
-  name: Angry Mobs (v0.1.0-alpha.1) # Name shown ingame, may be colored
+  name: Angry Mobs (v0.1.0-alpha.2) # Name shown ingame, may be colored
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
-    description: It's a team 
+    description: It's probably like a map you played before, hopefully I've brought some originality to it, don't forget to read the tooltips in-game so you don't miss out
     suggestedPlayers: 2-6
     loadingScreen:
       background: Generic
       title: Anniversary re-make
       subTitle: Angry Mobs
-      text: Two Castles, Two Kings\n\nDefend your King and kill the other one|n|nEach King wants 10 Guards|n|nEach worker needs to reach your hero for you to collect the gold
+      text: Two Castles, Two Kings|n|n|nDefend your King and kill the other one|n|n|nEach King wants 10 Guards|n|n|nEach worker needs to reach your hero for you to collect the gold|n|n|nRead the tooltips and don't forget to check out your item slots
   optionsFlags:
     hideMinimapPreview: true
     forcesFixed: true

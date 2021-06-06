@@ -10,7 +10,7 @@ import Ids
 		..setProperNames(HERO_NAMES)
 		..setProperNamesUsed(6)
 		..hideHeroDeathMsg(true)
-		// ..setCollisionSize(0)
+		..setCollisionSize(1.0)
 		// Icon / Model
 		..setIconGameInterface(HERO_ICON)
 		..setIconScoreScreen("")
