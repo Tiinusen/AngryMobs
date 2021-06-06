@@ -30,7 +30,7 @@ function _init()
                     UnitEntity.applyUpgradesOnPlayerUnits(owner)
 
     // Prevent building outside of castle
-    EventEntity.onConstructionFinished() (unit building, CallbackConstruction callback) ->
+    EventEntity.onConstructionStarted() (unit building, CallbackConstruction callback) ->
         let side = building.getOwner().toOwnerType().getSide() 
         if side == Side.west and side.getGate().getPos().x < building.getPos().x
             nullTimer() ->
