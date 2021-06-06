@@ -9,9 +9,9 @@ import OrderStringer
 @compiletime function generate()
 	// Command Book
 	new ItemDefinition(COMMAND_BOOK_ID, ItemIds.bookoftheDead)
-	..setName("Command")
-	..setTooltipBasic("Do eet")
-	..setTooltipExtended("It is round")
+	..setName("Command Controlled Units")
+	..setTooltipBasic("Command Controlled Units")
+	..setTooltipExtended("Use abilities in this book to control friendly soldiers, this is the only way to control anything else but your hero")
 	..setDescription("Give's the hero the possibility to issue commands to friendly minions")
 	// Icon / Model
 	..setInterfaceIcon(Icons.bTNBookOfSummoning)

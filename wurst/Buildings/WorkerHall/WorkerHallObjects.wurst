@@ -92,7 +92,7 @@ import Ids
 		..setTimeBase(1)
 		..setTimeIncrement(0)
 		..setGoldCostBase(100)
-		..setGoldCostIncrement(1200)
+		..setGoldCostIncrement(600)
 		// Level 1
 		..setIcon(1, Icons.bTNCallToArms)
 		..setName(1, "Call to Fighter")
@@ -127,7 +127,7 @@ import Ids
 		..setTimeBase(1)
 		..setTimeIncrement(0)
 		..setGoldCostBase(1000)
-		..setGoldCostIncrement(2000)
+		..setGoldCostIncrement(1000)
 
 	// Repair Upgrade
 	new UpgradeDefinition(WORKER_HALL_WORKER_REPAIR_UPGRADE_ID)
@@ -146,8 +146,8 @@ import Ids
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
-		..setGoldCostBase(500)
-		..setGoldCostIncrement(1000)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(500)
 
 	// Movement Speed
 	new UpgradeDefinition(WORKER_HALL_MOVEMENT_SPEED_ID)
@@ -166,7 +166,7 @@ import Ids
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
-		..setGoldCostBase(300)
+		..setGoldCostBase(200)
 		..setGoldCostIncrement(400)
 		// Stats
 		..addEffectMovementSpeedBonus(50, 50)

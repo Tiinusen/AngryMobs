@@ -93,8 +93,8 @@ public class Gate
     private real _lastLifeCheck
     function initialize()
         this.open()
-        this.setMaxHealth(1000)
-        this.setHealth(1000)
+        this.setMaxHealth(2000)
+        this.setHealth(2000)
 
         this._lastLifeCheck = this.getHealth()
 
@@ -148,6 +148,7 @@ public class Gate
         this._dead = false
         this.getGate().killable.restoreLife(this.getMaxHealth(), true)
         this.open()
+        this.setHealth(this.getMaxHealth())
 
     function isDamaged() returns bool
         return this.getHealth() < this.getMaxHealth()
@@ -297,10 +298,14 @@ class GateControl extends EventEntity
         this.onSelected() (player p) ->
             if p.getSide() == this.getOwner().getSide()
                 if this._selectedBy != null and this._selectedBy != p
-                    this._selectedBy.print(p.getName()+" wants you to release control over gate", 2)
-                    this._selectedBy.toOwnerType().ping(this.getUnit().getPos(), 2)
-                    p.print(this._selectedBy.getName()+" is currently using the control tower, he/she has been asked to release control", 2)
-                    this._selectedBy.unselect(this.getUnit())
+                    if this._selectedBy.toOwnerType().isPlaying()
+                        this._selectedBy.print(p.getName()+" wants you to release control over gate", 2)
+                        this._selectedBy.toOwnerType().ping(this.getUnit().getPos(), 2)
+                        p.print(this._selectedBy.getName()+" is currently using the control tower, he/she has been asked to release control", 2)
+                        this._selectedBy.unselect(this.getUnit())
+                    else
+                        this._selectedBy = p
+                        this.getUnit().setOwner(this._selectedBy, true)
                 else
                     this._selectedBy = p
                     this.getUnit().setOwner(this._selectedBy, true)

@@ -21,7 +21,7 @@ import Ids
 @configurable public let BARRACK_BUTTON_Y = 0
 
 @configurable public let BARRACK_COST_GOLD = 200
-@configurable public let BARRACK_COST_GOLD_INCREMENT = 600
+@configurable public let BARRACK_COST_GOLD_INCREMENT = 200
 @configurable public let BARRACK_COST_LUMBER = 1
 
 @configurable public let BARRACK_RUN_CYCLE_INTERVAL = 30.

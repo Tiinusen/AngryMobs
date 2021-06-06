@@ -14,7 +14,7 @@ import Ids
 		..setUnitClassification("_")
 		..setRace(Race.Commoner)
 		..setCanFlee(true)
-		//..setCollisionSize(0.0)
+		..setCollisionSize(1.0)
 		// Button Placement
 		..setButtonPositionX(WORKER_BUTTON_X)
 		..setButtonPositionY(WORKER_BUTTON_Y)

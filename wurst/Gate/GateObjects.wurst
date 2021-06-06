@@ -27,7 +27,7 @@ import Ids
 		..setUnitsTrained(commaList(""))
 		..setUnitsSold(commaList(""))
 		// Health
-		..setHitPointsMaximumBase(1000)
+		..setHitPointsMaximumBase(2000)
 		// Other
 		..setIsaBuilding(true)
 		..setHideMinimapDisplay(false)
@@ -70,8 +70,8 @@ import Ids
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
-		..setGoldCostBase(1500)
-		..setGoldCostIncrement(1500)
+		..setGoldCostBase(750)
+		..setGoldCostIncrement(750)
 
 	// Health Upgrade
 	new UpgradeDefinition(GATE_CONTROL_HEALTH_UPGRADE_ID)

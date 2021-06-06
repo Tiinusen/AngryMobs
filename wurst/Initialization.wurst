@@ -16,15 +16,34 @@ init
 	Owner.getActive().forEach() (Owner owner) ->
 		owner.getPlayer().addGold(bj_isSinglePlayer?100:100)
 		owner.getPlayer().addLumber(1)
+	// Keep time at noon
 	SetTimeOfDay(12)
 	doPeriodically(30) (CallbackPeriodic cb) ->
 		SetTimeOfDay(12)
+	// Passive gold income each minute
 	doPeriodically(60) (CallbackPeriodic cb) ->
 		Owner.getActive().forEach() (Owner owner) ->
 			owner.getPlayer().addGold(100)
+	// Passive lumber income each five minute
 	doPeriodically(300) (CallbackPeriodic cb) ->
 		Owner.getActive().forEach() (Owner owner) ->
 			owner.getPlayer().addLumber(1)
+	// Shade side players money amongst all players of that side
+	doPeriodically(1) (CallbackPeriodic cb) ->
+		if Side.west.getSidePlayer().getGold() > 0
+			let players = Side.west.getPlayers().filter((Owner t) -> t.isPlaying())
+			let share = Side.west.getSidePlayer().getGold() / players.size()
+			Side.west.getSidePlayer().setGold(0)
+			players.forEach() (Owner t) ->
+				t.getPlayer().addGold(share.toInt())
+		if Side.east.getSidePlayer().getGold() > 0
+			let players = Side.east.getPlayers().filter((Owner t) -> t.isPlaying())
+			let share = Side.east.getSidePlayer().getGold() / players.size()
+			Side.east.getSidePlayer().setGold(0)
+			players.forEach() (Owner t) ->
+				t.getPlayer().addGold(share.toInt())
+
+	print("|cffffcc00Welcome to this Playtest !|r\nFirst off, |cff33ff00read tooltips|r and please be patient, not everything is working perfectly\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas",20)
 	
 function spawn()
 	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))
