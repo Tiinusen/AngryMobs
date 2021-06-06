@@ -18,5 +18,4 @@ public class Archer extends SoldierEntity
         super(ARCHER_ID, worker)
     
     override function applyUpgrades()
-        this.applyMoveSpeed(this.getOwner().getResearch(WORKER_HALL_MOVEMENT_SPEED_ID)*50.)
-        this.applyAttackDamage(0, damage(this.getOwner().getResearch(WORKER_HALL_ATTACK_DAMAGE_ID)*5, 0, 0))
+        this.applyAttackDamage(0, damage(0, this.getOwner().getResearch(BARRACK_ARCHER_DAMAGE_ID)*2, 0))

@@ -87,9 +87,9 @@ public class AI
         let gx = this.getOwner().getSide().getGate().getPos().x
         let w = GetWorldBounds()
         if gx < 0
-            r = Rect(kx, w.getMinY(), gx-500, w.getMaxY())
+            r = Rect(kx, w.getMinY(), gx-200, w.getMaxY())
         else
-            r = Rect(kx, w.getMinY(), gx+500, w.getMaxY())
+            r = Rect(kx, w.getMinY(), gx+200, w.getMaxY())
         this.getHero().orderBuild(typeid, r) (bool success) ->
             doAfter(1) ->
                 this.decideNextAction()

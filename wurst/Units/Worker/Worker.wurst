@@ -93,7 +93,7 @@ public class Worker extends UnitEntity
 	function decideNextAction()
 		if not this.isCarryingGold() and this.getOwner().getSide().getGate().isDamaged()
 			// The gate needs repair, let's go to the worker hall and fetch lumber
-			this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
+			this.orderMove(this.getWorkerHall().getUnit(), 550) (boolean reached) ->
 				// Let's go inside and get lumber
 				if reached and this.getOwner().getSide().getGate().isDamaged()
 					this.getUnit().hide()
@@ -109,11 +109,11 @@ public class Worker extends UnitEntity
 
 								// Each stroke of the hammer rebuilds the gate
 								let cbp = this._closureTerminator.periodically(1) (CallbackClosureTerminator terminator) ->
-									this.getOwner().getSide().getGate().setHealth(this.getOwner().getSide().getGate().getHealth()+10)
+									this.getOwner().getSide().getGate().increaseHealth(25.*(this.getOwner().getResearch(WORKER_HALL_WORKER_REPAIR_UPGRADE_ID)+1.))
 									this.getUnit().setAnimation("attack")
 								
 								// After a little while the lumber ran out
-								this._closureTerminator.after(5) -> 
+								this._closureTerminator.after(2) -> 
 									destroy cbp
 									this.getUnit().removeAnimationProperties("lumber")
 									this.decideNextAction()

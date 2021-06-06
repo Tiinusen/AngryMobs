@@ -27,6 +27,6 @@ import Ids
 @configurable public let WORKER_HALL_RUN_CYCLE_INTERVAL = 5.
 
 @configurable public let WORKER_HALL_SELECT_MINE_ICON = Icons.bTNGoldmine
-@configurable public let WORKER_HALL_SELECT_MINE_NAME = "Select Mine"
-@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_BASIC = "Select Mine"
-@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_EXTENDED = ""
+@configurable public let WORKER_HALL_SELECT_MINE_NAME = "Swap Mine"
+@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_BASIC = "Swap Mine"
+@configurable public let WORKER_HALL_SELECT_MINE_TOOL_TIP_EXTENDED = "Swaps which mine your workers will goto to fetch gold"

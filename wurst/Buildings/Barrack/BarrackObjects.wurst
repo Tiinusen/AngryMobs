@@ -2,6 +2,7 @@ package BarrackObjects
 
 import BarrackConstants
 import ChannelAbilityPreset
+import UpgradeObjEditing
 import Ids
 
 @compiletime function generate()
@@ -21,7 +22,11 @@ import Ids
 		..setButtonPositionY(i != 0 ? 2 : BARRACK_BUTTON_Y)
 		// Abilities / Upgrades / Building / Training / Selling
 		..setNormalAbilities(BARRACK_ABILITIES)
-		..setResearchesAvailable(commaList(BARRACK_WORKER_TO_MILITIA_UPGRADE_ID, BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID))
+		..setResearchesAvailable(commaList(
+			BARRACK_FOOTMAN_ARMOR_ID, 
+			BARRACK_FOOTMAN_DAMAGE_ID, 
+			BARRACK_ARCHER_DAMAGE_ID
+		))
 		..setUnitsTrained(commaList(BARRACK_UNITS_TRAINED))
 		..setUnitsSold(BARRACK_UNITS_SOLD)
 		// Build / Cost
@@ -42,3 +47,78 @@ import Ids
 			b..setHotkey(BARRACK_HOTKEY)
 		else
 			b..setHotkey("V")
+
+	// Footman Armor
+	new UpgradeDefinition(BARRACK_FOOTMAN_ARMOR_ID)
+		..setLevels(2)
+		..presetEditorSuffix((int lvl) -> "(Barrack)")
+		..presetName((int lvl) -> "Armor (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Armor (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the armor of your footmen")
+		// Requirements
+		// ..presetRequirements((int lvl) -> commaList(""))
+		// ..presetRequirementsLevels((int lvl) -> commaList(""))
+		// Hotkey
+		..presetHotkey(lvl -> "X")
+		// Icon
+		..setIcon(1, Icons.bTNHumanArmorUpOne)
+		..setIcon(2, Icons.bTNHumanArmorUpTwo)
+		..setIcon(3, Icons.bTNHumanArmorUpThree)
+		// Button Placement
+		..setButtonPositionX(1)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(400)
+
+	// Footman Damage
+	new UpgradeDefinition(BARRACK_FOOTMAN_DAMAGE_ID)
+		..setLevels(3)
+		..presetEditorSuffix((int lvl) -> "(Barrack)")
+		..presetName((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the attack damage of your footmen")
+		// Requirements
+		// ..presetRequirements((int lvl) -> commaList(""))
+		// ..presetRequirementsLevels((int lvl) -> commaList(""))
+		// Hotkey
+		..presetHotkey(lvl -> "C")
+		// Icon
+		..setIcon(1, "ReplaceableTextures\\CommandButtons\\BTNSteelMelee.blp")
+		..setIcon(2, "ReplaceableTextures\\CommandButtons\\BTNThoriumMelee.blp")
+		..setIcon(3, "ReplaceableTextures\\CommandButtons\\BTNArcaniteMelee.blp")
+		// Button Placement
+		..setButtonPositionX(2)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(400)
+
+	// Archer Damage
+	new UpgradeDefinition(BARRACK_ARCHER_DAMAGE_ID)
+		..setLevels(3)
+		..presetEditorSuffix((int lvl) -> "(Barrack)")
+		..presetName((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Attack Damage (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increases the attack damage of your archers")
+		// Requirements
+		// ..presetRequirements((int lvl) -> commaList(""))
+		// ..presetRequirementsLevels((int lvl) -> commaList(""))
+		// Hotkey
+		..presetHotkey(lvl -> "Z")
+		// Icon
+		..setIcon(1, Icons.bTNImprovedBows)
+		..setIcon(2, Icons.bTNImprovedBows)
+		..setIcon(3, Icons.bTNImprovedBows)
+		// Button Placement
+		..setButtonPositionX(0)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(200)
+		..setGoldCostIncrement(400)

@@ -11,7 +11,8 @@ import Ids
 @configurable public let HERO_NAMES = commaList("Hero")
 @configurable public let HERO_NAME = "|cff084294Hero"
 
-@configurable public let HERO_ABILITIES = commaList(AbilityIds.inventory, AbilityIds.repairHuman)
+@configurable public let HERO_ABILITIES = commaList("")
+@configurable public let HERO_NORMAL_ABILITIES = commaList(AbilityIds.inventory, AbilityIds.repairHuman)
 
 @configurable public let HERO_BUILDING = commaList(WORKER_HALL_ID_LEVEL_1, BARRACK_ID_LEVEL_1)
 @configurable public let HERO_UPGRADES = commaList("")

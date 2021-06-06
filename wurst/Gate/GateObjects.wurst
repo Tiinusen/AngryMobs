@@ -2,6 +2,7 @@ package GateObjects
 
 import public Assets
 import ChannelAbilityPreset
+import UpgradeObjEditing
 import Ids
 
 @compiletime function generate()
@@ -22,7 +23,7 @@ import Ids
 		// Abilities / Upgrades / Building / Training / Selling
 		..setNormalAbilities(commaList(GATE_CONTROL_TOGGLE_ID))
 		..setUpgradesTo(commaList(""))
-		..setResearchesAvailable(commaList(""))
+		..setResearchesAvailable(commaList(GATE_CONTROL_UPGRADE_ID, GATE_CONTROL_HEALTH_UPGRADE_ID))
 		..setUnitsTrained(commaList(""))
 		..setUnitsSold(commaList(""))
 		// Health
@@ -36,7 +37,7 @@ import Ids
 	..setEditorSuffix("(Gate Control)")
 	..setName("Toggle")
 	..setTooltipNormal(1, "Open")
-	..setTooltipNormalExtended(1, "Opens the gate|n|n|cc7cfc20cMight look like it get's destroyed in reforged but it isn't")
+	..setTooltipNormalExtended(1, "Opens the |cffb61aaeGate|r|n|n|cff33ff00Might look like it get's destroyed in reforged but it isn't")
 	..setTooltipNormal(2, "Close")
 	..setTooltipNormalExtended(2, "Closes the gate")
 	// Icon
@@ -51,3 +52,43 @@ import Ids
 	// Target
 	..presetTargetTypes(Targettype.NONE)
 	// ..presetOption(Option.TARGETIMAGE, true)
+
+	// Gate Level Upgrade
+	new UpgradeDefinition(GATE_CONTROL_UPGRADE_ID)
+		..setLevels(3)
+		..presetEditorSuffix((int lvl) -> "(Gate Control)")
+		..presetName((int lvl) -> "Gate Level (|c90ecfc0eLevel "+(lvl+1).toString()+"|r)")
+		..presetTooltip((int lvl) -> "Upgrade (|c90ecfc0eLevel "+(lvl+1).toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increase the level of the |cffb61aaeGate|r\n\n|cffffcc00Increases the |cff33ff00health|r and |cffffcc00unlock upgrades|r")
+		// Icon
+		..presetIcon((int lvl) -> Icons.bTNDemonGate)
+		// Hotkey
+		..presetHotkey(lvl -> "V")
+		// Button Placement
+		..setButtonPositionX(3)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(1500)
+		..setGoldCostIncrement(1500)
+
+	// Health Upgrade
+	new UpgradeDefinition(GATE_CONTROL_HEALTH_UPGRADE_ID)
+		..setLevels(50)
+		..presetEditorSuffix((int lvl) -> "(Gate Control)")
+		..presetName((int lvl) -> "Gate Health Level (|c90ecfc0eLevel "+(lvl+1).toString()+"|r)")
+		..presetTooltip((int lvl) -> "Upgrade Health (|c90ecfc0eLevel "+(lvl+1).toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "|cffffcc00Increases the |cff33ff00health|r of |cffb61aaeGate|r by |cffffcc00250|r")
+		// Icon
+		..presetIcon((int lvl) -> Icons.bTNRepair)
+		// Hotkey
+		..presetHotkey(lvl -> "C")
+		// Button Placement
+		..setButtonPositionX(2)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(100)
+		..setGoldCostIncrement(0)

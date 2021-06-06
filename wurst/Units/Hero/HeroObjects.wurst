@@ -18,7 +18,8 @@ import Ids
 		// Hotkey
 		..setHotkey("")
 		// Abilities / Upgrades / Building / Training / Selling
-		..setNormalAbilities(HERO_ABILITIES)
+		..setHeroAbilities(HERO_ABILITIES)
+		..setNormalAbilities(HERO_NORMAL_ABILITIES)
 		..setUpgradesUsed(HERO_UPGRADES)
 		..setStructuresBuilt(HERO_BUILDING)
 		// Speed

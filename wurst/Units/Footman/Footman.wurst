@@ -18,3 +18,5 @@ public class Footman extends SoldierEntity
         super(FOOTMAN_ID, worker)
     
     override function applyUpgrades()
+        this.applyAttackDamage(0, damage(this.getOwner().getResearch(BARRACK_FOOTMAN_DAMAGE_ID)*10, 0, 0))
+        this.applyArmor(this.getOwner().getResearch(BARRACK_FOOTMAN_ARMOR_ID).toReal())

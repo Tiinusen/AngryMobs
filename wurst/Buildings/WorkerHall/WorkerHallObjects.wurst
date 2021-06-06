@@ -27,7 +27,8 @@ import Ids
 			WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID, 
 			WORKER_HALL_MOVEMENT_SPEED_ID, 
 			WORKER_HALL_ARMOR_ID, 
-			WORKER_HALL_ATTACK_DAMAGE_ID
+			WORKER_HALL_ATTACK_DAMAGE_ID,
+			WORKER_HALL_WORKER_REPAIR_UPGRADE_ID
 		))
 		..setUnitsTrained(WORKER_HALL_UNITS_TRAINED)
 		..setUnitsSold(WORKER_HALL_UNITS_SOLD)
@@ -111,7 +112,7 @@ import Ids
 		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
 		..presetName((int lvl) -> "Trips to Mine (|c90ecfc0eLevel "+lvl.toString()+"|r)")
 		..presetTooltip((int lvl) -> "Trips to Mine (|c90ecfc0eLevel "+lvl.toString()+"|r)")
-		..presetTooltipExtended((int lvl) -> "Increase the amount of trips each worker do between the mine and the hero\n\n|c81d9dd06Increases trips to "+(lvl+1).toString())
+		..presetTooltipExtended((int lvl) -> "Increase the amount of trips each |cff33ff00worker|r do between the mine and the hero\n\n|c81d9dd06Increases trips to "+(lvl+1).toString())
 		// Icon
 		..presetIcon((int lvl) -> Icons.bTNBox)
 		// Hotkey
@@ -124,6 +125,26 @@ import Ids
 		..setTimeIncrement(0)
 		..setGoldCostBase(1000)
 		..setGoldCostIncrement(2000)
+
+	// Repair Upgrade
+	new UpgradeDefinition(WORKER_HALL_WORKER_REPAIR_UPGRADE_ID)
+		..setLevels(3)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName((int lvl) -> "Repair (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltip((int lvl) -> "Repair (|c90ecfc0eLevel "+lvl.toString()+"|r)")
+		..presetTooltipExtended((int lvl) -> "Increase the amount of |cff33ff00health|r each |cff33ff00worker|r restore when repairing |cffb61aaeGate|r\n\nIncreases |cff33ff00health|r restored per |cd419d4c5second|r to |cff33ff00"+((lvl+1)*25).toString())
+		// Icon
+		..presetIcon((int lvl) -> Icons.bTNRepair)
+		// Hotkey
+		..presetHotkey(lvl -> "C")
+		// Button Placement
+		..setButtonPositionX(2)
+		..setButtonPositionY(2)
+		// Cost
+		..setTimeBase(1)
+		..setTimeIncrement(0)
+		..setGoldCostBase(500)
+		..setGoldCostIncrement(1000)
 
 	// Movement Speed
 	new UpgradeDefinition(WORKER_HALL_MOVEMENT_SPEED_ID)

@@ -143,12 +143,13 @@ public class Owner
             this._onResearch = new LinkedList<CallbackResearch>()
             nullTimer() -> 
                 this._onResearchEventListener = EventListener.add(EVENT_PLAYER_UNIT_RESEARCH_FINISH) ->
-                    let typeid = EventData.getResearchedType()
-                    if this._onResearch != null
-                        this._onResearch.filter((CallbackResearch callback) -> callback.techID == 0 or callback.techID == typeid).forEach() (CallbackResearch callback) ->
-                            if this._onResearch.has(callback)
-                                callback.call(typeid)
-            this._onResearch.add(callback)
+                    if this.getPlayer() == EventData.getTriggerPlayer()
+                        let typeid = EventData.getResearchedType()
+                        if this._onResearch != null
+                            this._onResearch.filter((CallbackResearch callback) -> callback.techID == 0 or callback.techID == typeid).forEach() (CallbackResearch callback) ->
+                                if this._onResearch.has(callback)
+                                    callback.call(typeid)
+        this._onResearch.add(callback)
         callback.cancel = () ->
             if this._onResearch != null
                 this._onResearch.remove(callback)

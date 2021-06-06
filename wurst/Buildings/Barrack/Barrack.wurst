@@ -21,12 +21,6 @@ public class Barrack extends RunnerEntity
     construct(player owner, vec2 pos, real dir)
         super(CreateUnit(owner, BARRACK_ID_LEVEL_1, pos.x, pos.y, dir), BARRACK_RUN_CYCLE_INTERVAL)
 
-    function getWorkerToMilitiaLevel() returns int
-        return this.getOwner().getResearch(BARRACK_WORKER_TO_MILITIA_UPGRADE_ID)
-
-    function getWorkerTripsToMineLevel() returns int
-        return this.getOwner().getResearch(BARRACK_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
-
     override function initalize()
         this.getUnit().setInvulnerable(true)
         this.onUpgraded() (int typeid) ->

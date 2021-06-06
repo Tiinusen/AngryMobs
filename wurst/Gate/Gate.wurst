@@ -8,7 +8,7 @@ import Side
 import Abilities
 import LinkedList
 import ClosureEvents
-import initlater Worker
+import initlater Owner
 
 init
     _init()
@@ -82,6 +82,12 @@ public class Gate
             this._gate.open()
         this.setMaxHealth(maxHP+10000)
         this.setHealth(ratio*this.getMaxHealth())
+
+    function increaseMaxHealth(real life)
+        this.setMaxHealth(this.getMaxHealth()+life)
+    
+    function increaseHealth(real life)
+        this.setHealth(this.getHealth()+life)
         
         
     private real _lastLifeCheck
@@ -92,7 +98,7 @@ public class Gate
 
         this._lastLifeCheck = this.getHealth()
 
-        this._run  = doPeriodically(1) (CallbackPeriodic cb) ->
+        this._run  = doPeriodically(0.5) (CallbackPeriodic cb) ->
             let currentLife = this.getHealth()
             if this._lastLifeCheck != currentLife
                 this._lastLifeCheck = currentLife
@@ -100,7 +106,8 @@ public class Gate
                     cbhc.call(currentLife,cbhc)
 
             // Check if destroyed
-            if not this._dead and this.getHealth() < 1
+            if not this._dead and this.getHealth() < 50
+                this.setHealth(0)
                 this._dead = true
                 this.open()
                 if this._onDeath != null
@@ -268,12 +275,33 @@ class GateControl extends EventEntity
                 this._gate.close()
                 this.getUnit().setAbilityLevel(GATE_CONTROL_TOGGLE_ID, 1)
 
+        this.getOwner().getSide().getPlayers().forEach() (Owner t) ->
+            t.onResearch(GATE_CONTROL_UPGRADE_ID) (int techid) ->
+                this.getGate().upgrade()
+                this.getOwner().getSide().getPlayers().forEach() (Owner owner) ->
+                    if owner.getPlayer() != this._selectedBy
+                        owner.setResearch(techid, this._selectedBy.getResearch(techid))
+                    owner.print("|cff33ff00"+this._selectedBy.getName()+"|r has upgraded the |cffb61aaeGate|r to Level "+(owner.getResearch(techid)+1).toString(), 3)
+
+        this.getOwner().getSide().getPlayers().forEach() (Owner t) ->
+            t.onResearch(GATE_CONTROL_HEALTH_UPGRADE_ID) (int techid) ->
+                this.getGate().increaseMaxHealth(250)
+                this.getGate().increaseHealth(250)
+                this.getOwner().getSide().getPlayers().forEach() (Owner owner) ->
+                    if owner.getPlayer() != this._selectedBy
+                        owner.setResearch(techid, this._selectedBy.getResearch(techid))
+                    owner.print("|cff33ff00"+this._selectedBy.getName()+"|r has upgraded the |cffb61aaeGate|r |cff33ff00health|r to Level "+(owner.getResearch(techid)+1).toString(), 3)
+
         this.onSelected() (player p) ->
             if p.getSide() == this.getOwner().getSide()
-                if this._selectedBy != null
+                if this._selectedBy != null and this._selectedBy != p
+                    this._selectedBy.print(p.getName()+" wants you to release control over gate", 2)
+                    this._selectedBy.toOwnerType().ping(this.getUnit().getPos(), 2)
+                    p.print(this._selectedBy.getName()+" is currently using the control tower, he/she has been asked to release control", 2)
                     this._selectedBy.unselect(this.getUnit())
-                this._selectedBy = p
-                this.getUnit().setOwner(this._selectedBy, true)
+                else
+                    this._selectedBy = p
+                    this.getUnit().setOwner(this._selectedBy, true)
 
         this.onDeSelected() (player p) ->
             if this._selectedBy != null and this._selectedBy == p
