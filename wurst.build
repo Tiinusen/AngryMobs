@@ -1,7 +1,7 @@
 ---
 projectName: AngryMobs
 buildMapData:
-  name: Angry Mobs # Name shown ingame, may be colored
+  name: Angry Mobs (v0.1.0-alpha.1) # Name shown ingame, may be colored
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
@@ -53,7 +53,7 @@ buildMapData:
   - id: 6
     name: East Player 1
     race: HUMAN
-    controller: COMPUTER
+    controller: USER
     fixedStartLoc: true
   - id: 7
     name: East Player 2

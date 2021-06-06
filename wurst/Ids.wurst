@@ -53,6 +53,9 @@ public let COMMAND_BOOK_ABILITY_ID = compiletime(ABIL_ID_GEN.next())
 public let COMMAND_CONTROL_RELEASE_ID = compiletime(ABIL_ID_GEN.next())
 public let COMMAND_CONTROL_UNIT_ID = compiletime(ABIL_ID_GEN.next())
 public let COMMAND_CONTROL_AREA_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_ATTACK_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_MOVE_ID = compiletime(ABIL_ID_GEN.next())
+public let COMMAND_FOLLOW_ID = compiletime(ABIL_ID_GEN.next())
 
 /*
  * Buffs

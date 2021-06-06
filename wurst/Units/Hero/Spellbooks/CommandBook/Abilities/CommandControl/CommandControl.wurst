@@ -31,3 +31,18 @@ init
 			let hero = caster.toHeroType()
 			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
 				ControlledBuff.remove(soldier)
+
+		EventListener.onPointCast(COMMAND_ATTACK_ID) (unit caster, vec2 target) ->
+			let hero = caster.toHeroType()
+			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
+				soldier.orderAttack(target)
+
+		EventListener.onPointCast(COMMAND_MOVE_ID) (unit caster, vec2 target) ->
+			let hero = caster.toHeroType()
+			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
+				soldier.orderMove(target)
+
+		EventListener.onPointCast(COMMAND_FOLLOW_ID) (unit caster, vec2 target) ->
+			let hero = caster.toHeroType()
+			hero.getControlledSoldiers().forEach() (SoldierEntity soldier) ->
+				soldier.orderFollow(hero.getUnit())

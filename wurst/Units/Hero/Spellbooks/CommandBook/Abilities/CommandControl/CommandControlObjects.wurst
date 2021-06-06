@@ -22,6 +22,7 @@ import Ids
 		// Target
 		..presetTargetTypes(Targettype.NONE)
 		// ..presetOption(Option.VISIBLE, true)
+
 	// Control one Soldier
 	new ChannelAbilityPreset(COMMAND_CONTROL_UNIT_ID,1,true)
 		..setEditorSuffix("(Command Book)")
@@ -60,3 +61,62 @@ import Ids
 		..presetAreaofEffect((int lvl) -> 600)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
+
+	// Attack
+	new ChannelAbilityPreset(COMMAND_ATTACK_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Command Attack")
+		..presetTooltipNormal(lvl -> "Order Attack")
+		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to attack location|n|nKeep in mind that they won't automatically attack gate if used behind it, release control will make them go for the gate")
+		// Icon
+		..presetIcon(Icons.bTNCallToArms)
+		// Hotkey
+		..presetHotkey("A")
+		// Button Placement
+		..presetButtonPosNormal(0, 1)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetAreaofEffect((int lvl) -> 200)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)
+
+	// Move
+	new ChannelAbilityPreset(COMMAND_MOVE_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Command Move")
+		..presetTooltipNormal(lvl -> "Order Move")
+		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to move to location|n|nKeep in mind that they won't attack if encountering enemies until reaching location")
+		// Icon
+		..presetIcon(Icons.bTNCallToArms)
+		// Hotkey
+		..presetHotkey("S")
+		// Button Placement
+		..presetButtonPosNormal(1, 1)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetAreaofEffect((int lvl) -> 200)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)
+
+	// Follow
+	new ChannelAbilityPreset(COMMAND_FOLLOW_ID,1,true)
+		..setEditorSuffix("(Command Book)")
+		..setName("Command Follow")
+		..presetTooltipNormal(lvl -> "Order Follow")
+		..presetTooltipNormalExtended(lvl -> "Orders all controlled units to follow hero without attacking")
+		// Icon
+		..presetIcon(Icons.bTNCallToArms)
+		// Hotkey
+		..presetHotkey("D")
+		// Button Placement
+		..presetButtonPosNormal(2, 1)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetTargetTypes(Targettype.NONE)
+		// ..presetOption(Option.VISIBLE, true)

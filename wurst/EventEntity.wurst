@@ -451,6 +451,7 @@ public class ClosureTerminator
     function after(real timeToWait, CallbackVoid callback) returns CallbackClosureTerminator
         let ctsh = new ClosureTerminatorStateHolder()
         CallbackClosureTerminator cbct =  (CallbackClosureTerminator terminator) ->
+            this._list.remove(terminator)
             destroy terminator
         ctsh.cbs = doAfter(timeToWait) -> 
             this._list.remove(cbct)

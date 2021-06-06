@@ -13,7 +13,7 @@ public class Hero extends UnitEntity
     LinkedList<SoldierEntity> _controlledSoldiers = new LinkedList<SoldierEntity>()
     LinkedList<Hero> _challangedBy = new LinkedList<Hero>()
 
-    private int _maxRespawnTime = 60
+    private int _maxRespawnTime = 10
     private int _respawnTime = 0
     private unit _ghost
     private bool _inChallange = false
@@ -126,7 +126,7 @@ public class Hero extends UnitEntity
             this._ghost..setPos(this.getPos())
                 ..show()
             this.getOwner().getPlayer().select(this._ghost)
-            if this.getMaxRespawnTime() < 120
+            if this.getMaxRespawnTime() < 90
                 this.increaseMaxRespawnTime(10)
             this.increaseRespawnTime(this.getMaxRespawnTime(), false)
             SetTextTagVisibility(this._respawnText, true)
