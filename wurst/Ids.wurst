@@ -20,6 +20,7 @@ import public Icons
 
 // Hero
 public let HERO_ID = compiletime(HERO_ID_GEN.next())
+public let HERO_GHOST_ID = compiletime(UNIT_ID_GEN.next())
 
 // King
 public let KING_ID = compiletime(UNIT_ID_GEN.next())
@@ -42,6 +43,9 @@ public let ARCHER_ID = compiletime(UNIT_ID_GEN.next())
 /*
  * Abilities
  */
+
+// Rock Paper Scissors
+public let HERO_GHOST_ROCK_PAPER_SCISSORS_ID = compiletime(ABIL_ID_GEN.next())
 
 // Command Book
 public let COMMAND_BOOK_ID = compiletime(ITEM_ID_GEN.next())

@@ -60,3 +60,63 @@ import Ids
 		..setStrengthPerLevel(0)
 		..setAgilityPerLevel(0)
 		..setIntelligencePerLevel(0)
+
+	new UnitDefinition(HERO_GHOST_ID, UnitIds.wisp)
+		..setName("Soul of a Hero")
+		..setNameEditorSuffix("(Hero)")
+		..setTooltipBasic("Soul of a Hero")
+		..setTooltipExtended("Soul of a Hero wandering this wicked earth")
+		..setUnitClassification("_")
+		..setRace(Race.Commoner)
+		..setCanFlee(false)
+		..setCollisionSize(0.0)
+		// Requirements
+		..setRequirements(commaList(""))
+		..setRequirementsLevels(commaList(""))
+		// Icon / Model
+		..setIconGameInterface(Icons.bTNWisp)
+		..setModelFile(Units.wisp1)
+		// Scale
+		..setScalingValue(0.5)
+		..setSelectionScale(0.5)
+		// Hotkey
+		..setHotkey("")
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(commaList(HERO_GHOST_ROCK_PAPER_SCISSORS_ID))
+		..setUpgradesUsed(commaList(""))
+		..setStructuresBuilt(commaList(""))
+		// Speed
+		..setSpeedBase(500)
+		// Sight
+		..setSightRadiusDay(600)
+		..setSightRadiusNight(100)
+		// Mana
+		..setManaRegeneration(0)
+		..setManaInitialAmount(0)
+		..setManaMaximum(0)
+		// Armor
+		..setDefenseBase(0)
+		..setArmorType(ArmorType.Unarmored)
+		// Health
+		..setHitPointsMaximumBase(220)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Unknown)
+		..setAttack1CooldownTime(0)
+		..setAttack1DamageBase(0)
+		..setAttack1DamageNumberofDice(0)
+		..setAttack1DamageSidesperDie(0)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Art Special / Animation / Maximum Pitch / Maximum Roll / Projectile / Propulsion
+		..setArtSpecial("")
+		..setAnimationBlendTimeseconds(0.0)
+		..setAnimationCastBackswing(0.0)
+		..setMaximumPitchAngledegrees(0.0)
+		..setMaximumRollAngledegrees(0.0)
+		..setProjectileImpactZ(0.0)
+		..setProjectileLaunchZ(0.0)
+		..setPropulsionWindowdegrees(1.0)

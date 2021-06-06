@@ -1,0 +1,26 @@
+package RockPaperScissorsObjects
+
+import ChannelAbilityPreset
+import Ids
+
+@compiletime function generate()
+	// Control one Soldier
+	new ChannelAbilityPreset(HERO_GHOST_ROCK_PAPER_SCISSORS_ID,1,true)
+		..setEditorSuffix("(Hero Ghost)")
+		..setName("Challange")
+		..presetTooltipNormal(lvl -> "Rock, Paper, Scissors")
+		..presetTooltipNormalExtended(lvl -> "Challange soul(s) in Rock, Paper Scissors\n\nWinner respawns instantly\nLoser takes Winners remaining respawn time")
+		// Icon
+		..presetIcon(Icons.bTNWisp)
+		// Hotkey
+		..presetHotkey("Z")
+		// Button Placement
+		..presetButtonPosNormal(0, 2)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		// Target
+		..presetAreaofEffect((int lvl) -> 100)
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)

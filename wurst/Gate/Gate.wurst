@@ -119,7 +119,7 @@ public class Gate
                 // Check if enemies are nearby
                 bool nearbyEnemies = false
                 for unit u in GetUnitsInRangeOfLocAll(800, Location(this.getPos().x, this.getPos().y)).iterator()
-                    if u.getOwner().isEnemyOf(this.getGateControl().getOwner().getPlayer()) and u.isAliveTrick()
+                    if u.getTypeId() != HERO_ID and u.getTypeId() != HERO_GHOST_ID and u.getOwner().isEnemyOf(this.getGateControl().getOwner().getPlayer()) and u.isAliveTrick()
                         nearbyEnemies = true
                         break
                 

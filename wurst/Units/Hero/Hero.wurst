@@ -11,6 +11,12 @@ LinkedList<Hero> _heroes = new LinkedList<Hero>()
 
 public class Hero extends UnitEntity
     LinkedList<SoldierEntity> _controlledSoldiers = new LinkedList<SoldierEntity>()
+    LinkedList<Hero> _challangedBy = new LinkedList<Hero>()
+
+    private int _maxRespawnTime = 60
+    private int _respawnTime = 0
+    private unit _ghost
+    private bool _inChallange = false
 
     construct(unit obj)
         super(obj)
@@ -29,6 +35,61 @@ public class Hero extends UnitEntity
 
     ondestroy
         destroy _controlledSoldiers
+
+    function inChallange() returns bool
+        return this._inChallange
+
+    function setInChallange(bool state)
+        this._inChallange = state
+
+    function isChallangedBy(Hero h) returns bool
+        return this._challangedBy.has(h)
+
+    function addChallangedBy(Hero h)
+        this._challangedBy.add(h)
+
+    function removeChallangedBy(Hero h)
+        this._challangedBy.remove(h)
+
+    function clearChallangers()
+        this._challangedBy.clear()
+
+    function revive()
+        this._ghost.hide()
+        this.getUnit().revive(this._ghost.getPos(), true)
+        this.getUnit().setHP(this.getUnit().getMaxHP())
+        this.getOwner().getPlayer().select(this.getUnit())
+
+    function getGhost() returns unit
+        return this._ghost
+
+    function increaseRespawnTime(int add, bool allowOverMax) returns int
+        this._respawnTime += add
+        if not allowOverMax and this._respawnTime > this.getMaxRespawnTime()
+            this._respawnTime = this.getMaxRespawnTime()
+        return this._respawnTime
+
+    function decreaseRespawnTime(int sub) returns int
+        this._respawnTime -= sub
+        if this._respawnTime < 0
+            this._respawnTime = 0
+        return this._respawnTime
+
+    function getRespawnTime() returns int
+        return this._respawnTime
+
+    function getMaxRespawnTime() returns int
+        return this._maxRespawnTime
+
+    function increaseMaxRespawnTime(int add) returns int
+        this._maxRespawnTime += add
+        return this.getMaxRespawnTime()
+
+    function transferRespawnTime(Hero loser)
+        loser.increaseRespawnTime(this.getRespawnTime(), true)
+        this.decreaseRespawnTime(this.getRespawnTime())
+        print(this.getOwner().getPlayer().getName()+" should respawn soon")
+        
         
     static function removeControlledSoldier(SoldierEntity soldier)
         _heroes.forEach() (Hero hero) ->
@@ -47,12 +108,38 @@ public class Hero extends UnitEntity
     
     override function applyUpgrades()
 
+    private texttag _respawnText
+
     override protected function initalize()
+        this._ghost = CreateUnit(this.getOwner().getPlayer(), HERO_GHOST_ID, this.getPos().x, this.getPos().y, 270)
+        this._ghost.setInvulnerable(true)
+        this._ghost.hide()
+        this._respawnText = CreateTextTagUnitBJ("", this._ghost, 0, 10, 0, 100, 0, 0)
+        SetTextTagVisibility(this._respawnText, false)
+
         new CommandBook(this.getUnit())
+        
         this.onDeath() (unit killer, CallbackDeath callback) ->
             this._controlledSoldiers.forEach() (SoldierEntity t) ->
                 ControlledBuff.remove(t)
             this._controlledSoldiers.clear()
+            this._ghost..setPos(this.getPos())
+                ..show()
+            this.getOwner().getPlayer().select(this._ghost)
+            if this.getMaxRespawnTime() < 120
+                this.increaseMaxRespawnTime(10)
+            this.increaseRespawnTime(this.getMaxRespawnTime(), false)
+            SetTextTagVisibility(this._respawnText, true)
+            this._closureTerminator.periodically(1) (CallbackClosureTerminator terminator) ->
+                if not this._inChallange
+                    if this.getRespawnTime() == 0
+                        terminator.terminate(terminator)
+                        SetTextTagVisibility(this._respawnText, false)
+                        this.revive()
+                    else
+                        this.decreaseRespawnTime(1)
+                        SetTextTagTextBJ(this._respawnText, this.getRespawnTime().toString()+"s", 10)
+                        SetTextTagPosUnitBJ(this._respawnText, this._ghost, 0)
 
     /** Moves player camera to hero */
     function focus()
@@ -63,4 +150,4 @@ public class Hero extends UnitEntity
 
 /** finds owner type linked to player primitive */
 public function unit.toHeroType() returns Hero
-    return _heroes.filter((Hero hero) -> hero.getUnit() == this).getFirst()
+    return _heroes.filter((Hero hero) -> hero.getUnit() == this or hero.getGhost() == this).getFirst()

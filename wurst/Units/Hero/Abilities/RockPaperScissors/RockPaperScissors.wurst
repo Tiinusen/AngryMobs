@@ -1,0 +1,159 @@
+package RockPaperScissors
+
+import ClosureEvents
+import ClosureTimers
+import Hero
+import Ids
+import DialogBox
+import Owner
+
+init
+	nullTimer() -> 
+		EventListener.onPointCast(HERO_GHOST_ROCK_PAPER_SCISSORS_ID) (unit caster, vec2 pos) ->
+			bool challangeStarted = false
+			for unit target in GetUnitsInRangeOfLocAll(100, Location(pos.x, pos.y)).iterator()
+				if target.getTypeId() == HERO_GHOST_ID and target != caster and not challangeStarted
+					let casterHero = caster.toHeroType()
+					let targetHero = target.toHeroType()
+					if casterHero == null or targetHero == null
+						caster.getOwner().print("This can't be happening, this can't be true")
+					else if not casterHero.isAlive() and not targetHero.isAlive()
+						if not casterHero.isChallangedBy(targetHero) and not targetHero.getOwner().getPlayer().isComputer()
+							if not targetHero.isChallangedBy(casterHero)
+								targetHero.addChallangedBy(casterHero)
+								targetHero.getOwner().print("You have challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r in |cffffcc00Rock, Paper, Scissors|r", 2)
+							else
+								targetHero.getOwner().print("You have already challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r", 2)
+						else
+							challangeStarted = true
+							// Prevent multiple challanges starting
+							casterHero.clearChallangers()
+							targetHero.clearChallangers()
+
+							// Initiate Rock, Paper and Scissor
+							new Challange(casterHero, targetHero)
+
+public enum RPS
+	NONE
+	ROCK
+	PAPER
+	SCISSORS
+
+function RPS.toString() returns string
+	if this == RPS.ROCK
+		return "Rock"
+	else if this == RPS.PAPER
+		return "Paper"
+	else if this == RPS.SCISSORS
+		return "Scissors"
+	return "None"
+
+/** Returns who is the winner */
+function RPS.outcome(RPS b) returns RPS
+	let a = this
+	if a == b
+		return RPS.NONE
+	
+	// Rock
+	if a == RPS.ROCK and b == RPS.PAPER
+		return RPS.PAPER
+	if a == RPS.ROCK and b == RPS.SCISSORS
+		return RPS.ROCK
+
+	// Paper
+	if a == RPS.PAPER and b == RPS.ROCK
+		return RPS.PAPER
+	if a == RPS.PAPER and b == RPS.SCISSORS
+		return RPS.SCISSORS
+
+	// Scissors
+	if a == RPS.SCISSORS and b == RPS.ROCK
+		return RPS.ROCK
+	if a == RPS.SCISSORS and b == RPS.PAPER
+		return RPS.SCISSORS
+
+	return RPS.NONE
+
+class Challange
+	Hero heroA
+	Hero heroB
+
+	RPS answerA = RPS.NONE
+	RPS answerB = RPS.NONE
+
+	construct(Hero a, Hero b)
+		this.heroA = a
+		this.heroB = b
+		this.doChallange()
+
+	function doChallange()
+		this.doChallange(false)
+
+	function doChallange(bool rerun)
+		this.heroA.setInChallange(true)
+		this.heroB.setInChallange(true)
+		this.answerA = RPS.NONE
+		this.answerB = RPS.NONE
+		
+		this.showDialog(this.heroA.getOwner().getPlayer(), rerun) (RPS answer) ->
+			this.answerA = answer
+			if this.answerB != RPS.NONE
+				let winner = this.answerA.outcome(this.answerB)
+				this.heroA.setInChallange(false)
+				this.heroB.setInChallange(false)
+				this.heroA.getOwner().print(this.heroA.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerA.toString()+"|r, "+this.heroB.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerB.toString()+"|r, Winner: |cffffcc00"+winner.toString()+"|r wins", 3)
+				this.heroB.getOwner().print(this.heroA.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerA.toString()+"|r, "+this.heroB.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerB.toString()+"|r, Winner: |cffffcc00"+winner.toString()+"|r wins", 3)
+				if winner == this.answerA
+					this.heroA.transferRespawnTime(this.heroB)
+				else if winner == this.answerB
+					this.heroB.transferRespawnTime(this.heroA)
+				else
+					this.doChallange(true)
+
+		this.showDialog(this.heroB.getOwner().getPlayer(), rerun) (RPS answer) ->
+			this.answerB = answer
+			if this.answerA != RPS.NONE
+				let winner = this.answerA.outcome(this.answerB)
+				this.heroA.setInChallange(false)
+				this.heroB.setInChallange(false)
+				this.heroA.getOwner().print(this.heroA.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerA.toString()+"|r, "+this.heroB.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerB.toString()+"|r, Winner: |cffffcc00"+winner.toString()+"|r wins", 3)
+				this.heroB.getOwner().print(this.heroA.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerA.toString()+"|r, "+this.heroB.getOwner().getPlayer().getName()+" picked |cffffcc00"+this.answerB.toString()+"|r, Winner: |cffffcc00"+winner.toString()+"|r wins", 3)
+				if winner == this.answerA
+					this.heroA.transferRespawnTime(this.heroB)
+				else if winner == this.answerB
+					this.heroB.transferRespawnTime(this.heroA)
+				else
+					this.doChallange(true)
+	
+	function showDialog(player p, bool rerun, CallbackRPS cb)
+		if p.isComputer()
+			nullTimer() -> 
+				switch GetRandomInt(1, 3)
+					case 1
+						cb.call(RPS.ROCK)
+						destroy cb
+					case 2
+						cb.call(RPS.PAPER)
+						destroy cb
+					case 3
+						cb.call(RPS.SCISSORS)
+						destroy cb
+		else
+			let tempBox = new DialogBox(rerun?"TIE, Try Again":"What do you choice?")
+			tempBox.addButton("Rock") ->
+				destroy tempBox
+				cb.call(RPS.ROCK)
+				destroy cb
+			tempBox.addButton("Paper") ->
+				destroy tempBox
+				cb.call(RPS.PAPER)
+				destroy cb
+			tempBox.addButton("Scissors") ->
+				destroy tempBox
+				cb.call(RPS.SCISSORS)
+				destroy cb
+			tempBox.display(p, true)
+
+
+public abstract class CallbackRPS
+	abstract function call(RPS answer)
