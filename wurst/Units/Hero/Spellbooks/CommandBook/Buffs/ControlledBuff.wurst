@@ -43,7 +43,6 @@ abstract class ControlledBuff
 			let cb = doAfter(duration) ->
 				if _buffMap.has(soldier)
 					_buffMap.remove(soldier)
-					soldier.orderStop()
 					soldier.getUnit().removeAbility(buffId)
 					Hero.removeControlledSoldier(soldier)
 					soldier.orderStop()

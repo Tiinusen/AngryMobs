@@ -31,6 +31,7 @@ abstract public class SoldierEntity extends UnitEntity
 	ondestroy
 		SoldierEntity._units.remove(this)
 		Hero.removeControlledSoldier(this)
+		ControlledBuff.remove(this)
 
 	private function _init()
 		SoldierEntity._units.add(this)

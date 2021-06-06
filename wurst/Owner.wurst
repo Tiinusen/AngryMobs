@@ -6,6 +6,7 @@ import Side
 import LinkedList
 import ClosureEvents
 import ClosureTimers
+import Ids
 
 LinkedList<Owner> _owners = null
 
@@ -29,35 +30,30 @@ function _init()
                     UnitEntity.applyUpgradesOnPlayerUnits(owner)
 
     // Prevent building outside of castle
-    EventEntity.onConstructionStarted() (unit building, CallbackConstruction callback) ->
-        let side = building.getOwner().toOwnerType().getSide() 
-        if side == Side.west and side.getGate().getPos().x < building.getPos().x
-            building
-                ..cancel()
-                .getOwner()
-                .print("You are not allowed to build outside of the castle")
-        else if side == Side.east and building.getPos().x < side.getGate().getPos().x
-            building
-                ..cancel()
-                .getOwner()
-                .print("You are not allowed to build outside of the castle")
-
     EventEntity.onConstructionFinished() (unit building, CallbackConstruction callback) ->
         let side = building.getOwner().toOwnerType().getSide() 
         if side == Side.west and side.getGate().getPos().x < building.getPos().x
-            building.remove()
             nullTimer() ->
                 building
                 .getOwner()
-                .print("I can't say that I didn't give you a warning |cd1c9ae18;)")
-                building.getOwner().toOwnerType().getHero().getUnit().kill()
+                ..print("You are not allowed to build outside of castle")
+                if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                    building
+                    .getOwner()
+                    ..setGold(200)
+                    ..setLumber(1)
+                building.remove()
         else if side == Side.east and building.getPos().x < side.getGate().getPos().x
-            building.remove()
             nullTimer() ->
                 building
                 .getOwner()
-                .print("I can't say that I didn't give you a warning |cd1c9ae18;)")
-                building.getOwner().toOwnerType().getHero().getUnit().kill()
+                ..print("You are not allowed to build outside of castle")
+                if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                    building
+                    .getOwner()
+                    ..setGold(200)
+                    ..setLumber(1)
+                building.remove()
             
 public function unit.cancel()
     let owner = this.getOwner()
