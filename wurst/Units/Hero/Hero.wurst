@@ -1,7 +1,6 @@
 package Hero
 
 import Ids
-import CommandBook
 import Owner
 import LinkedList
 import SoldierEntity
