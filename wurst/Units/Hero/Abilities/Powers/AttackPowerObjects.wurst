@@ -1,0 +1,34 @@
+package AttackPowerObjects
+
+import Ids
+import AbilityObjEditing
+import BuffIds
+import BuffObjEditing
+
+@compiletime function gen()
+	new AbilityDefinitionRoar(HERO_ATTACK_POWER_ID)
+		..setEditorSuffix("(Hero Power)")
+		..setLevels(3)
+		// Hotkey
+		..presetHotkey("V")
+		// Button Placement
+		..presetButtonPosNormal(3, 2)
+		..setName("Attack Power")
+		..setTooltipLearn("Attack Power")
+		..setTooltipLearnExtended("Increase attack power of nearby units")
+		..presetTooltipNormal((int lvl) -> "Attack Power")
+		..presetTooltipNormalExtended((int lvl) -> "Increase attack power of nearby units\n\n"+(125*lvl).toString()+"% damage increase for 10 seconds")
+		..presetIcon(Icons.bTNAttack)
+		..presetBuffs((int lvl) -> commaList(HERO_ATTACK_POWER_BUFF_ID))
+		..presetDamageIncrease((int lvl) -> 1.25*lvl)
+		..presetManaCost((int lvl) -> 100)
+		..presetCooldown((int lvl) -> 20)
+		..presetDurationNormal((int lvl) -> 10.)
+		..presetDurationHero((int lvl) -> 0.1)
+		..setLevelSkipRequirement(1)
+
+	new BuffDefinition(HERO_ATTACK_POWER_BUFF_ID, BuffIds.roar)
+		..setName(1, "Attack Power")
+		..setTooltipNormal(1, "Attack Power")
+		..setTooltipNormalExtended(1, "This unit has it's attack power increased")
+		..setIcon(Icons.bTNAttack)

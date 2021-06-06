@@ -44,6 +44,12 @@ public let ARCHER_ID = compiletime(UNIT_ID_GEN.next())
  * Abilities
  */
 
+// Hero
+public let HERO_ATTACK_POWER_ID = compiletime(ABIL_ID_GEN.next())
+public let HERO_ATTACK_POWER_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+public let HERO_INVULNERABILITY_POWER_ID = compiletime(ABIL_ID_GEN.next())
+public let HERO_HEALING_POWER_ID = compiletime(ABIL_ID_GEN.next())
+
 // Rock Paper Scissors
 public let HERO_GHOST_ROCK_PAPER_SCISSORS_ID = compiletime(ABIL_ID_GEN.next())
 

@@ -132,7 +132,7 @@ public class Worker extends UnitEntity
 			this.goToMine(this.getWorkerHall().getSelectedMine())  
 		else if this.getOwner().getHero().isAlive()
 			// I have gold, let's go for the hero
-			this.orderMove(this.getOwner().getHero(), 200) (boolean reached) ->
+			this.orderMove(this.getOwner().getHero(), 300) (boolean reached) ->
 				if reached
 					// I have reached my hero, let's give him my gold
 					this.getUnit().removeAnimationProperties("gold")

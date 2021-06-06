@@ -5,13 +5,13 @@ buildMapData:
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
-    description: Anniversary re-make, originally inspired by Pyramid Escape's Mob Challange, construct minion spawners and use your abilities to improve their performance, take out enemy king and win
-    suggestedPlayers: DefaultSuggestedPlayers # Hint text displayed in lobby
+    description: It's a team 
+    suggestedPlayers: 2-6
     loadingScreen:
       background: Generic
       title: Anniversary re-make
       subTitle: Angry Mobs
-      text: Construct buildings to spawn minions, use abilities to boost minions, take out enemy leader, easy peacey
+      text: Two Castles, Two Kings\n\nDefend your King and kill the other one|n|nEach King wants 10 Guards|n|nEach worker needs to reach your hero for you to collect the gold
   optionsFlags:
     hideMinimapPreview: true
     forcesFixed: true
