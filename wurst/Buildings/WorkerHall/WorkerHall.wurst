@@ -93,6 +93,12 @@ public class WorkerHall extends RunnerEntity
                 this.getUnit().setAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID, 1)
             else
                 this.getUnit().setAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID, 2)
+        
+        this.run()
+        if this.getOwner().isTutorialEnabled() and not this.getOwner().isTutorialAlreadyDisplayedAndMarkAsDisplayed("WORKER HALL")
+            this.getOwner().print("|cff33ff00TUTORIAL|r: Spawns |cd5dab515workers|r automatically, but you can also send |cd5dab515expeditions|r", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: |cd5dab515Workers|r first goes to the |cd5dab515mine|r you have |cd5dab515selected|r", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: Afterwards they will go to the |cd5dab515Hero|r to give him the |cd5dab515Gold|r", 15)
             
             
     override function run()

@@ -66,6 +66,7 @@ import Ids
 		..presetHotkey("Z")
 		// Button Placement
 		..presetButtonPosNormal(0, 2)
+		..presetBaseOrderID((int lvl) -> WORKER_HALL_SELECT_MINE_ORDER_STRING)
 		// Cost
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)

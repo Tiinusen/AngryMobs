@@ -56,6 +56,13 @@ public class Barrack extends RunnerEntity
 
         this.onSold(ARCHER_ID) (unit sold, CallbackSold callback) ->
             new Archer(sold)
+
+        this.run()
+        if this.getOwner().isTutorialEnabled() and not this.getOwner().isTutorialAlreadyDisplayedAndMarkAsDisplayed("BARRACK")
+            this.getOwner().print("|cff33ff00TUTORIAL|r: Spawns |cd5dab515soldiers|r automatically, but you can also buy", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: |cd5dab515Soldiers|r will guard the |cd5dab515King|r (up to |cd5dab515ten|r soldiers)", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: If not defending then they will go to kill the enemy king", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: You can override this behavior by using the abilities in the |cd5dab515Inventory|r", 15)
             
     override function run()
         // Slot 1

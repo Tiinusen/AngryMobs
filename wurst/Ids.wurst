@@ -5,6 +5,7 @@ import public ObjectIds
 import public UnitIds
 import public Buildings
 import public Icons
+import OrderStringer
 
 /*
  * Destructables
@@ -104,6 +105,7 @@ public let WORKER_HALL_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
 public let WORKER_HALL_ID_LEVEL_2 = compiletime(UNIT_ID_GEN.next())
 public let WORKER_HALL_ID_LEVEL_3 = compiletime(UNIT_ID_GEN.next())
 public let WORKER_HALL_ID_LEVEL_4 = compiletime(UNIT_ID_GEN.next())
+public let WORKER_HALL_SELECT_MINE_ORDER_STRING = compiletime(OrderStringer.getOrderString())
 public let WORKER_HALL_SELECT_MINE_ID = compiletime(ABIL_ID_GEN.next())
 public let WORKER_HALL_LIMIT_REACHED_ID = compiletime(UPGD_ID_GEN.next())
 public let WORKER_HALL_LEVEL_ID = compiletime(UPGD_ID_GEN.next())

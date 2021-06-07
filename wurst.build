@@ -28,7 +28,7 @@ buildMapData:
   - id: 1
     name: West Player 2
     race: HUMAN
-    controller: USER
+    controller: COMPUTER
     fixedStartLoc: true
   - id: 2
     name: West Player 3
@@ -53,12 +53,12 @@ buildMapData:
   - id: 6
     name: East Player 1
     race: HUMAN
-    controller: USER
+    controller: COMPUTER
     fixedStartLoc: true
   - id: 7
     name: East Player 2
     race: HUMAN
-    controller: USER
+    controller: COMPUTER
     fixedStartLoc: true
   - id: 8
     name: East Player 3

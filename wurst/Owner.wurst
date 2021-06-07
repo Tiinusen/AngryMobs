@@ -78,6 +78,8 @@ public class Owner
     private Side _side
     private Hero _hero
 
+    private LinkedList<string> _viewedTutorials = new LinkedList<string>()
+
     private LinkedList<CallbackResearch> _onResearch = null
 
     private EventListener _onResearchEventListener = null
@@ -100,6 +102,15 @@ public class Owner
         if this._onResearchEventListener != null
             destroy this._onResearchEventListener
 
+    function isTutorialEnabled() returns bool
+        return true
+
+    function isTutorialAlreadyDisplayedAndMarkAsDisplayed(string name) returns bool
+        if this._viewedTutorials.has(name)
+            return true
+        this._viewedTutorials.add(name)
+        return false        
+    
     /** returns hero belonging to player */
     function getHero() returns Hero
         return this._hero
