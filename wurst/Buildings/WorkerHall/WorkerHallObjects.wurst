@@ -103,7 +103,7 @@ import Ids
 
 	// Worker Hall level
 	new UpgradeDefinition(WORKER_HALL_LEVEL_ID)
-		..setLevels(1)
+		..setLevels(5)
 		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
 		..presetName(lvl -> "Worker Hall - Level 2")
 		..presetTooltip(lvl -> "You need to upgrade the Worker Hall")
@@ -128,17 +128,17 @@ import Ids
 		..setGoldCostIncrement(600)
 		// Level 1
 		..setIcon(1, Icons.bTNCallToArms)
-		..setName(1, "Call to Fighter")
+		..setName(1, "Worker becomes a Fighter")
 		..setTooltip(1, "Upgrade Worker becomes a Fighter")
 		..setTooltipExtended(1, "Worker becomes a Fighter once his gold is collected by hero")
 		// Level 2
 		..setIcon(2, Icons.bTNMilitia)
-		..setName(2, "Call to Militia")
+		..setName(2, "Worker becomes a Militia")
 		..setTooltip(2, "Upgrade Worker becomes a Militia")
 		..setTooltipExtended(2, "Worker becomes a Militia once his gold is collected by hero")
 		// Level 3
 		..setIcon(3, Icons.bTNFootman)
-		..setName(3, "Call to Footman")
+		..setName(3, "Upgrade Worker becomes a Footman")
 		..setTooltip(3, "Upgrade Worker becomes a Footman")
 		..setTooltipExtended(3, "Worker becomes a Footman once his gold is collected by hero")
 

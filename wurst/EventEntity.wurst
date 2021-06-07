@@ -6,6 +6,18 @@ import LinkedList
 import ClosureTimers
 import ClosureEvents
 
+LinkedList<EventEntity> _eventEntities = new LinkedList<EventEntity>()
+
+init
+    // Countermesaure for onDeath leaks, I find no reason why they should but they do, so this is my way of working around it
+    // until a better solution has been though of, don't judge me.
+    int leaks = 0
+    doPeriodically(5) (CallbackPeriodic cb) ->
+        _eventEntities.forEach() (EventEntity e) ->
+            if e.doOnDeathEmitIfLeakIsDetected()
+                leaks++
+                print("OnDeath not emitted #"+leaks.toString()+": fixed")
+
 abstract public class EventEntity extends Entity
     // To prevent closures from triggering after entity has been destructed
     protected ClosureTerminator _closureTerminator = new ClosureTerminator()
@@ -27,15 +39,20 @@ abstract public class EventEntity extends Entity
     private EventListener _onDeathEventListener = null
     private EventListener _onSoldEventListener = null
     private OnCast _onCastEventListener = null
+
     private static EventListener _onConstructionFinishedEventListener = null
     private static EventListener _onConstructionStartedEventListener = null
 
+    private bool _onDeathEmitted = false
+
     construct(unit obj)
         super(obj)
+        _eventEntities.add(this)
                     
     
     // Use remove() instead of destroy when it comes to event entities
     ondestroy
+        _eventEntities.remove(this)
         if this._closureTerminator != null
             destroy this._closureTerminator
 
@@ -107,6 +124,14 @@ abstract public class EventEntity extends Entity
 
         destroy this
 
+    function doOnDeathEmitIfLeakIsDetected() returns bool
+        if not this.isAlive() and not this._onDeathEmitted
+            this.emitOnDeath()
+            return true
+        else if this.isAlive() and this._onDeathEmitted
+            this._onDeathEmitted = false
+        return false
+
     //
     // On Remove
     //
@@ -137,15 +162,20 @@ abstract public class EventEntity extends Entity
             this._onDeath = new LinkedList<CallbackDeath>()
             nullTimer() -> 
                 this._onDeathEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_DEATH) ->
-                    if this._onDeath != null
-                        this._onDeath.forEach() (CallbackDeath callback2) ->
-                            if this._onDeath.has(callback)
-                                callback2.call(EventData.getKillingUnit(), callback2)
+                    this.emitOnDeath()
         this._onDeath.add(callback)
         callback.cancel = () ->
             if this._onDeath != null
                 this._onDeath.remove(callback)
         return callback
+
+    /** callback used to force emit on death */
+    function emitOnDeath()
+        this._onDeathEmitted = true
+        if this._onDeath != null
+            this._onDeath.forEach() (CallbackDeath callback) ->
+                if this._onDeath.has(callback)
+                    callback.call(EventData.getKillingUnit(), callback)
 
     //
     // On Sold
@@ -323,7 +353,7 @@ abstract public class EventEntity extends Entity
                                 if ee._onWithin.has(callback)
                                     if callback.lastEntityPos != vec2(0, 0) and callback.lastEntityPos == ee.getUnit().getPos()
                                         callback.lastEntityPosTimes++
-                                        if callback.lastEntityPosTimes > 3
+                                        if callback.lastEntityPosTimes > 1
                                             ee._onWithin.remove(callback)
                                             nullTimer() -> 
                                                 callback.call(false, callback)

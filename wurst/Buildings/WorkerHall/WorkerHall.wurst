@@ -61,6 +61,7 @@ public class WorkerHall extends RunnerEntity
         this.onUpgraded() (int typeid) ->
             this.getUnit().setInvulnerable(true)
             this.setLevel(this.getLevel()+1)
+            this.getUnit().getOwner().setResearch(WORKER_HALL_LEVEL_ID, this.getLevel())
 
         this.onSold(WORKER_ID) (unit sold, CallbackSold callback) ->
             let worker = new Worker(sold, this)

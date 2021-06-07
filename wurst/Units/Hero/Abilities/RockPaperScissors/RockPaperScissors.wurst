@@ -21,9 +21,10 @@ init
 						if not casterHero.isChallangedBy(targetHero) and not targetHero.getOwner().getPlayer().isComputer()
 							if not targetHero.isChallangedBy(casterHero)
 								targetHero.addChallangedBy(casterHero)
-								targetHero.getOwner().print("You have challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r in |cffffcc00Rock, Paper, Scissors|r", 2)
+								casterHero.getOwner().print("You have challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r in |cffffcc00Rock, Paper, Scissors|r", 2)
+								targetHero.getOwner().print("You have been challanged by |cff33ff00"+casterHero.getOwner().getPlayer().getName()+"|r in |cffffcc00Rock, Paper, Scissors|r (Use ability on challanging ghost to accept)", 2)
 							else
-								targetHero.getOwner().print("You have already challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r", 2)
+								casterHero.getOwner().print("You have already challanged |cff33ff00"+targetHero.getOwner().getPlayer().getName()+"|r", 2)
 						else
 							challangeStarted = true
 							// Prevent multiple challanges starting

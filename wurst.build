@@ -1,12 +1,12 @@
 ---
 projectName: AngryMobs
 buildMapData:
-  name: Angry Mobs (v0.1.0-alpha.4) # Name shown ingame, may be colored
+  name: Angry Mobs (v0.1.1-|cffff0000alpha|r.5) # Name shown ingame, may be colored
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
     description: This is a playtest build, and if you do not intend to be constructive in your feedback, then please leave, if you choose to stay, keep in mind that my ideas might not be original but I try to put my creative touch to them, but my mind is mostly untainted by other maps.
-    suggestedPlayers: 2-6
+    suggestedPlayers: (Simple AI Supported) 2-6
     loadingScreen:
       background: Generic
       title: Anniversary re-make

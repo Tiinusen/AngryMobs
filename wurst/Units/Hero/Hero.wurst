@@ -133,17 +133,25 @@ public class Hero extends UnitEntity
             if this.getMaxRespawnTime() < 60
                 this.increaseMaxRespawnTime(5)
             this.increaseRespawnTime(this.getMaxRespawnTime(), false)
-            SetTextTagVisibility(this._respawnText, true)
-            this._closureTerminator.periodically(1) (CallbackClosureTerminator terminator) ->
-                if not this._inChallange
+            this.refreshTextTag()
+            bool even = false
+            this._closureTerminator.periodically(0.5) (CallbackClosureTerminator terminator) ->
+                even = not even
+                this.refreshTextTag()
+                if not this._inChallange and even
                     if this.getRespawnTime() == 0
                         terminator.terminate(terminator)
-                        SetTextTagVisibility(this._respawnText, false)
                         this.revive()
                     else
                         this.decreaseRespawnTime(1)
-                        SetTextTagTextBJ(this._respawnText, this.getRespawnTime().toString()+"s", 10)
-                        SetTextTagPosUnitBJ(this._respawnText, this._ghost, 0)
+
+    function refreshTextTag()
+        if this.getRespawnTime() > 0
+            SetTextTagVisibility(this._respawnText, true)
+            SetTextTagPosUnitBJ(this._respawnText, this._ghost, 0)
+            SetTextTagTextBJ(this._respawnText, this.getRespawnTime().toString()+"s", 10)
+        else
+            SetTextTagVisibility(this._respawnText, false)
 
     /** Moves player camera to hero */
     function focus()
