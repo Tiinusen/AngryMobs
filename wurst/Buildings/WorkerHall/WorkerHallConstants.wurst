@@ -14,8 +14,6 @@ import Ids
 @configurable public let WORKER_HALL_UNITS_SOLD = commaList(WORKER_ID, FIGHTER_ID, MILITIA_ID)
 @configurable public let WORKER_HALL_UNITS_TRAINED = commaList("")
 
-@configurable public let WORKER_HALL_ABILITIES = commaList(WORKER_HALL_SELECT_MINE_ID)
-
 @configurable public let WORKER_HALL_HOTKEY = "Q"
 @configurable public let WORKER_HALL_BUTTON_X = 0
 @configurable public let WORKER_HALL_BUTTON_Y = 0

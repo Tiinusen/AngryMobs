@@ -21,7 +21,10 @@ import Ids
 		..setButtonPositionX(i != 0 ? 3 : WORKER_HALL_BUTTON_X)
 		..setButtonPositionY(i != 0 ? 2 : WORKER_HALL_BUTTON_Y)
 		// Abilities / Upgrades / Building / Training / Selling
-		..setNormalAbilities(WORKER_HALL_ABILITIES)
+		..setNormalAbilities(commaList(
+			WORKER_HALL_SELECT_MINE_ID, 
+			WORKER_HALL_WORKER_DISABLE_REPAIR_ID
+		))
 		..setResearchesAvailable(commaList(
 			WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID, 
 			WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID, 
@@ -63,6 +66,25 @@ import Ids
 		..presetHotkey("Z")
 		// Button Placement
 		..presetButtonPosNormal(0, 2)
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 0)
+		// Target
+		..presetTargetTypes(Targettype.NONE)
+		..presetOption(Option.TARGETIMAGE, true)
+
+	// Disable Repair
+	new ChannelAbilityPreset(WORKER_HALL_WORKER_DISABLE_REPAIR_ID,2,true)
+		..setEditorSuffix("(Worker Hall)")
+		..setName("Disable Repair")
+		..presetTooltipNormal(lvl -> lvl == 1?"Gate Repair (|cff00ff00ON|r)":"Gate Repair (|cffff0000OFF|r)")
+		..presetTooltipNormalExtended(lvl -> lvl==1?"The workers are currently going to repair if the gate gets damaged or destroyed\n\n|cffffcc00Press to deactivate this behavior|r":"The workers are currently NOT going to repair if the gate gets damaged or destroyed\n\n|cffffcc00Press to activate this behavior|r")
+		// Icon
+		..presetIcon(Icons.bTNRepairOn)
+		// Hotkey
+		..presetHotkey("R")
+		// Button Placement
+		..presetButtonPosNormal(3, 0)
 		// Cost
 		..presetCooldown(lvl -> 1)
 		..presetManaCost(lvl -> 0)

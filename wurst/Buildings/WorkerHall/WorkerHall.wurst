@@ -47,6 +47,9 @@ public class WorkerHall extends RunnerEntity
     function getWorkerTripsToMineLevel() returns int
         return this.getOwner().getResearch(WORKER_HALL_WORKER_TRIPS_TO_MINE_UPGRADE_ID)
 
+    function isRepairDisabled() returns bool
+        return this.getUnit().getAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID) == 2
+
     /** returns the mine that has been selected by the select mine ability */
     function getSelectedMine() returns unit
         return this._selectedMine
@@ -83,6 +86,13 @@ public class WorkerHall extends RunnerEntity
             this.workers.forEach() (Worker worker) ->
                 if not worker.isCarryingGold()
                     worker.goToMine(this.getSelectedMine())
+
+        this.onCast(WORKER_HALL_WORKER_DISABLE_REPAIR_ID) (unit target, vec2 pos, CallbackCast callback) ->
+            if this.getUnit().getAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID) == 2
+                this.getUnit().setAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID, 1)
+            else
+                this.getUnit().setAbilityLevel(WORKER_HALL_WORKER_DISABLE_REPAIR_ID, 2)
+            
             
     override function run()
         for i = 1 to this.getLevel() - this.workers.size()

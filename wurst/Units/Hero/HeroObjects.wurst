@@ -43,7 +43,7 @@ import Ids
 		// Attack (1)
 		..setAttack1AttackType(AttackType.Hero)
 		..setAttack1CooldownTime(1)
-		..setAttack1DamageBase(12)
+		..setAttack1DamageBase(24)
 		..setAttack1DamageNumberofDice(3)
 		..setAttack1DamageSidesperDie(8)
 		// Attack (2)

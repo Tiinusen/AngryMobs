@@ -94,7 +94,6 @@ class Challange
 		this.heroB.setInChallange(true)
 		this.answerA = RPS.NONE
 		this.answerB = RPS.NONE
-		
 		this.showDialog(this.heroA.getOwner().getPlayer(), rerun) (RPS answer) ->
 			this.answerA = answer
 			if this.answerB != RPS.NONE
@@ -139,20 +138,21 @@ class Challange
 						cb.call(RPS.SCISSORS)
 						destroy cb
 		else
-			let tempBox = new DialogBox(rerun?"TIE, Try Again":"What do you choice?")
-			tempBox.addButton("Rock") ->
-				destroy tempBox
-				cb.call(RPS.ROCK)
-				destroy cb
-			tempBox.addButton("Paper") ->
-				destroy tempBox
-				cb.call(RPS.PAPER)
-				destroy cb
-			tempBox.addButton("Scissors") ->
-				destroy tempBox
-				cb.call(RPS.SCISSORS)
-				destroy cb
-			tempBox.display(p, true)
+			nullTimer() -> 
+				let tempBox = new DialogBox(rerun?"TIE, Try Again":"What do you choice?")
+				tempBox.addButton("Rock") ->
+					destroy tempBox
+					cb.call(RPS.ROCK)
+					destroy cb
+				tempBox.addButton("Paper") ->
+					destroy tempBox
+					cb.call(RPS.PAPER)
+					destroy cb
+				tempBox.addButton("Scissors") ->
+					destroy tempBox
+					cb.call(RPS.SCISSORS)
+					destroy cb
+				tempBox.display(p, true)
 
 
 public abstract class CallbackRPS

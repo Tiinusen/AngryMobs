@@ -88,7 +88,6 @@ public class Hero extends UnitEntity
     function transferRespawnTime(Hero loser)
         loser.increaseRespawnTime(this.getRespawnTime(), true)
         this.decreaseRespawnTime(this.getRespawnTime())
-        print(this.getOwner().getPlayer().getName()+" should respawn soon")
         
         
     static function removeControlledSoldier(SoldierEntity soldier)
@@ -131,8 +130,8 @@ public class Hero extends UnitEntity
             this._ghost..setPos(this.getPos())
                 ..show()
             this.getOwner().getPlayer().select(this._ghost)
-            if this.getMaxRespawnTime() < 90
-                this.increaseMaxRespawnTime(10)
+            if this.getMaxRespawnTime() < 60
+                this.increaseMaxRespawnTime(5)
             this.increaseRespawnTime(this.getMaxRespawnTime(), false)
             SetTextTagVisibility(this._respawnText, true)
             this._closureTerminator.periodically(1) (CallbackClosureTerminator terminator) ->

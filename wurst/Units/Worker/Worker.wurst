@@ -91,7 +91,7 @@ public class Worker extends UnitEntity
 					this.decideNextAction()
 
 	function decideNextAction()
-		if not this.isCarryingGold() and this.getOwner().getSide().getGate().isDamaged()
+		if not this.isCarryingGold() and this.getOwner().getSide().getGate().isDamaged() and not this.getWorkerHall().isRepairDisabled()
 			// The gate needs repair, let's go to the worker hall and fetch lumber
 			this.orderMove(this.getWorkerHall().getUnit(), 550) (boolean reached) ->
 				// Let's go inside and get lumber

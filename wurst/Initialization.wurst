@@ -43,7 +43,9 @@ init
 			players.forEach() (Owner t) ->
 				t.getPlayer().addGold(share.toInt())
 
-	print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00balance|r\n\nFirst off, |cff33ff00read tooltips|r, check the help [|cffffcc00F9|r] and please be patient, not everything is working perfectly\n\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas\n\nThank you, Good Luck and Have Fun !",25)
+	print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00bugs|r\n\nKnown Bugs to Test:\nHero dosen't always respawn (|cffdd0000NEED REPRODUCE REPORT|r)\nRock, Paper, Scissor throwing errors (|cff00ff00HAS FIX|r)\nInvulnerability throwing errors (|cff00ff00HAS FIX|r)\nAttack Power not applying (|cffff0000FEATURE DISABLED|r)\nHealing Power is applyable on enemies (|cff00ff00HAS FIX|r)\n\nNew Features:\nDisable Gate Repair (|cff0000ffNeeds testing|r)",10)
+	doAfter(10) -> 
+		print("First off, |cff33ff00read tooltips|r, check the help [|cffffcc00F9|r] and please be patient, not everything is working perfectly\n\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas\n\nThank you, Good Luck and Have Fun !",20)
 	
 function spawn()
 	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))
