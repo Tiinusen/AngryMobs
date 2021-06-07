@@ -101,6 +101,15 @@ import Ids
 		// Icon
 		..setIcon(1, Icons.bTNCancel)
 
+	// Worker Hall level
+	new UpgradeDefinition(WORKER_HALL_LEVEL_ID)
+		..setLevels(1)
+		..presetEditorSuffix((int lvl) -> "(Worker Hall)")
+		..presetName(lvl -> "Worker Hall - Level 2")
+		..presetTooltip(lvl -> "You need to upgrade the Worker Hall")
+		// Icon
+		..setIcon(1, Icons.bTNCancel)
+
 	// Worker to Militia
 	new UpgradeDefinition(WORKER_HALL_WORKER_TO_MILITIA_UPGRADE_ID)
 		..setLevels(3)
@@ -110,6 +119,8 @@ import Ids
 		// Button Placement
 		..setButtonPositionX(3)
 		..setButtonPositionY(1)
+		..presetRequirements((int lvl) -> commaList(WORKER_HALL_LEVEL_ID))
+		..presetRequirementsLevels((int lvl) -> commaList("1"))
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)

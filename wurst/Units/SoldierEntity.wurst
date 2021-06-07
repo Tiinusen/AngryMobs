@@ -5,6 +5,7 @@ import initlater Hero
 import Worker
 import LinkedList
 import ControlledBuff
+import InvulnerabilityBuff
 import ClosureTimers
 
 abstract public class SoldierEntity extends UnitEntity
@@ -32,6 +33,7 @@ abstract public class SoldierEntity extends UnitEntity
 		SoldierEntity._units.remove(this)
 		Hero.removeControlledSoldier(this)
 		ControlledBuff.remove(this)
+		InvulnerabilityBuff.remove(this)
 
 	private function _init()
 		SoldierEntity._units.add(this)
