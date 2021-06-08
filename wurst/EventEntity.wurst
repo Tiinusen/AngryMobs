@@ -7,15 +7,15 @@ import ClosureTimers
 import ClosureEvents
 
 LinkedList<EventEntity> _eventEntities = new LinkedList<EventEntity>()
+int leaks = 0
 
 init
     // Countermesaure for onDeath leaks, I find no reason why they should but they do, so this is my way of working around it
     // until a better solution has been though of, don't judge me.
-    int leaks = 0
     doPeriodically(5) (CallbackPeriodic cb) ->
         _eventEntities.forEach() (EventEntity e) ->
             if e.doOnDeathEmitIfLeakIsDetected()
-                leaks++
+                leaks++ 
                 print("OnDeath not emitted #"+leaks.toString()+": fixed")
 
 abstract public class EventEntity extends Entity
@@ -125,7 +125,7 @@ abstract public class EventEntity extends Entity
         destroy this
 
     function doOnDeathEmitIfLeakIsDetected() returns bool
-        if not this.isAlive() and not this._onDeathEmitted
+        if this.getUnit().getHP() < 5 and not this._onDeathEmitted
             this.emitOnDeath()
             return true
         else if this.isAlive() and this._onDeathEmitted

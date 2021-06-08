@@ -1,7 +1,7 @@
 ---
 projectName: AngryMobs
 buildMapData:
-  name: Angry Mobs (v0.1.1-|cffff0000alpha|r.5) # Name shown ingame, may be colored
+  name: Angry Mobs (v0.9.0-|cffff0000alpha|r.1) # Name shown ingame, may be colored
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
@@ -28,7 +28,7 @@ buildMapData:
   - id: 1
     name: West Player 2
     race: HUMAN
-    controller: COMPUTER
+    controller: USER
     fixedStartLoc: true
   - id: 2
     name: West Player 3
@@ -36,56 +36,26 @@ buildMapData:
     controller: USER
     fixedStartLoc: true
   - id: 3
-    name: West Player 4
+    name: East Player 1
     race: HUMAN
     controller: USER
     fixedStartLoc: true
   - id: 4
-    name: West Player 5
+    name: East Player 2
     race: HUMAN
     controller: USER
     fixedStartLoc: true
   - id: 5
-    name: West Player 6
-    race: HUMAN
-    controller: USER
-    fixedStartLoc: true
-  - id: 6
-    name: East Player 1
-    race: HUMAN
-    controller: COMPUTER
-    fixedStartLoc: true
-  - id: 7
-    name: East Player 2
-    race: HUMAN
-    controller: COMPUTER
-    fixedStartLoc: true
-  - id: 8
     name: East Player 3
     race: HUMAN
     controller: USER
     fixedStartLoc: true
-  - id: 9
-    name: East Player 4
-    race: HUMAN
-    controller: USER
-    fixedStartLoc: true
-  - id: 10
-    name: East Player 5
-    race: HUMAN
-    controller: USER
-    fixedStartLoc: true
-  - id: 11
-    name: East Player 6
-    race: HUMAN
-    controller: USER
-    fixedStartLoc: true
-  - id: 12
+  - id: 6
     name: East Army
     race: HUMAN
     controller: COMPUTER
     fixedStartLoc: true
-  - id: 13
+  - id: 7
     name: West Army
     race: HUMAN
     controller: COMPUTER
@@ -96,10 +66,7 @@ buildMapData:
     - 0
     - 1
     - 2
-    - 3
-    - 4
-    - 5
-    - 13
+    - 7
     flags:
       allied: true
       alliedVictory: true
@@ -108,13 +75,10 @@ buildMapData:
       sharedControlAdvanced: false
   - name: East Side
     playerIds:
-    - 6
-    - 7
-    - 8
-    - 9
-    - 10
-    - 11
-    - 12
+      - 3
+      - 4
+      - 5
+      - 6
     flags:
       allied: true
       alliedVictory: true

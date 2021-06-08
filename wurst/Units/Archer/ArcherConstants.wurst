@@ -19,7 +19,7 @@ import Ids
 @configurable public let ARCHER_BUTTON_X = 1
 @configurable public let ARCHER_BUTTON_Y = 0
 
-@configurable public let ARCHER_COST_GOLD = 40
+@configurable public let ARCHER_COST_GOLD = 50
 @configurable public let ARCHER_COST_LUMBER = 0
 @configurable public let ARCHER_COST_FOOD = 0
 

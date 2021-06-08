@@ -13,8 +13,8 @@ public class Side
     private Gate _gate
     private King _king
 
-    static var west = new Side(Player(13))
-    static var east = new Side(Player(12))
+    static var west = new Side(Player(7))
+    static var east = new Side(Player(6))
 
     construct(player p)
         this._sidePlayer = p

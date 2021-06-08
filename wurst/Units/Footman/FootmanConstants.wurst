@@ -19,7 +19,7 @@ import ObjectIds
 @configurable public let FOOTMAN_BUTTON_X = 0
 @configurable public let FOOTMAN_BUTTON_Y = 0
 
-@configurable public let FOOTMAN_COST_GOLD = 35
+@configurable public let FOOTMAN_COST_GOLD = 60
 @configurable public let FOOTMAN_COST_LUMBER = 0
 @configurable public let FOOTMAN_COST_FOOD = 0
 
