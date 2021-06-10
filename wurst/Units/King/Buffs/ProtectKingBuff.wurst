@@ -1,4 +1,4 @@
-package InvulnerabilityBuff
+package ProtectKingBuff
 
 import HashMap
 import ClosureTimers
@@ -6,11 +6,11 @@ import HeroConstants
 import initlater SoldierEntity
 import BuffObjEditing
 
-public let INVULNERABILITY_BUFF_OBJ = compiletime(createDummyBuffObject("Invulnerability", "This unit is invulnerability", Icons.dISBTNDivineShieldOff, Abilities.divineShieldTarget, AttachmentPoints.origin))
+public let PROTECT_KING_BUFF_OBJ = compiletime(createDummyBuffObject("Protect the King", "This unit is currently guarding the King\n\n|cf4c0ae0eHe/she will not leave his side unless you order him to|r\n\n|cff00ff00See Hero Inventory|r", Icons.dISBTNDivineShieldOff, Abilities.soulBurnbuff, AttachmentPoints.overhead))
 
-let buffId = INVULNERABILITY_BUFF_OBJ.abilId
+let buffId = PROTECT_KING_BUFF_OBJ.abilId
 
-abstract class InvulnerabilityBuff
+abstract class ProtectKingBuff
 	private static HashMap<SoldierEntity, CallbackSingle> _buffMap = new HashMap<SoldierEntity, CallbackSingle>()
 
 	static function has(SoldierEntity soldier) returns bool
@@ -30,7 +30,7 @@ abstract class InvulnerabilityBuff
 		else
 			_buffMap.put(soldier, null)
 		// Logic executed on buff creation
-		soldier.getUnit().setInvulnerable(true)
+		soldier.getOwner().getSide().getKing().addGuard(soldier)
 
 	static function remove(SoldierEntity soldier)
 		_remove(soldier, false)
@@ -43,5 +43,6 @@ abstract class InvulnerabilityBuff
 			if soldier.getUnit().hasAbility(buffId)
 				soldier.getUnit().removeAbility(buffId)
 			// Logic executed on buff removal
-			soldier.getUnit().setInvulnerable(false)
-		
+			soldier.getOwner().getSide().getKing().removeGuard(soldier)
+			if expired and soldier.isAlive()
+				soldier.decideNextAction()

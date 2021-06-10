@@ -70,8 +70,8 @@ import Ids
 		// Cost
 		..setTimeBase(1)
 		..setTimeIncrement(0)
-		..setGoldCostBase(750)
-		..setGoldCostIncrement(750)
+		..setGoldCostBase(400)
+		..setGoldCostIncrement(500)
 
 	// Health Upgrade
 	new UpgradeDefinition(GATE_CONTROL_HEALTH_UPGRADE_ID)

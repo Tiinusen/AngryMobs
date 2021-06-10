@@ -1,0 +1,54 @@
+package GuardTowerObjects
+
+import GuardTowerConstants
+import ChannelAbilityPreset
+import Ids
+
+@compiletime function generate()
+	let ids = [GUARD_TOWER_ID_LEVEL_1,GUARD_TOWER_ID_LEVEL_2,GUARD_TOWER_ID_LEVEL_3,GUARD_TOWER_ID_LEVEL_4]
+	
+	// Worker Hall
+	for i = 0 to 3
+		let b = new BuildingDefinition(ids[i], UnitIds.guardtower)
+		..setNameEditorSuffix("(Guard Tower)")
+		..setName(GUARD_TOWER_NAME+" - Level "+(i+1).toString())
+		..setTooltipBasic(GUARD_TOWER_TOOL_TIP_BASIC)
+		..setTooltipExtended(GUARD_TOWER_TOOL_TIP_EXTENDED)
+		// Icon / Model
+		..setIconGameInterface(GUARD_TOWER_ICON)
+		..setModelFile(GUARD_TOWER_MODEL)
+		// Button Placement
+		..setButtonPositionX(i != 0 ? 3 : GUARD_TOWER_BUTTON_X)
+		..setButtonPositionY(i != 0 ? 2 : GUARD_TOWER_BUTTON_Y)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(GUARD_TOWER_ABILITIES)
+		..setResearchesAvailable(commaList(""))
+		..setUnitsTrained(commaList(GUARD_TOWER_UNITS_TRAINED))
+		..setUnitsSold(GUARD_TOWER_UNITS_SOLD)
+		..setRequirements(commaList(""))
+		..setRequirementsLevels(commaList(""))
+		// Build / Cost
+		..setBuildTime(1)
+		..setGoldCost(GUARD_TOWER_COST_GOLD+i*GUARD_TOWER_COST_GOLD_INCREMENT)
+		..setLumberCost(i==0 ? GUARD_TOWER_COST_LUMBER : 0)
+		// Health
+		..setHitPointsMaximumBase(1000)
+		..setAttack1WeaponType(WeaponType.Missile)
+		..setAttack1Range(600)
+		..setAttack1CooldownTime(2/(i+1))
+		..setAttack1DamageBase(59+(i*40))
+		..setAttack1DamageNumberofDice(1)
+		..setAttack1DamageSidesperDie(30+(30*i))
+		..setAttack1TargetsAllowed(commaList(TargetsAllowed.enemies,TargetsAllowed.nonhero))
+		// Other
+		..setIsaBuilding(true)
+		..setHideMinimapDisplay(true)
+		// Upgrades To
+		if i < 3
+			b..setUpgradesTo(commaList(ids[i+1]))
+			
+		if i == 0
+			// Hotkey
+			b..setHotkey(GUARD_TOWER_HOTKEY)
+		else
+			b..setHotkey("V")

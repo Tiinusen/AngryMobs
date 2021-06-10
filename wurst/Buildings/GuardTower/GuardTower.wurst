@@ -1,0 +1,30 @@
+package GuardTower
+
+import Ids
+import UnitEntity
+import Owner
+
+init
+    EventEntity.onConstructionFinished(GUARD_TOWER_ID_LEVEL_1) (unit building, CallbackConstruction callback) ->
+        new GuardTower(building)
+
+public class GuardTower extends UnitEntity
+    construct(unit obj)
+        super(obj)
+
+    construct(player owner, vec2 pos)
+        super(CreateUnit(owner, GUARD_TOWER_ID_LEVEL_1, pos.x, pos.y, 270))
+
+    construct(player owner, vec2 pos, real dir)
+        super(CreateUnit(owner, GUARD_TOWER_ID_LEVEL_1, pos.x, pos.y, dir))
+
+    override function initalize()
+        this.getUnit().setInvulnerable(true)
+        this.onUpgraded() (int typeid) ->
+            this.getUnit().setInvulnerable(true)
+            this.setLevel(this.getLevel()+1)
+
+        if this.getOwner().isTutorialEnabled() and not this.getOwner().isTutorialAlreadyDisplayedAndMarkAsDisplayed("GUARD_TOWER")
+            this.getOwner().print("|cff33ff00TUTORIAL|r: |cd5dab515Guard Tower|r can be controlled by other players", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: it can't be attacked or destroyed, only upgraded", 15)
+            this.getOwner().print("|cff33ff00TUTORIAL|r: will only attack enemies but not heroes", 15)

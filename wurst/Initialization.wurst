@@ -8,14 +8,22 @@ import ClosureTimers
 import King
 import EntityCallback
 import Ids
+import Collaborators
+import DialogBox
+
+bool isStaffPresent = false
 
 init
 	spawn()
 	createVictoryCondition()
 	createHelp()
 	Owner.getActive().forEach() (Owner owner) ->
-		owner.getPlayer().addGold(bj_isSinglePlayer?100:100)
+		owner.getPlayer().addGold(bj_isSinglePlayer?1000:100)
 		owner.getPlayer().addLumber(1)
+		if Collaborators.is(owner.getPlayer().getName())
+			print(Collaborators.description(owner.getPlayer().getName()), 20)
+			isStaffPresent = true
+		showDialog(owner)
 	// Keep time at noon
 	SetTimeOfDay(12)
 	doPeriodically(30) (CallbackPeriodic cb) ->
@@ -43,11 +51,22 @@ init
 			players.forEach() (Owner t) ->
 				t.getPlayer().addGold(share.toInt())
 	
-	if not bj_isSinglePlayer
-		print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00balance and bugs|r\n\nKnown Bugs to Test:\nHero dosen't always respawn (|cff00ff00HAS FIX and FAILSAFE|r)\nAttack Power not applying (|cffff0000FEATURE DISABLED|r)\n",10)
-		doAfter(10) -> 
-			print("First off, |cff33ff00read tooltips|r, check the help [|cffffcc00F9|r] and please be patient, not everything is working perfectly\n\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas\n\nThank you, Good Luck and Have Fun !",20)
-	
+	if not bj_isSinglePlayer and isStaffPresent
+		print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00balance|r",5)
+		doAfter(5) -> 
+			print("First off, |cff33ff00read tooltips|r, check the help [|cffffcc00F9|r] and please be patient, not everything is working perfectly\n\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas\n\nThank you, Good Luck and Have Fun !",15)
+
+function showDialog(Owner o)
+	if not o.getPlayer().isComputer()
+		nullTimer() -> 
+			let tempBox = new DialogBox("First time playing?")
+			tempBox.addButton("|cff33ff00Enable tutorials") ->
+				destroy tempBox
+				o.setTutorialEnabled(true)
+			tempBox.addButton("|cffccc012Disable tutorials") ->
+				destroy tempBox
+			tempBox.display(o.getPlayer(), true)
+
 function spawn()
 	Side.west.setKing(new King(Side.west.getSidePlayer().getStartLocation(), Side.west.getSidePlayer()))
 	Side.east.setKing(new King(Side.east.getSidePlayer().getStartLocation(), Side.east.getSidePlayer()))
@@ -79,6 +98,12 @@ function createVictoryCondition()
 		Side.west.getPlayers().forEach() (Owner t) ->
 			t.print("Your king has been slayed")
 		doAfter(5) -> 
+			print("The Game has Reached it's End",25)
+		doAfter(10) -> 
+			print("Feel free to share feedback and thoughts",20)
+		doAfter(85) -> 
+			print("Time's up, see you again soon !",5)
+		doAfter(90) -> 
 			EndGame(false)
 	Side.east.getKing().onDeath() (unit killer, CallbackDeath callback) ->
 		Side.west.getPlayers().forEach() (Owner t) ->
@@ -86,4 +111,10 @@ function createVictoryCondition()
 		Side.east.getPlayers().forEach() (Owner t) ->
 			t.print("Your king has been slayed")
 		doAfter(5) -> 
+			print("The Game has Reached it's End",55)
+		doAfter(10) -> 
+			print("Feel free to share feedback and thoughts",50)
+		doAfter(55) -> 
+			print("Time's up, see you again soon !",5)
+		doAfter(60) -> 
 			EndGame(false)

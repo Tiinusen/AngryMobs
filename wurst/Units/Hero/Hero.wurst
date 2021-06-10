@@ -13,7 +13,7 @@ public class Hero extends UnitEntity
     LinkedList<SoldierEntity> _controlledSoldiers = new LinkedList<SoldierEntity>()
     LinkedList<Hero> _challangedBy = new LinkedList<Hero>()
 
-    private int _maxRespawnTime = 10
+    private int _maxRespawnTime = bj_isSinglePlayer?1:10
     private int _respawnTime = 0
     private unit _ghost
     private bool _inChallange = false
@@ -54,10 +54,17 @@ public class Hero extends UnitEntity
     function clearChallangers()
         this._challangedBy.clear()
 
-    function revive()
+    function reviveAndHideHeroAndShowGhost()
+        this._ghost..setPos(this.getPos())
+        super.revive(this._ghost.getPos())
+        this.getUnit().hide()
+        this._ghost.show()
+        this.getOwner().getPlayer().select(this._ghost)
+
+    function hideGhostAndShowHero()
+        this.getUnit().setPos(this._ghost.getPos())
         this._ghost.hide()
-        this.getUnit().revive(this._ghost.getPos(), true)
-        this.getUnit().setHP(this.getUnit().getMaxHP())
+        this.getUnit().show()
         this.getOwner().getPlayer().select(this.getUnit())
 
     function getGhost() returns unit
@@ -127,11 +134,9 @@ public class Hero extends UnitEntity
             this._controlledSoldiers.forEach() (SoldierEntity t) ->
                 ControlledBuff.remove(t)
             this._controlledSoldiers.clear()
-            this._ghost..setPos(this.getPos())
-                ..show()
-            this.getOwner().getPlayer().select(this._ghost)
+            this.reviveAndHideHeroAndShowGhost()
             if this.getMaxRespawnTime() < 60
-                this.increaseMaxRespawnTime(5)
+                this.increaseMaxRespawnTime(bj_isSinglePlayer?1:5)
             this.increaseRespawnTime(this.getMaxRespawnTime(), false)
             this.refreshTextTag()
             bool even = false
@@ -141,7 +146,7 @@ public class Hero extends UnitEntity
                 if not this._inChallange and even
                     if this.getRespawnTime() == 0
                         terminator.terminate(terminator)
-                        this.revive()
+                        this.hideGhostAndShowHero()
                     else
                         this.decreaseRespawnTime(1)
 

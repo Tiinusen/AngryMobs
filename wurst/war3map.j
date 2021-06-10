@@ -252,15 +252,14 @@ function InitAllyPriorities takes nothing returns nothing
 
     call SetStartLocPrioCount(3, 2)
     call SetStartLocPrio(3, 0, 4, MAP_LOC_PRIO_HIGH)
-    call SetStartLocPrio(3, 1, 5, MAP_LOC_PRIO_LOW)
+    call SetStartLocPrio(3, 1, 5, MAP_LOC_PRIO_HIGH)
 
     call SetStartLocPrioCount(4, 2)
     call SetStartLocPrio(4, 0, 3, MAP_LOC_PRIO_HIGH)
-    call SetStartLocPrio(4, 1, 5, MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrio(4, 1, 5, MAP_LOC_PRIO_LOW)
 
-    call SetStartLocPrioCount(5, 2)
-    call SetStartLocPrio(5, 0, 3, MAP_LOC_PRIO_LOW)
-    call SetStartLocPrio(5, 1, 4, MAP_LOC_PRIO_HIGH)
+    call SetStartLocPrioCount(5, 1)
+    call SetStartLocPrio(5, 0, 3, MAP_LOC_PRIO_HIGH)
 
     call SetStartLocPrioCount(6, 2)
     call SetStartLocPrio(6, 0, 3, MAP_LOC_PRIO_HIGH)
@@ -306,11 +305,11 @@ function config takes nothing returns nothing
     call SetTeams(8)
     call SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
 
-    call DefineStartLocation(0, - 6016.0, - 64.0)
+    call DefineStartLocation(0, - 6016.0, 0.0)
     call DefineStartLocation(1, - 6400.0, 320.0)
-    call DefineStartLocation(2, - 6400.0, - 448.0)
-    call DefineStartLocation(3, 6400.0, 320.0)
-    call DefineStartLocation(4, 6016.0, - 64.0)
+    call DefineStartLocation(2, - 6400.0, - 384.0)
+    call DefineStartLocation(3, 6016.0, - 64.0)
+    call DefineStartLocation(4, 6400.0, 384.0)
     call DefineStartLocation(5, 6400.0, - 448.0)
     call DefineStartLocation(6, 6784.0, 0.0)
     call DefineStartLocation(7, - 6784.0, 0.0)

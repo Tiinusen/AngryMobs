@@ -100,6 +100,12 @@ public let BARRACK_SLOT_2_ID = compiletime(ABIL_ID_GEN.next())
 public let BARRACK_SLOT_3_ID = compiletime(ABIL_ID_GEN.next())
 public let BARRACK_SLOT_4_ID = compiletime(ABIL_ID_GEN.next())
 
+// Guard Tower
+public let GUARD_TOWER_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
+public let GUARD_TOWER_ID_LEVEL_2 = compiletime(UNIT_ID_GEN.next())
+public let GUARD_TOWER_ID_LEVEL_3 = compiletime(UNIT_ID_GEN.next())
+public let GUARD_TOWER_ID_LEVEL_4 = compiletime(UNIT_ID_GEN.next())
+
 // Worker Hall
 public let WORKER_HALL_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
 public let WORKER_HALL_ID_LEVEL_2 = compiletime(UNIT_ID_GEN.next())

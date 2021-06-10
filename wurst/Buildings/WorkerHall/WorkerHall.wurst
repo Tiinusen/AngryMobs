@@ -28,6 +28,9 @@ init
         GetUnitsOfPlayerAndTypeId(workerhall.getOwner().getPlayer(), WORKER_HALL_ID_LEVEL_1).asList().filter((unit obj) -> obj != workerhall.getUnit()).forEach() (unit obj) ->
             obj.remove()
 
+public function getMines() returns LinkedList<unit>
+    return mines.copy()
+
 public class WorkerHall extends RunnerEntity
     LinkedList<Worker> workers = new LinkedList<Worker>()
     private unit _selectedMine = null
@@ -84,6 +87,7 @@ public class WorkerHall extends RunnerEntity
             this._selectedMine = mines.filter((unit mine) -> mine != this.getSelectedMine()).getFirst()
             this.getOwner().print("You have selected the "+(this.getSelectedMine().getPos().y>0?"North":"South")+" mine")
             this.getOwner().ping(this.getSelectedMine().getPos(), 1)
+            this.getUnit().setAbilityLevel(WORKER_HALL_SELECT_MINE_ID, this.getSelectedMine().getPos().y>0?1:2)
             this.workers.forEach() (Worker worker) ->
                 if not worker.isCarryingGold()
                     worker.goToMine(this.getSelectedMine())

@@ -55,11 +55,11 @@ import Ids
 			b..setHotkey("V")
 
 	// Select Mine
-	new ChannelAbilityPreset(WORKER_HALL_SELECT_MINE_ID,1,true)
+	new ChannelAbilityPreset(WORKER_HALL_SELECT_MINE_ID,2,true)
 		..setEditorSuffix("(Worker Hall)")
-		..setName(WORKER_HALL_SELECT_MINE_NAME)
-		..presetTooltipNormal(lvl -> WORKER_HALL_SELECT_MINE_TOOL_TIP_BASIC)
-		..presetTooltipNormalExtended(lvl -> WORKER_HALL_SELECT_MINE_TOOL_TIP_EXTENDED)
+		..setName("Select Mine")
+		..presetTooltipNormal(lvl -> lvl == 1?"Selected Mine (|cff00ff00North|r)":"Selected Mine (|cff00ffffSouth|r)")
+		..presetTooltipNormalExtended(lvl -> lvl==1?"Currently the |cff00ff00North|r mine is selected as mining target for workers\n\n|ce2e7b511Press|r to swap to |cff00ffffSouth|r mine":"Currently the |cff00ffffSouth|r mine is selected as mining target for workers\n\n|ce2e7b511Press|r to swap to |cff00ff00North|r mine")
 		// Icon
 		..presetIcon(WORKER_HALL_SELECT_MINE_ICON)
 		// Hotkey

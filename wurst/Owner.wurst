@@ -6,6 +6,7 @@ import Side
 import LinkedList
 import ClosureEvents
 import ClosureTimers
+import initlater WorkerHall
 import Ids
 
 LinkedList<Owner> _owners = null
@@ -31,29 +32,48 @@ function _init()
 
     // Prevent building outside of castle
     EventEntity.onConstructionStarted() (unit building, CallbackConstruction callback) ->
+        let mines = getMines()
         let side = building.getOwner().toOwnerType().getSide() 
         if side == Side.west and side.getGate().getPos().x < building.getPos().x
             nullTimer() ->
-                building
-                .getOwner()
-                ..print("You are not allowed to build outside of the castle")
-                if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                if building.getTypeId() == GUARD_TOWER_ID_LEVEL_1
+                    if building.getPos().x < 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
+                        building
+                        .getOwner()
+                        ..addGold(200)
+                        ..addLumber(1)
+                        ..print(building.getPos().x < 0?"You are not allowed to build on enemy side":(building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200?"You are not allowed to build to close to gate control":"You are not allowed to build to close to the mines"))
+                        building.remove()
+                else
                     building
                     .getOwner()
-                    ..addGold(200)
-                    ..addLumber(1)
-                building.remove()
+                    ..print("You are not allowed to build outside of the castle")
+                    if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                        building
+                        .getOwner()
+                        ..addGold(200)
+                        ..addLumber(1)
+                    building.remove()
         else if side == Side.east and building.getPos().x < side.getGate().getPos().x
             nullTimer() ->
-                building
-                .getOwner()
-                ..print("You are not allowed to build outside of the castle")
-                if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                if building.getTypeId() == GUARD_TOWER_ID_LEVEL_1
+                    if building.getPos().x > 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
+                        building
+                        .getOwner()
+                        ..addGold(200)
+                        ..addLumber(1)
+                        ..print(building.getPos().x > 0?"You are not allowed to build on enemy side":(building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200?"You are not allowed to build to close to gate control":"You are not allowed to build to close to the mines"))
+                        building.remove()
+                else
                     building
                     .getOwner()
-                    ..addGold(200)
-                    ..addLumber(1)
-                building.remove()
+                    ..print("You are not allowed to build outside of the castle")
+                    if building.getTypeId() != WORKER_HALL_ID_LEVEL_1
+                        building
+                        .getOwner()
+                        ..addGold(200)
+                        ..addLumber(1)
+                    building.remove()
             
 public function unit.cancel()
     let owner = this.getOwner()
@@ -78,6 +98,7 @@ public class Owner
     private Side _side
     private Hero _hero
 
+    private bool _tutorialEnabled = false
     private LinkedList<string> _viewedTutorials = new LinkedList<string>()
 
     private LinkedList<CallbackResearch> _onResearch = null
@@ -103,7 +124,11 @@ public class Owner
             destroy this._onResearchEventListener
 
     function isTutorialEnabled() returns bool
-        return true
+        return this._tutorialEnabled
+
+    function setTutorialEnabled(bool b)
+        this._tutorialEnabled = b
+        
 
     function isTutorialAlreadyDisplayedAndMarkAsDisplayed(string name) returns bool
         if this._viewedTutorials.has(name)

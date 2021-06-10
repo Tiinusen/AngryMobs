@@ -44,7 +44,7 @@ abstract public class Entity
     function isAlive() returns bool
         if this._removed
             return false
-        return this._obj.isAlive()
+        return not (IsUnitType(this.getUnit(), UNIT_TYPE_DEAD) or GetUnitTypeId(this.getUnit()) == 0)
 
     
     //

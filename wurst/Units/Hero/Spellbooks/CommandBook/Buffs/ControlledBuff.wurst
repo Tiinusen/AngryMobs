@@ -5,6 +5,7 @@ import ClosureTimers
 import HeroConstants
 import initlater SoldierEntity
 import BuffObjEditing
+import ProtectKingBuff
 import initlater Hero
 
 public let CONTROLLED_BUFF_OBJ = compiletime(createDummyBuffObject("Controlled", "This unit is controlled by a hero", Icons.bTNCallToArms, Abilities.generalAuraTarget, AttachmentPoints.origin))
@@ -17,17 +18,6 @@ abstract class ControlledBuff
 	static function has(SoldierEntity soldier) returns bool
 		return _buffMap.has(soldier)
 
-	static function remove(SoldierEntity soldier)
-		if _buffMap.has(soldier)
-			destroy _buffMap.get(soldier)
-			_buffMap.remove(soldier)
-			soldier.orderStop()
-			soldier.getUnit().removeAbility(buffId)
-			Hero.removeControlledSoldier(soldier)
-			soldier.orderStop()
-			soldier.decideNextAction()
-		
-
 	static function add(SoldierEntity soldier, Hero hero, real duration)
 		if _buffMap.has(soldier)
 			let cb = _buffMap.get(soldier)
@@ -35,18 +25,32 @@ abstract class ControlledBuff
 				destroy cb
 		if not soldier.getUnit().hasAbility(buffId)
 			soldier.getUnit().addAbility(buffId)
-		Hero.removeControlledSoldier(soldier)
-		soldier.getOwner().getSide().getKing().removeGuard(soldier)
-		soldier.orderStop()
-		hero.addControlledSoldier(soldier)
 		if duration > 0
 			let cb = doAfter(duration) ->
-				if _buffMap.has(soldier)
-					_buffMap.remove(soldier)
-					soldier.getUnit().removeAbility(buffId)
-					Hero.removeControlledSoldier(soldier)
-					soldier.orderStop()
-					soldier.decideNextAction()
+				_remove(soldier, true)
 			_buffMap.put(soldier, cb)
 		else
 			_buffMap.put(soldier, null)
+		// Logic executed on buff creation
+		Hero.removeControlledSoldier(soldier)
+		ProtectKingBuff.remove(soldier)
+		hero.addControlledSoldier(soldier)
+		
+		soldier.orderFollow(hero.getUnit())
+
+	static function remove(SoldierEntity soldier)
+		_remove(soldier, false)
+
+	private static function _remove(SoldierEntity soldier, bool expired)
+		if _buffMap.has(soldier)
+			if not expired
+				destroy _buffMap.get(soldier)
+			_buffMap.remove(soldier)
+			if soldier.getUnit().hasAbility(buffId)
+				soldier.getUnit().removeAbility(buffId)
+			// Logic executed on buff removal
+			Hero.removeControlledSoldier(soldier)
+
+			if soldier.isAlive()
+				soldier.orderStop()
+				soldier.decideNextAction()

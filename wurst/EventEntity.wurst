@@ -5,8 +5,9 @@ import public EntityCallback
 import LinkedList
 import ClosureTimers
 import ClosureEvents
+import HashSet
 
-LinkedList<EventEntity> _eventEntities = new LinkedList<EventEntity>()
+HashSet<EventEntity> _eventEntities = new HashSet<EventEntity>()
 int leaks = 0
 
 init
@@ -16,7 +17,7 @@ init
         _eventEntities.forEach() (EventEntity e) ->
             if e.doOnDeathEmitIfLeakIsDetected()
                 leaks++ 
-                print("OnDeath not emitted #"+leaks.toString()+": fixed")
+                Player(0).print("Fixed leak #"+leaks.toString(), 1)
 
 abstract public class EventEntity extends Entity
     // To prevent closures from triggering after entity has been destructed
@@ -72,7 +73,7 @@ abstract public class EventEntity extends Entity
 
         unregisterEventsForUnit(this.getUnit())
         
-        this.remove(false)
+        this.remove(true)
 
         // Destroy callbacks and lists
         if this._onDeath != null
@@ -124,9 +125,15 @@ abstract public class EventEntity extends Entity
 
         destroy this
 
+    function revive(vec2 pos)
+        this._onDeathEmitted = false
+        this.getUnit().revive(pos, false)
+        this.getUnit().setHP(this.getUnit().getMaxHP())
+        this.getOwner().getPlayer().select(this.getUnit())
+
     function doOnDeathEmitIfLeakIsDetected() returns bool
-        if this.getUnit().getHP() < 5 and not this._onDeathEmitted
-            this.emitOnDeath()
+        if not this.isAlive() and not this._onDeathEmitted
+            this.emitOnDeath(null)
             return true
         else if this.isAlive() and this._onDeathEmitted
             this._onDeathEmitted = false
@@ -162,7 +169,7 @@ abstract public class EventEntity extends Entity
             this._onDeath = new LinkedList<CallbackDeath>()
             nullTimer() -> 
                 this._onDeathEventListener = EventListener.add(this.getUnit(), EVENT_PLAYER_UNIT_DEATH) ->
-                    this.emitOnDeath()
+                    this.emitOnDeath(EventData.getKillingUnit())
         this._onDeath.add(callback)
         callback.cancel = () ->
             if this._onDeath != null
@@ -170,12 +177,16 @@ abstract public class EventEntity extends Entity
         return callback
 
     /** callback used to force emit on death */
-    function emitOnDeath()
-        this._onDeathEmitted = true
-        if this._onDeath != null
+    function emitOnDeath(unit killing)
+        if this._onDeath != null and not this._onDeathEmitted
+            if killing == null
+                this.getUnit().kill()
+            this._onDeathEmitted = true
             this._onDeath.forEach() (CallbackDeath callback) ->
                 if this._onDeath.has(callback)
-                    callback.call(EventData.getKillingUnit(), callback)
+                    callback.call(killing, callback)
+        else
+            this._onDeathEmitted = true
 
     //
     // On Sold
@@ -353,7 +364,7 @@ abstract public class EventEntity extends Entity
                                 if ee._onWithin.has(callback)
                                     if callback.lastEntityPos != vec2(0, 0) and callback.lastEntityPos == ee.getUnit().getPos()
                                         callback.lastEntityPosTimes++
-                                        if callback.lastEntityPosTimes > 1
+                                        if callback.lastEntityPosTimes > 2
                                             ee._onWithin.remove(callback)
                                             nullTimer() -> 
                                                 callback.call(false, callback)

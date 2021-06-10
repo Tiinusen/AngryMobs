@@ -65,7 +65,7 @@ public class Worker extends UnitEntity
 
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this.getUnit().addEffect("Objects\\Spawnmodels\\Orc\\Orcblood\\BattrollBlood.mdl", AttachmentPoints.chest).destrAfter(0.5)
-			if this.isCarryingGold()
+			if this.isCarryingGold() and killer != null
 				if killer.getOwner().toOwnerType() != this.getOwner()
 					killer.getOwner().toOwnerType().getPlayer().addGold(50)
 				if killer.getOwner() != killer.getOwner().toOwnerType().getSide().getSidePlayer()
@@ -92,6 +92,7 @@ public class Worker extends UnitEntity
 
 	function decideNextAction()
 		if not this.isCarryingGold() and this.getOwner().getSide().getGate().isDamaged() and not this.getWorkerHall().isRepairDisabled()
+			this.debugOrder("Go for gate repair")
 			// The gate needs repair, let's go to the worker hall and fetch lumber
 			this.orderMove(this.getWorkerHall().getUnit(), 550) (boolean reached) ->
 				// Let's go inside and get lumber
@@ -120,17 +121,18 @@ public class Worker extends UnitEntity
 							else
 								// We were unable to reach the gate control for some reason
 								this.getUnit().removeAnimationProperties("lumber")
-								this.decideNextAction()
+								this._closureTerminator.after(1) -> 
+									this.decideNextAction()
 				else
 					// No needs to repair the gate
-					this.decideNextAction()
-					
-							
-					
+					this._closureTerminator.after(1) -> 
+						this.decideNextAction()		
 		else if not this.isCarryingGold()
+			this.debugOrder("Go to mine")
 			// I should go to the mine
 			this.goToMine(this.getWorkerHall().getSelectedMine())  
 		else if this.getOwner().getHero().isAlive()
+			this.debugOrder("Go to hero")
 			// I have gold, let's go for the hero
 			this.orderMove(this.getOwner().getHero(), 300) (boolean reached) ->
 				if reached
@@ -156,8 +158,10 @@ public class Worker extends UnitEntity
 				else
 					// I was unable to find the hero
 					this.orderStop()
-					this.decideNextAction()
+					this._closureTerminator.after(1) -> 
+						this.decideNextAction()
 		else
+			this.debugOrder("Wait for hero to respawn")
 			// My hero is dead, I should go back to the worker hall and await for him to respawn
 			this.orderMove(this.getWorkerHall().getUnit(), 500) (boolean reached) ->
 				if reached

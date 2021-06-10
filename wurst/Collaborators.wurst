@@ -1,0 +1,24 @@
+package Collaborators
+
+import HashMap
+
+public abstract class Collaborators
+    private static HashMap<string, string> _collaborators = null
+    private static function _init()
+        if Collaborators._collaborators != null
+            return
+        Collaborators._collaborators = new HashMap<string, string>()
+        Collaborators._collaborators.put("Tiinusen#2807", "|cc3e50eecTiinusen|r: |cd5bdac18Founder|r and |cd5bdac18Developer|r")
+        Collaborators._collaborators.put("Archima#2478", "|cdc2591e9Archima|r: Creative Ideas, Good Testing Partner, |cb518e711Hell of a Guy|r")
+
+    /** is player name a collaborator */
+    static function is(string name) returns bool
+        Collaborators._init()
+        return Collaborators._collaborators.has(name)
+
+    /** returns belonging description to collaborator*/
+    static function description(string name) returns string
+        Collaborators._init()
+        if not Collaborators._collaborators.has(name)
+            return ""
+        return Collaborators._collaborators.get(name)
