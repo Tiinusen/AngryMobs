@@ -37,7 +37,7 @@ function _init()
         if side == Side.west and side.getGate().getPos().x < building.getPos().x
             nullTimer() ->
                 if building.getTypeId() == GUARD_TOWER_ID_LEVEL_1
-                    if building.getPos().x < 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
+                    if building.getPos().x > 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
                         building
                         .getOwner()
                         ..addGold(200)
@@ -57,7 +57,7 @@ function _init()
         else if side == Side.east and building.getPos().x < side.getGate().getPos().x
             nullTimer() ->
                 if building.getTypeId() == GUARD_TOWER_ID_LEVEL_1
-                    if building.getPos().x > 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
+                    if building.getPos().x < 0 or building.getPos().distanceTo(mines.get(0).getPos()) < 1000 or building.getPos().distanceTo(mines.get(1).getPos()) < 1000 or building.getPos().distanceTo(side.getGate().getGateControl().getPos())<200
                         building
                         .getOwner()
                         ..addGold(200)

@@ -18,7 +18,7 @@ init
 	createVictoryCondition()
 	createHelp()
 	Owner.getActive().forEach() (Owner owner) ->
-		owner.getPlayer().addGold(bj_isSinglePlayer?1000:100)
+		owner.getPlayer().addGold(bj_isSinglePlayer?100:100)
 		owner.getPlayer().addLumber(1)
 		if Collaborators.is(owner.getPlayer().getName())
 			print(Collaborators.description(owner.getPlayer().getName()), 20)
@@ -52,7 +52,7 @@ init
 				t.getPlayer().addGold(share.toInt())
 	
 	if not bj_isSinglePlayer and isStaffPresent
-		print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00balance|r",5)
+		print("|cffffcc00Welcome to this Alpha Playtest !|r\n\nTodays mission is to evaluate the |cffffcc00balance and new guard tower|r",5)
 		doAfter(5) -> 
 			print("First off, |cff33ff00read tooltips|r, check the help [|cffffcc00F9|r] and please be patient, not everything is working perfectly\n\nSecondly, AI behavior is mostly as intended, so units near the king is |cff33ff00not bugged|r, they are |cff33ff00guarding|r the |cd3fffb00King|r, and lastly, give feedback if you see parts needing improvement or ideas\n\nThank you, Good Luck and Have Fun !",15)
 

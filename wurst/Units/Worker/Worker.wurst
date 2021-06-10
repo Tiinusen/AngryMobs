@@ -22,21 +22,21 @@ public class Worker extends UnitEntity
 		this._workerHall = workerHall
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this._closureTerminator.after(5) -> 
-				this.remove(false)
+				this.remove(true)
 
 	construct(vec2 pos, player owner, WorkerHall workerHall)
 		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, 270))
 		this._workerHall = workerHall
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this._closureTerminator.after(5) -> 
-				this.remove(false)
+				this.remove(true)
 
 	construct(vec2 pos, player owner, real dir, WorkerHall workerHall)
 		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, dir))
 		this._workerHall = workerHall
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this._closureTerminator.after(5) -> 
-				this.remove(false)
+				this.remove(true)
 
 	ondestroy
 		if this._orderCallback != null

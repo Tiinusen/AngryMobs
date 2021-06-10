@@ -42,7 +42,7 @@ abstract public class SoldierEntity extends UnitEntity
 		SoldierEntity._units.add(this)
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this._closureTerminator.after(5) -> 
-				this.remove(false)
+				this.remove(true)
 		nullTimer() -> 
 			this.decideNextAction()
 

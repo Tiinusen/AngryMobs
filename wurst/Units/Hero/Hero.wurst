@@ -122,6 +122,8 @@ public class Hero extends UnitEntity
         this._ghost.hide()
         this._respawnText = CreateTextTagUnitBJ("", this._ghost, 0, 10, 0, 100, 0, 0)
         SetTextTagVisibility(this._respawnText, false)
+        
+        this.getUnit().setInvulnerable(true)
 
         new CommandAttack(this.getUnit())
         new CommandRecruitUnit(this.getUnit())

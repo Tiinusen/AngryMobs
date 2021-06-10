@@ -1,7 +1,7 @@
 ---
 projectName: AngryMobs
 buildMapData:
-  name: Angry Mobs (v0.9.1-|cffff0000alpha|r.3) # Name shown ingame, may be colored
+  name: Angry Mobs (v0.10.0-|cffaa0000alpha|r.2) # Name shown ingame, may be colored
   fileName: AngryMobs # Name of the map file
   author: Tiinusen # Name of the author
   scenarioData:
