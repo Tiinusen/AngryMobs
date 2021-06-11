@@ -36,7 +36,7 @@ import Ids
 		..setAttack1WeaponType(WeaponType.Missile)
 		..setAttack1Range(600)
 		..setAttack1CooldownTime(2/(i+1))
-		..setAttack1DamageBase(59+(i*20))
+		..setAttack1DamageBase(59+(i*5))
 		..setAttack1DamageNumberofDice(1)
 		..setAttack1DamageSidesperDie(30+(40*i))
 		..setAttack1TargetsAllowed(commaList(TargetsAllowed.enemies,TargetsAllowed.nonhero))

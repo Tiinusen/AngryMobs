@@ -47,7 +47,7 @@ import Ids
 	// Button Placement
 	..presetButtonPosNormal(0, 2)
 	// Cost
-	..presetCooldown(lvl -> 1)
+	..presetCooldown(lvl -> 10)
 	..presetManaCost(lvl -> 0)
 	// Target
 	..presetTargetTypes(Targettype.NONE)
