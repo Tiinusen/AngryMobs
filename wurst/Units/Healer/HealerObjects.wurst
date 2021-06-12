@@ -1,0 +1,75 @@
+package HealerObjects
+
+import HealerConstants
+import UnitObjEditing
+import Ids
+
+@compiletime function generate()
+	new UnitDefinition(HEALER_ID, HEALER_ORIGINAL_ID)
+		..setName(HEALER_NAME)
+		..setNameEditorSuffix("")
+		..setTooltipBasic(HEALER_TOOL_TIP_BASIC)
+		..setTooltipExtended(HEALER_TOOL_TIP_EXTENDED)
+		..setUnitClassification("_")
+		..setRace(Race.Commoner)
+		..setCanFlee(false)
+		..setCollisionSize(1.0)
+		// Requirements
+		..setRequirements(commaList(""))
+		..setRequirementsLevels(commaList("1"))
+		// Button Placement
+		..setButtonPositionX(HEALER_BUTTON_X)
+		..setButtonPositionY(HEALER_BUTTON_Y)
+		// Icon / Model
+		..setIconGameInterface(HEALER_ICON)
+		..setModelFile(HEALER_MODEL)
+		// Hotkey
+		..setHotkey(HEALER_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(HEALER_ABILITIES)
+		..setUpgradesUsed(HEALER_UPGRADES)
+		..setStructuresBuilt(commaList(""))
+		// Speed
+		..setSpeedBase(450)
+		// Sight
+		..setSightRadiusDay(600)
+		..setSightRadiusNight(100)
+		// Mana
+		..setManaRegeneration(1)
+		..setManaInitialAmount(100)
+		..setManaMaximum(100)
+		// Cost
+		..setGoldCost(HEALER_COST_GOLD)
+		..setLumberCost(HEALER_COST_LUMBER)
+		..setFoodCost(HEALER_COST_FOOD)
+		// Shop
+		..setStockMaximum(HEALER_RESTOCK_MAX)
+		..setStockStartDelay(HEALER_RESTOCK_DELAY)
+		..setStockReplenishInterval(HEALER_RESTOCK_INTERVAL)
+		// Armor
+		..setDefenseBase(0)
+		..setArmorType(ArmorType.Unarmored)
+		// Health
+		..setHitPointsMaximumBase(220)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Unknown)
+		..setAttack1CooldownTime(0)
+		..setAttack1DamageBase(0)
+		..setAttack1DamageNumberofDice(0)
+		..setAttack1DamageSidesperDie(0)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Art Special / Animation / Maximum Pitch / Maximum Roll / Projectile / Propulsion
+		..setArtSpecial("")
+		..setAnimationBlendTimeseconds(0.0)
+		..setAnimationCastBackswing(0.0)
+		..setMaximumPitchAngledegrees(0.0)
+		..setMaximumRollAngledegrees(0.0)
+		..setProjectileImpactZ(0.0)
+		..setProjectileLaunchZ(0.0)
+		..setPropulsionWindowdegrees(1.0)
+		

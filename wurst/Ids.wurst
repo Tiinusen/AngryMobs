@@ -41,6 +41,23 @@ public let FOOTMAN_ID = compiletime(UNIT_ID_GEN.next())
 // Archer
 public let ARCHER_ID = compiletime(UNIT_ID_GEN.next())
 
+// Healer
+public let HEALER_ID = compiletime(UNIT_ID_GEN.next())
+public let HEALER_HEALING_WAVE_ID = compiletime(ABIL_ID_GEN.next())
+
+// Sapper
+public let SAPPER_ID = compiletime(UNIT_ID_GEN.next())
+public let SAPPER_EXPLODE_ID = compiletime(ABIL_ID_GEN.next())
+
+// Tank
+public let TANK_ID = compiletime(UNIT_ID_GEN.next())
+
+// Sniper
+public let SNIPER_ID = compiletime(UNIT_ID_GEN.next())
+
+// Captain
+public let CAPTAIN_ID = compiletime(UNIT_ID_GEN.next())
+
 /*
  * Abilities
  */
@@ -86,6 +103,9 @@ public let GATE_CONTROL_ID = compiletime(UNIT_ID_GEN.next())
 public let GATE_CONTROL_TOGGLE_ID = compiletime(ABIL_ID_GEN.next())
 public let GATE_CONTROL_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
 public let GATE_CONTROL_HEALTH_UPGRADE_ID = compiletime(UPGD_ID_GEN.next())
+
+// Workshop
+public let WORKSHOP_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())
 
 // Barrack
 public let BARRACK_ID_LEVEL_1 = compiletime(UNIT_ID_GEN.next())

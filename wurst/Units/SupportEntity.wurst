@@ -1,4 +1,4 @@
-package SoldierEntity
+package SupportEntity
 
 import public UnitEntity
 import initlater Hero
@@ -10,8 +10,8 @@ import ClosureTimers
 import ProtectKingBuff
 import HashSet
 
-abstract public class SoldierEntity extends UnitEntity
-	private static HashList<SoldierEntity> _units = new HashList<SoldierEntity>()
+abstract public class SupportEntity extends UnitEntity
+	private static HashList<SupportEntity> _units = new HashList<SupportEntity>()
 
 	construct(int typeID, vec2 pos, player owner)
 		super(CreateUnit(owner, typeID, pos.x, pos.y, 270))
@@ -32,33 +32,29 @@ abstract public class SoldierEntity extends UnitEntity
 		this._init()
 
 	ondestroy
-		SoldierEntity._units.remove(this)
-		Hero.removeControlledSoldier(this)
-		ControlledBuff.remove(this)
-		InvulnerabilityBuff.remove(this)
-		ProtectKingBuff.remove(this)
+		SupportEntity._units.remove(this)
 
 	private function _init()
-		SoldierEntity._units.add(this)
+		SupportEntity._units.add(this)
 		this.onDeath() (unit killer, CallbackDeath callback) ->
 			this._closureTerminator.after(5) -> 
 				this.remove(true)
 		nullTimer() -> 
 			this.decideNextAction()
 
-	static function getSoldiers() returns HashList<SoldierEntity>
-		return SoldierEntity._units.copy()
+	static function getSupports() returns HashList<SupportEntity>
+		return SupportEntity._units.copy()
 
-	static function getSoldiers(LinkedListPredicate<SoldierEntity> predicate) returns LinkedList<SoldierEntity>
-		let ll = new LinkedList<SoldierEntity>()
-		SoldierEntity._units.forEach() (SoldierEntity t) ->
+	static function getSupports(LinkedListPredicate<SupportEntity> predicate) returns LinkedList<SupportEntity>
+		let ll = new LinkedList<SupportEntity>()
+		SupportEntity._units.forEach() (SupportEntity t) ->
 			if predicate.isTrueFor(t)
 				ll.add(t)
 		return ll
 
 	/** Forces all soldier untis to re-evalute next action */
 	static function allDecideNextAction()
-		SoldierEntity._units.forEach() (SoldierEntity t) ->
+		SupportEntity._units.forEach() (SupportEntity t) ->
 			t.decideNextAction()
 			
 	private function castIfNeeded(unit u, int typeID) returns unit
@@ -67,7 +63,7 @@ abstract public class SoldierEntity extends UnitEntity
 		return u
 	
 	function decideNextAction()
-		if ControlledBuff.has(this) or ProtectKingBuff.has(this) or not this.isAlive()
+		if not this.isAlive()
 			return
 		let friendly = this.getOwner().getSide()
 		let enemy = this.getOwner().getSide().getEnemySide()
@@ -80,73 +76,65 @@ abstract public class SoldierEntity extends UnitEntity
 			// Is closer to friendly gate
 			if (friendly.getGate().getPos().x < 0 and this.getPos().x < friendly.getGate().getPos().x) or (friendly.getGate().getPos().x > 0 and friendly.getGate().getPos().x < this.getPos().x)
 				// Is inside walls
-				if this.canProtectKing() and friendly.getKing().isInNeedOfGuards()
-					// The king is in need of more protectors
-					this.orderMove(friendly.getKing(), 350) (boolean fulfilled) ->
-						if fulfilled
-							this.orderStop()
-							ProtectKingBuff.add(this, 120)
-						else
-							this.debugOrder("Line 95")
-							this._closureTerminator.after(1) -> 
-								this.decideNextAction()
-							
-				else if not friendly.getGate().isOpen()
+				if not friendly.getGate().isOpen()
 					// The gate is closed, let's protect it
-					this.orderAttack(friendly.getGate().getPos(), 400) (boolean fulfilled) ->
+					this.orderMove(friendly.getGate().getPos(), 600) (boolean fulfilled) ->
 						if fulfilled
 							this.orderStop()
 						else
+							this.debugOrder("Line 105")
 							this._closureTerminator.after(1) -> 
 								this.decideNextAction()
 				else
-					// Let's kill everything inbetween here and the enemy gate
-					this.orderAttack(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
+					// Let's move towards the enemy gate
+					this.orderMove(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
 						if fulfilled
 							this.decideNextAction()
 						else
+							this.debugOrder("Line 114")
 							this._closureTerminator.after(1) -> 
 								this.decideNextAction()
 			else
 				// Is outside walls
 				if not friendly.getGate().isOpen() or friendly.getGate().isDamaged()
 					// Our gates needs attention, retreat to them and slaughter anything inbetween here and the friendly gate
-					this.orderAttack(friendly.getGate().getPos(), 400) (boolean fulfilled) ->
+					this.orderMove(friendly.getGate().getPos(), 400) (boolean fulfilled) ->
 						if fulfilled
 							// It's done, let's go for enemy gate like we originally planned
-							this.orderAttack(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
+							this.orderMove(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
 								if fulfilled
 									this.decideNextAction()
 								else
+									this.debugOrder("Line 128")
 									this._closureTerminator.after(1) -> 
 										this.decideNextAction()
 						else
-							this._closureTerminator.after(1) -> 
-								this.decideNextAction()
+						
 				else
-					// Let's kill everything inbetween here and the enemy gate
-					this.orderAttack(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
+					// Let's move towards enemy gate
+					this.orderMove(enemy.getGate().getPos(), 400) (boolean fulfilled) ->
 						if fulfilled
 							this.decideNextAction()
 						else
+							this.debugOrder("Line 139")
 							this._closureTerminator.after(1) -> 
 								this.decideNextAction()
 		else
 			// Is closer to enemy gate
 			if enemy.getGate().isOpen() or enemy.getGate().isDestroyed() or this.distanceTo(enemy.getKing()) < 1000
 				// Gate is broken or the enemy king is near, so let's kill him
-				if not this.orderAttack(enemy.getKing().getPos())
+				if not this.orderMove(enemy.getKing().getPos())
+					this.debugOrder("Line 147")
 					this._closureTerminator.after(1) -> 
 						this.decideNextAction()
-			else if distanceToEnemyGate < 350
+			else if distanceToEnemyGate < 600
 				// Close to the enemy gate, let's break it down
-				if not this.orderAttack(enemy.getGate())
-					this.debugOrder("Line 153")
-					this._closureTerminator.after(1) -> 
-						this.decideNextAction()
+				this.orderStop()
+				this._closureTerminator.after(1) -> 
+					this.decideNextAction()
 			else
-				// Let's kill everything inbetween here and the enemy gate
-				this.orderAttack(enemy.getGate().getPos(), 300) (boolean fulfilled) ->
+				// Let's move towards the enemy gate
+				this.orderMove(enemy.getGate().getPos(), 300) (boolean fulfilled) ->
 					if fulfilled
 						this.decideNextAction()
 					else
@@ -154,8 +142,7 @@ abstract public class SoldierEntity extends UnitEntity
 						this._closureTerminator.after(1) -> 
 							this.decideNextAction()
 
-	protected function canProtectKing() returns bool
-		return true
+		
 
 	override function initalize()
 		if this.getOwner().getPlayer() != this.getOwner().getSide().getSidePlayer()

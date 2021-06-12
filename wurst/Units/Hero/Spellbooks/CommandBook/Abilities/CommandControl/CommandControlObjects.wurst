@@ -162,8 +162,8 @@ import Ids
 		..presetManaCost(lvl -> 0)
 		// Target
 		..setItemAbility(true)
-		..presetCastRange((int lvl) -> 2000)
-		..presetAreaofEffect((int lvl) -> 200)
+		..presetCastRange((int lvl) -> 4000)
+		..presetAreaofEffect((int lvl) -> 50)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)
 
@@ -242,7 +242,7 @@ import Ids
 		..presetManaCost(lvl -> 0)
 		// Target
 		..setItemAbility(true)
-		..presetCastRange((int lvl) -> 2000)
-		..presetAreaofEffect((int lvl) -> 200)
+		..presetCastRange((int lvl) -> 4000)
+		..presetAreaofEffect((int lvl) -> 50)
 		..presetTargetTypes(Targettype.POINT)
 		..presetOption(Option.TARGETIMAGE, true)

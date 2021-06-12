@@ -1,0 +1,38 @@
+package Workshop
+
+import Healer
+import Sapper
+import Ids
+import WorkshopConstants
+import RunnerEntity
+import Owner
+
+init
+    EventEntity.onConstructionFinished(WORKSHOP_ID_LEVEL_1) (unit building, CallbackConstruction callback) ->
+        new Workshop(building)
+
+public class Workshop extends RunnerEntity
+    construct(unit obj)
+        super(obj, WORKSHOP_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos)
+        super(CreateUnit(owner, WORKSHOP_ID_LEVEL_1, pos.x, pos.y, 270), WORKSHOP_RUN_CYCLE_INTERVAL)
+
+    construct(player owner, vec2 pos, real dir)
+        super(CreateUnit(owner, WORKSHOP_ID_LEVEL_1, pos.x, pos.y, dir), WORKSHOP_RUN_CYCLE_INTERVAL)
+
+    override function initalize()
+        this.getUnit().setInvulnerable(true)
+
+        this.onSold(HEALER_ID) (unit sold, CallbackSold callback) ->
+            new Healer(sold)
+
+        this.onSold(SAPPER_ID) (unit sold, CallbackSold callback) ->
+            new Sapper(sold)
+
+        this.run()
+        if this.getOwner().isTutorialEnabled() and not this.getOwner().isTutorialAlreadyDisplayedAndMarkAsDisplayed("WORKSHOP")
+            this.getOwner().print("|cff33ff00TUTORIAL|r: The Workshop allows you to purchase support/specialist units", 15)
+            
+    override function run()
+      

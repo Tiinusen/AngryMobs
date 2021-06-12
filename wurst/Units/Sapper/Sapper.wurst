@@ -1,0 +1,26 @@
+package Sapper
+
+import SoldierEntity
+import Ids
+
+public class Sapper extends SoldierEntity
+	construct(vec2 pos, player owner)
+		super(SAPPER_ID, pos, owner)
+
+	construct(vec2 pos, player owner, real dir)
+		super(SAPPER_ID, pos, owner, dir)
+
+	construct(unit obj)
+		super(SAPPER_ID, obj)
+
+	override protected function canProtectKing() returns bool
+		return false
+	
+	override function applyUpgrades()
+		
+				
+
+					
+				
+				
+			

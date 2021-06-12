@@ -1,0 +1,28 @@
+package SapperConstants
+import public Assets
+import Ids
+
+
+@configurable public let SAPPER_ORIGINAL_ID = UnitIds.goblinsapper
+
+@configurable public let SAPPER_ICON = Icons.bTNGoblinSapper
+@configurable public let SAPPER_MODEL = Units.goblinSapper1
+
+@configurable public let SAPPER_NAME = "Sapper"
+@configurable public let SAPPER_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Sapper"
+@configurable public let SAPPER_TOOL_TIP_EXTENDED = ""
+
+@configurable public let SAPPER_ABILITIES = commaList(SAPPER_EXPLODE_ID)
+@configurable public let SAPPER_UPGRADES = commaList("")
+
+@configurable public let SAPPER_HOTKEY = "Q"
+@configurable public let SAPPER_BUTTON_X = 0
+@configurable public let SAPPER_BUTTON_Y = 0
+
+@configurable public let SAPPER_COST_GOLD = 100
+@configurable public let SAPPER_COST_LUMBER = 0
+@configurable public let SAPPER_COST_FOOD = 0
+
+@configurable public let SAPPER_RESTOCK_INTERVAL = 60
+@configurable public let SAPPER_RESTOCK_MAX = 2
+@configurable public let SAPPER_RESTOCK_DELAY = 0

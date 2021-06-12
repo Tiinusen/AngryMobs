@@ -1,0 +1,12 @@
+package HealingWave
+
+import Ids
+import AbilityObjEditing
+
+@compiletime function gen()
+	new AbilityDefinitionHealingWaveCreep(HEALER_HEALING_WAVE_ID)
+		..setEditorSuffix("(Healer)")
+		..setName("Healing")
+		// Cost
+		..presetCooldown(lvl -> 1)
+		..presetManaCost(lvl -> 25)

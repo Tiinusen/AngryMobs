@@ -1,0 +1,17 @@
+package HealingPower
+
+import ClosureEvents
+import ClosureTimers
+import Owner
+import SoldierEntity
+import Ids
+
+init
+	nullTimer() -> 
+		EventListener.onPointCast(HERO_HEALING_POWER_ID) (unit caster, vec2 target) ->
+			let side = caster.getOwner().toOwnerType().getSide()
+			let lvl = caster.getAbilityLevel(HERO_INVULNERABILITY_POWER_ID)
+			SoldierEntity.getSoldiers((SoldierEntity soldier) -> soldier.getUnit().getOwner().toOwnerType().getSide() == side and soldier.isAlive() and soldier.isWithin(target, 50.+(50.*lvl))).forEach() (SoldierEntity soldier) ->
+				soldier.getUnit().setHP(soldier.getUnit().getMaxHP())
+				
+		

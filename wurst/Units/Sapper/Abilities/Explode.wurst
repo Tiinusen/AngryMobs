@@ -1,0 +1,14 @@
+package Explode
+
+import Ids
+import AbilityObjEditing
+
+@compiletime function gen()
+	new AbilityDefinitionDeathDamageAOEsapper(SAPPER_EXPLODE_ID)
+		..setEditorSuffix("(Sapper)")
+		..setName("Explode")
+		// Cost
+		..presetFullDamageRadius((int lvl) -> 250)
+		..presetPartialDamageRadius((int lvl) -> 500)
+		..presetFullDamageAmount((int lvl) -> 800)
+		..presetPartialDamageAmount((int lvl) -> 350)

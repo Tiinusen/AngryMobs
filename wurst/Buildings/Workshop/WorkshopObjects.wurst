@@ -1,0 +1,41 @@
+package WorkshopObjects
+
+import WorkshopConstants
+import ChannelAbilityPreset
+import Ids
+
+@compiletime function generate()
+	let ids = [WORKSHOP_ID_LEVEL_1]
+	
+	// Worker Hall
+	for i = 0 to 0
+		let b = new BuildingDefinition(ids[i], UnitIds.humanbarracks)
+		..setNameEditorSuffix("(Workshop)")
+		..setName(WORKSHOP_NAME+" - Level "+(i+1).toString())
+		..setTooltipBasic((i==0?"|cffFFCC00Build|r":"|cffFFCC00Upgrade|r")+" "+WORKSHOP_TOOL_TIP_BASIC)
+		..setTooltipExtended(WORKSHOP_TOOL_TIP_EXTENDED)
+		// Icon / Model
+		..setIconGameInterface(WORKSHOP_ICON)
+		..setModelFile(WORKSHOP_MODEL)
+		// Button Placement
+		..setButtonPositionX(i != 0 ? 3 : WORKSHOP_BUTTON_X)
+		..setButtonPositionY(i != 0 ? 2 : WORKSHOP_BUTTON_Y)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(WORKSHOP_ABILITIES)
+		..setResearchesAvailable(commaList(""))
+		..setUnitsTrained(commaList(WORKSHOP_UNITS_TRAINED))
+		..setUnitsSold(WORKSHOP_UNITS_SOLD)
+		// Build / Cost
+		..setBuildTime(1)
+		..setGoldCost(WORKSHOP_COST_GOLD+i*WORKSHOP_COST_GOLD_INCREMENT)
+		..setLumberCost(i==0 ? WORKSHOP_COST_LUMBER : 0)
+		// Health
+		..setHitPointsMaximumBase(1000)
+		// Other
+		..setIsaBuilding(true)
+		..setHideMinimapDisplay(true)
+		if i == 0
+			// Hotkey
+			b..setHotkey(WORKSHOP_HOTKEY)
+		else
+			b..setHotkey("V")

@@ -8,4 +8,5 @@ I will start by making base types and abstraction layers, then some map details 
 
 And last but not least, make the abstraction layers as a shared library for anyone to import and use.
 
-Maybe making a youtube series in the end when I've learned to what extend one can use Wurst.
+# Known Bugs
+[ ] Death event sometimes does not trigger (Hero re-designed due to this since revival malfunctioned)

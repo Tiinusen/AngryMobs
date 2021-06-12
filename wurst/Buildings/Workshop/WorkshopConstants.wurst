@@ -1,0 +1,27 @@
+package WorkshopConstants
+import public Assets
+import Ids
+
+@configurable public let WORKSHOP_ORIGINAL_ID = UnitIds.humanbarracks
+
+@configurable public let WORKSHOP_ICON = Icons.bTNWorkshop
+@configurable public let WORKSHOP_MODEL = Buildings.workshop
+
+@configurable public let WORKSHOP_NAME = "Workshop"
+@configurable public let WORKSHOP_TOOL_TIP_BASIC = "|cffFF7B29Workshop"
+@configurable public let WORKSHOP_TOOL_TIP_EXTENDED = "Allows you to purchase support/specialist units"
+
+@configurable public let WORKSHOP_UNITS_SOLD = commaList(HEALER_ID) // SAPPER_ID
+@configurable public let WORKSHOP_UNITS_TRAINED = commaList("")
+
+@configurable public let WORKSHOP_ABILITIES = commaList("")
+
+@configurable public let WORKSHOP_HOTKEY = "E"
+@configurable public let WORKSHOP_BUTTON_X = 2
+@configurable public let WORKSHOP_BUTTON_Y = 0
+
+@configurable public let WORKSHOP_COST_GOLD = 200
+@configurable public let WORKSHOP_COST_GOLD_INCREMENT = 200
+@configurable public let WORKSHOP_COST_LUMBER = 1
+
+@configurable public let WORKSHOP_RUN_CYCLE_INTERVAL = 30.

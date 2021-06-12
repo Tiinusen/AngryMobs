@@ -19,7 +19,7 @@ import Ids
 		let b = new BuildingDefinition(ids[i], UnitIds.humanbarracks)
 		..setNameEditorSuffix("(Barrack)")
 		..setName(BARRACK_NAME+" - Level "+(i+1).toString())
-		..setTooltipBasic(BARRACK_TOOL_TIP_BASIC)
+		..setTooltipBasic((i==0?"|cffFFCC00Build|r":"|cffFFCC00Upgrade|r")+" "+BARRACK_TOOL_TIP_BASIC)
 		..setTooltipExtended(BARRACK_TOOL_TIP_EXTENDED)
 		// Icon / Model
 		..setIconGameInterface(BARRACK_ICON)

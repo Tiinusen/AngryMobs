@@ -1,0 +1,63 @@
+package Healer
+
+import SoldierEntity
+import Ids
+
+public class Healer extends UnitEntity
+	construct(vec2 pos, player owner)
+		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, 270))
+
+	construct(vec2 pos, player owner, real dir)
+		super(CreateUnit(owner, WORKER_ID, pos.x, pos.y, dir))
+
+	construct(unit obj)
+		super(obj)
+	
+	override function applyUpgrades()
+	
+	override function initalize()
+		if this.getOwner().getPlayer() != this.getOwner().getSide().getSidePlayer()
+			this.getUnit().setOwner(this.getOwner().getSide().getSidePlayer(), false)
+		this.getUnit().setColor(this.getOwner().getPlayer().getColor())
+
+		this.decideNextAction()
+
+	function decideNextAction()
+		let side = this.getOwner().getSide()
+		if side.getKing().isDamaged()
+			// King needs to be healed
+			this.orderMove(side.getKing().getUnit(), 400) (boolean fulfilled) ->
+				if fulfilled
+					this.orderStop()
+					// Done like this to avoid changing order string
+					this._closureTerminator.after(3) ->
+						this.decideNextAction()
+				else
+					this._closureTerminator.after(1) ->
+						this.decideNextAction()
+						
+		else
+			let damagedSoldier = SoldierEntity.getSoldiers((SoldierEntity t) -> t.getOwner().getSide() == side and t.isDamaged()).getFirst()
+			if damagedSoldier != null
+				// We have a damaged friendly soldier
+				this.orderMove(damagedSoldier, 400) (boolean fulfilled) ->
+					if fulfilled
+						this.orderStop()
+						// Done like this to avoid changing order string
+						this._closureTerminator.after(3) ->
+							this.decideNextAction()
+					else
+						this._closureTerminator.after(1) ->
+							this.decideNextAction()
+			else
+				// Nothing to do let's head to the king
+				this.orderMove(side.getKing().getUnit(), 400) (boolean fulfilled) ->
+					this.orderStop()
+					this._closureTerminator.after(5) ->
+						this.decideNextAction()
+				
+
+					
+				
+				
+			

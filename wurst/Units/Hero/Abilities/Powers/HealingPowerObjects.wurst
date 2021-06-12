@@ -1,35 +1,28 @@
 package HealingPowerObjects
 
 import Ids
-import AbilityObjEditing
+import ChannelAbilityPreset
 
 @compiletime function gen()
-	new AbilityDefinitionHealingWaveCreep(HERO_HEALING_POWER_ID)
+	new ChannelAbilityPreset(HERO_HEALING_POWER_ID,4,true)
 		..setEditorSuffix("(Hero Power)")
-		..setLevels(4)
+		..setName("Healing")
+		..setTooltipLearn("Healing")
+		..setTooltipLearnExtended("Heals all soldier units within circle to full health\n\nHowever this healing power does not affect the king")
+		..presetTooltipNormal(lvl -> "Healing")
+		..presetTooltipNormalExtended(lvl -> "Heals all units within circle to full health\n\nHowever this healing power does not affect the king")
+		// Icon
+		..presetIcon(Icons.bTNHealingWard)
 		// Hotkey
-		..presetHotkey("C")
+		..presetHotkey("X")
 		// Button Placement
-		..presetButtonPosNormal(2, 2)
-		..setName("Healing Power")
-		..setTooltipLearn("Healing Power")
-		..setTooltipLearnExtended("Restores health of nearby units")
-		..presetTooltipNormal((int lvl) -> "Healing Power")
-		..presetTooltipNormalExtended((int lvl) -> "Heals friendly units with a wave or healing power\n\n"+(lvl*100).toString()+"hp restored per jump\n"+(lvl*4).toString()+" jumps per use")
-		..presetIcon(Icons.bTNHealingWave)
-		..presetNumberofTargetsHit((int lvl) -> lvl * 4)
-		..presetDamageperTarget((int lvl) -> lvl * 300.)
-		..presetDamageReductionperTarget((int lvl) -> 1)
+		..presetButtonPosNormal(1, 2)
+		// Cost
+		..presetCooldown(lvl -> 5)
+		..presetManaCost(lvl -> 75)
+		// Target
+		..setItemAbility(false)
 		..presetCastRange((int lvl) -> 1000)
-		..presetCooldown((int lvl) -> 10)
-		..presetManaCost((int lvl) -> 50)
-		..presetTargetsAllowed((int lvl) -> commaList(
-			TargetsAllowed.air, 
-			TargetsAllowed.ground,
-			TargetsAllowed.friend,
-			TargetsAllowed.self,
-			TargetsAllowed.vulnerable,
-			TargetsAllowed.invulnerable,
-			TargetsAllowed.organic
-		))
-		..setLevelSkipRequirement(1)
+		..presetAreaofEffect((int lvl) -> 50.+(50.*lvl))
+		..presetTargetTypes(Targettype.POINT)
+		..presetOption(Option.TARGETIMAGE, true)

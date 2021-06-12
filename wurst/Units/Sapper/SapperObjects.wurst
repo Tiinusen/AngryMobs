@@ -1,0 +1,75 @@
+package SapperObjects
+
+import SapperConstants
+import UnitObjEditing
+import Ids
+
+@compiletime function generate()
+	new UnitDefinition(SAPPER_ID, SAPPER_ORIGINAL_ID)
+		..setName(SAPPER_NAME)
+		..setNameEditorSuffix("")
+		..setTooltipBasic(SAPPER_TOOL_TIP_BASIC)
+		..setTooltipExtended(SAPPER_TOOL_TIP_EXTENDED)
+		..setUnitClassification("_")
+		..setRace(Race.Commoner)
+		..setCanFlee(false)
+		..setCollisionSize(1.0)
+		// Requirements
+		..setRequirements(commaList(""))
+		..setRequirementsLevels(commaList("1"))
+		// Button Placement
+		..setButtonPositionX(SAPPER_BUTTON_X)
+		..setButtonPositionY(SAPPER_BUTTON_Y)
+		// Icon / Model
+		..setIconGameInterface(SAPPER_ICON)
+		..setModelFile(SAPPER_MODEL)
+		// Hotkey
+		..setHotkey(SAPPER_HOTKEY)
+		// Abilities / Upgrades / Building / Training / Selling
+		..setNormalAbilities(SAPPER_ABILITIES)
+		..setUpgradesUsed(SAPPER_UPGRADES)
+		..setStructuresBuilt(commaList(""))
+		// Speed
+		..setSpeedBase(450)
+		// Sight
+		..setSightRadiusDay(600)
+		..setSightRadiusNight(100)
+		// Mana
+		..setManaRegeneration(1)
+		..setManaInitialAmount(100)
+		..setManaMaximum(100)
+		// Cost
+		..setGoldCost(SAPPER_COST_GOLD)
+		..setLumberCost(SAPPER_COST_LUMBER)
+		..setFoodCost(SAPPER_COST_FOOD)
+		// Shop
+		..setStockMaximum(SAPPER_RESTOCK_MAX)
+		..setStockStartDelay(SAPPER_RESTOCK_DELAY)
+		..setStockReplenishInterval(SAPPER_RESTOCK_INTERVAL)
+		// Armor
+		..setDefenseBase(0)
+		..setArmorType(ArmorType.Unarmored)
+		// Health
+		..setHitPointsMaximumBase(220)
+		// Attack (1)
+		..setAttack1AttackType(AttackType.Unknown)
+		..setAttack1CooldownTime(0)
+		..setAttack1DamageBase(0)
+		..setAttack1DamageNumberofDice(0)
+		..setAttack1DamageSidesperDie(0)
+		// Attack (2)
+		..setAttack2AttackType(AttackType.Unknown)
+		..setAttack2CooldownTime(0)
+		..setAttack2DamageBase(0)
+		..setAttack2DamageNumberofDice(0)
+		..setAttack2DamageSidesperDie(0)
+		// Art Special / Animation / Maximum Pitch / Maximum Roll / Projectile / Propulsion
+		..setArtSpecial("")
+		..setAnimationBlendTimeseconds(0.0)
+		..setAnimationCastBackswing(0.0)
+		..setMaximumPitchAngledegrees(0.0)
+		..setMaximumRollAngledegrees(0.0)
+		..setProjectileImpactZ(0.0)
+		..setProjectileLaunchZ(0.0)
+		..setPropulsionWindowdegrees(1.0)
+		

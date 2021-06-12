@@ -1,0 +1,28 @@
+package HealerConstants
+import public Assets
+import Ids
+
+
+@configurable public let HEALER_ORIGINAL_ID = UnitIds.priest
+
+@configurable public let HEALER_ICON = Icons.bTNPriest
+@configurable public let HEALER_MODEL = Units.priest1
+
+@configurable public let HEALER_NAME = "Healer"
+@configurable public let HEALER_TOOL_TIP_BASIC = "|cffFFCC00Buy |cffFF7B29Healer"
+@configurable public let HEALER_TOOL_TIP_EXTENDED = ""
+
+@configurable public let HEALER_ABILITIES = commaList(HEALER_HEALING_WAVE_ID)
+@configurable public let HEALER_UPGRADES = commaList("")
+
+@configurable public let HEALER_HOTKEY = "Q"
+@configurable public let HEALER_BUTTON_X = 0
+@configurable public let HEALER_BUTTON_Y = 0
+
+@configurable public let HEALER_COST_GOLD = 50
+@configurable public let HEALER_COST_LUMBER = 0
+@configurable public let HEALER_COST_FOOD = 0
+
+@configurable public let HEALER_RESTOCK_INTERVAL = 30
+@configurable public let HEALER_RESTOCK_MAX = 2
+@configurable public let HEALER_RESTOCK_DELAY = 0
